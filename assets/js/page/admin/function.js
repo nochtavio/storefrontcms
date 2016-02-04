@@ -1,5 +1,4 @@
 $(document).ready(function () {
-  //Function
   get_data = function (page) {
     //Filter
     var username = $('#txt_username').val();
@@ -10,15 +9,14 @@ $(document).ready(function () {
     $.ajax({
       url: base_url + 'admin/get_data',
       type: 'POST',
-      data:{
+      data: {
         page: page,
         username: username,
-        active:active,
-        order:order
+        active: active,
+        order: order
       },
       dataType: 'json',
-      beforeSend: function () {
-        $('#paging').empty();
+      success: function (result) {
         $('#div_hidden').empty();
         $('#table_content').empty();
         $('#table_content').append("\
@@ -30,19 +28,19 @@ $(document).ready(function () {
             <th>Action</th>\
           </tr>\
         ");
-      },
-      success: function (result) {
+
         if (result['result'] === 'r1') {
           //Set Paging
           var no = 1;
           var size = result['size'];
+          var total_page = result['totalpage'];
+          var class_page = ".page";
           if (page > 1) {
             no = parseInt(1) + (parseInt(size) * (parseInt(page) - parseInt(1)));
           }
 
-          writePaging(result['totalpage'], page);
-          last_page = result['totalpage'];
-          clearPagingClass(".page", result['totalpage'], page);
+          writePaging(total_page, page, class_page);
+          last_page = total_page;
           //End Set Paging
 
           for (var x = 0; x < result['total']; x++) {
@@ -78,7 +76,7 @@ $(document).ready(function () {
             total_data++;
             //End Set Object ID
           }
-          
+
           set_edit();
         } else {
           $('#table_content').append("\
@@ -89,12 +87,10 @@ $(document).ready(function () {
       }
     });
   };
-  
-  set_edit = function ()
-  {
+
+  set_edit = function () {
     var id = [];
-    for (var x = 0; x < total_data; x++)
-    {
+    for (var x = 0; x < total_data; x++) {
       id[x] = $('#object' + x).val();
     }
 
@@ -105,25 +101,22 @@ $(document).ready(function () {
         $.ajax({
           url: base_url + 'admin/get_specific_data',
           type: 'POST',
-          data:
-            {
-              id: val
-            },
+          data:{
+            id: val
+          },
           dataType: 'json',
           success: function (result) {
-            if (result['result'] === 'r1')
-            {
+            if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
               $("#txt_data_username").val(result['username']);
-              if(result['active'] == "1"){
+              if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
-              }else{
+              } else {
                 $('#txt_data_active').prop('checked', false);
               }
               $('#modal_data').modal('show');
             }
-            else
-            {
+            else {
               alert("Error in connection");
               $('#modal_data').modal('hide');
             }
@@ -148,7 +141,7 @@ $(document).ready(function () {
     } else {
       $('#modal_data_title').html("Edit Admin");
       $('#txt_data_username').prop("readonly", true);
-      
+
       $('#txt_data_password').val('');
       $('#txt_data_conf_password').val('');
 
@@ -156,12 +149,12 @@ $(document).ready(function () {
       $('#error_container_message').empty();
     }
   };
-  
-  add_data = function(username, password, conf_password, active){
+
+  add_data = function (username, password, conf_password, active) {
     $.ajax({
       url: base_url + 'admin/add_data',
       type: 'POST',
-      data:{
+      data: {
         username: username,
         password: password,
         conf_password: conf_password,
@@ -183,12 +176,12 @@ $(document).ready(function () {
       }
     });
   };
-  
-  edit_data = function(id, password, conf_password, active){
+
+  edit_data = function (id, password, conf_password, active) {
     $.ajax({
       url: base_url + 'admin/edit_data',
       type: 'POST',
-      data:{
+      data: {
         id: id,
         password: password,
         conf_password: conf_password,
@@ -210,45 +203,4 @@ $(document).ready(function () {
       }
     });
   };
-  //End Function
-
-  //Initial Setup
-  page = 1;
-  last_page = 0;
-  total_data = 0;
-  state = "";
-
-  get_data(page);
-  //End Initial Setup
-
-  //User Action
-  $('#btn_filter').click(function () {
-    get_data(page);
-  });
-
-  $('#btn_add_data').click(function () {
-    set_state("add");
-  });
-
-  $('#btn_submit_data').click(function (event) {
-    event.preventDefault();
-
-    //Parameter
-    var id = $('#txt_data_id').val();
-    var username = $('#txt_data_username').val();
-    var password = $('#txt_data_password').val();
-    var conf_password = $('#txt_data_conf_password').val();
-    var active = 2;
-    if ($('#txt_data_active').prop('checked')) {
-      active = 1;
-    }
-    //End Parameter
-    
-    if(state == "add"){
-      add_data(username, password, conf_password, active);
-    }else{
-      edit_data(id, password, conf_password, active);
-    }
-  });
-  //End User Action
 });

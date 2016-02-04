@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <!-- header logo: style can be found in header.less -->
     <header class="header">
       <a href="#" class="logo">
-        StorefrontCMS
+        Storefront CMS
       </a>
       <!-- Header Navbar: style can be found in header.less -->
       <nav class="navbar navbar-static-top" role="navigation">
@@ -78,7 +78,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script type="text/javascript">
       base_url = "<?php echo base_url() ?>";
     </script>
-    <script src="<?php echo base_url() ?>assets/js/function.js" type="text/javascript"></script>
+    <script src="<?php echo base_url() ?>assets/js/global.js" type="text/javascript"></script>
     <?php
     if (!empty($js)) {
       if (count($js) > 0) {

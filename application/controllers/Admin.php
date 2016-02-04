@@ -14,7 +14,9 @@ class Admin extends CI_Controller {
     $page = 'Admin';
     $sidebar['page'] = $page;
     $content['js'] = array();
-    array_push($content['js'], 'admin.js');
+    array_push($content['js'], 'admin/function.js');
+    array_push($content['js'], 'admin/init.js');
+    array_push($content['js'], 'admin/action.js');
     
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
