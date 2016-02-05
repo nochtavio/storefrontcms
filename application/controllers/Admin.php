@@ -27,7 +27,7 @@ class Admin extends CI_Controller {
   public function get_data(){
     //filter
     $username = ($this->input->post('username', TRUE)) ? $this->input->post('username', TRUE) : "" ;
-    $active = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : -1 ;
+    $active = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : 0 ;
     $order = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1 ;
     //end filter
     
@@ -141,11 +141,32 @@ class Admin extends CI_Controller {
     }
     //end check
     
-    $validate_post = $this->validate_post("", $password, $conf_password, "edit", $edit_password);
-    if($validate_post['result'] == "r1"){
-      $this->Model_admin->edit_data($id, $password, $active);
+    if($id != ""){
+      $validate_post = $this->validate_post("", $password, $conf_password, "edit", $edit_password);
+      if($validate_post['result'] == "r1"){
+        $this->Model_admin->edit_data($id, $password, $active);
+      }
+    }else{
+      $validate_post['result'] = "r2";
+      $validate_post['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
     }
     
     echo json_encode($validate_post);
+  }
+  
+  public function remove_data(){
+    //post
+    $id = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
+    //end post
+    
+    if($id != ""){
+      $data['result'] = "r1";
+      $this->Model_admin->remove_data($id);
+    }else{
+      $data['result'] = "r2";
+      $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
+    }
+    
+    echo json_encode($data);
   }
 }

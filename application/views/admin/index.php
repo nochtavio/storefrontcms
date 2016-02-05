@@ -11,7 +11,7 @@
             <select id="sel_active" name="sel_active" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status</option>
               <option value="1">Active</option>
-              <option value="2">Not Active</option>
+              <option value="0">Not Active</option>
             </select>
             <select id="sel_order" name="sel_order" class="form-control input-sm" style="margin-right: 7px;width: 175px;">
               <option value="-1">Order by Username A-Z</option>
@@ -28,7 +28,7 @@
         <table class="table table-hover">
           <div id="div_hidden" style="display: none;"></div>
           <tbody id="table_content">
-            
+
           </tbody>
         </table>
         <div class="table-foot">
@@ -83,7 +83,7 @@
           </div>
           <div id="error_container" class="alert alert-block alert-danger" style="display: none;">
             <div id="error_container_message">
-              
+
             </div>
           </div>
           <div class="form-group">
@@ -92,6 +92,25 @@
             </div>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="modal_remove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <h4 class="modal-title">Remove Data</h4>
+      </div>
+      <div class="modal-body">
+        <span id="remove_message"></span>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" id="txt_remove_id" name="txt_remove_id" />
+        <button data-dismiss="modal" class="btn btn-default" type="button">No</button>
+        <button id="btn_remove_data" class="btn btn-danger" type="button"> Yes</button>
       </div>
     </div>
   </div>

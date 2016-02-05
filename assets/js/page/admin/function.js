@@ -24,7 +24,7 @@ $(document).ready(function () {
             <th>No</th>\
             <th>Username</th>\
             <th>Status</th>\
-            <th>Detail</th>\
+            <th>Date</th>\
             <th>Action</th>\
           </tr>\
         ");
@@ -51,21 +51,22 @@ $(document).ready(function () {
             }
             //End Status
 
-            //Detail
-            var detail = "Created by <strong>" + result['creby'][x] + "</strong> <br/> on <strong>" + result['cretime'][x] + "</strong>";
+            //Date
+            var date = "Created by <strong>" + result['creby'][x] + "</strong> <br/> on <strong>" + result['cretime'][x] + "</strong>";
             if (result['modby'][x] != null) {
-              detail += "<br/><br/> Modified by <strong>" + result['modby'][x] + "</strong> <br/> on <strong>" + result['modtime'][x] + "</strong>";
+              date += "<br/><br/> Modified by <strong>" + result['modby'][x] + "</strong> <br/> on <strong>" + result['modtime'][x] + "</strong>";
             }
-            //End Detail
+            //End Date
 
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
                 <td>" + result['username'][x] + "</td>\
                 <td>" + status + "</td>\
-                <td>" + detail + "</td>\
+                <td>" + date + "</td>\
                 <td>\
                   <a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;\
+                  <a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;\
                 </td>\
               </tr>");
 
@@ -78,6 +79,7 @@ $(document).ready(function () {
           }
 
           set_edit();
+          set_remove();
         } else {
           $('#table_content').append("\
           <tr>\
@@ -122,6 +124,22 @@ $(document).ready(function () {
             }
           }
         });
+      });
+    });
+  };
+  
+  set_remove = function () {
+    var id = [];
+    for (var x = 0; x < total_data; x++) {
+      id[x] = $('#object' + x).val();
+    }
+
+    $.each(id, function (x, val) {
+      $(document).off('click', '#btn_remove' + val);
+      $(document).on('click', '#btn_remove' + val, function () {
+        $('#remove_message').html("Are you sure you want to remove this admin?");
+        $('#txt_remove_id').val(val);
+        $('#modal_remove').modal("show");
       });
     });
   };
@@ -200,6 +218,30 @@ $(document).ready(function () {
           $('#error_container').show();
           $('#error_container_message').append(result['result_message']);
         }
+      }
+    });
+  };
+  
+  remove_data = function () {
+    //param
+    var id = $('#txt_remove_id').val();
+    //end param
+    
+    $.ajax({
+      url: base_url + 'admin/remove_data',
+      type: 'POST',
+      data: {
+        id: id
+      },
+      dataType: 'json',
+      success: function (result) {
+        if (result['result'] === 'r1') {
+          get_data(page);
+        } else {
+          alert(result['result_message']);
+          get_data(page);
+        }
+        $('#modal_remove').modal("hide");
       }
     });
   };

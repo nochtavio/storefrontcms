@@ -12,9 +12,10 @@ class Model_admin extends CI_Model {
     //Validation
     if($id > 0){$this->db->where('ma.id', $id);}
     if($username != ""){$this->db->like('ma.username', $username);}
-    if($active >= 0){$this->db->where('ma.active', $active);}
+    if($active > -1){$this->db->where('ma.active', $active);}
     //End Validation
     
+    $this->db->where('ma.deleted', 0);
     if($order == 1){
       $this->db->order_by("ma.username", "desc");
     }else if($order == 2){
@@ -60,6 +61,17 @@ class Model_admin extends CI_Model {
         'modby' => 'SYSTEM'
       );
     }
+    
+    $this->db->where('id', $id);
+    $this->db->update('ms_admin', $data);
+  }
+  
+  function remove_data($id){
+    $data = array(
+      'deleted' => 1,
+      'modtime' => date('Y-m-d H:i:s'),
+      'modby' => 'SYSTEM'
+    );
     
     $this->db->where('id', $id);
     $this->db->update('ms_admin', $data);

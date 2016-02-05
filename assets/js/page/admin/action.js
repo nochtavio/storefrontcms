@@ -29,4 +29,9 @@ $(document).ready(function () {
       edit_data(id, password, conf_password, active);
     }
   });
+  
+  $('#btn_remove_data').click(function (event) {
+    event.preventDefault();
+    remove_data();
+  });
 });
