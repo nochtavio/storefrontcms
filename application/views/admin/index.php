@@ -55,19 +55,19 @@
           <div class="form-group">
             <label for="txt_data_username" class="col-lg-4 col-sm-4 control-label">Username</label>
             <div class="col-lg-8 col-sm-8">
-              <input type="text" class="form-control" id="txt_data_username" placeholder="Enter username">
+              <input type="text" class="form-control form_data" id="txt_data_username" placeholder="Enter username">
             </div>
           </div>
           <div class="form-group">
             <label for="txt_data_password" class="col-lg-4 col-sm-4 control-label">Password</label>
             <div class="col-lg-8 col-sm-8">
-              <input type="password" class="form-control" id="txt_data_password" placeholder="Enter password">
+              <input type="password" class="form-control form_data" id="txt_data_password" placeholder="Enter password">
             </div>
           </div>
           <div class="form-group">
             <label for="txt_data_conf_password" class="col-lg-4 col-sm-4 control-label">Confirmation Password</label>
             <div class="col-lg-8 col-sm-8">
-              <input type="password" class="form-control" id="txt_data_conf_password" placeholder="Enter confirmation password">
+              <input type="password" class="form-control form_data" id="txt_data_conf_password" placeholder="Enter confirmation password">
               <p class="help-block" style="margin-bottom: 0;">Enter your password again</p>
             </div>
           </div>

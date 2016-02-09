@@ -43,7 +43,7 @@
 
 <!--Modal-->
 <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modal_data" class="modal fade">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
@@ -53,27 +53,66 @@
         <form class="form-horizontal" role="form">
           <input type="hidden" id="txt_data_id" name="txt_data_id" />
           <div class="form-group">
-            <label for="txt_data_username" class="col-lg-4 col-sm-4 control-label">Username</label>
-            <div class="col-lg-8 col-sm-8">
-              <input type="text" class="form-control" id="txt_data_username" placeholder="Enter username">
+            <label for="txt_data_name" class="col-lg-3 col-sm-3 control-label">Name</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_name" placeholder="Enter product name">
             </div>
           </div>
           <div class="form-group">
-            <label for="txt_data_password" class="col-lg-4 col-sm-4 control-label">Password</label>
-            <div class="col-lg-8 col-sm-8">
-              <input type="password" class="form-control" id="txt_data_password" placeholder="Enter password">
+            <label for="txt_data_price" class="col-lg-3 col-sm-3 control-label">Price</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_price" placeholder="Enter product price">
             </div>
           </div>
           <div class="form-group">
-            <label for="txt_data_conf_password" class="col-lg-4 col-sm-4 control-label">Confirmation Password</label>
-            <div class="col-lg-8 col-sm-8">
-              <input type="password" class="form-control" id="txt_data_conf_password" placeholder="Enter confirmation password">
-              <p class="help-block" style="margin-bottom: 0;">Enter your password again</p>
+            <label for="txt_data_sale_price" class="col-lg-3 col-sm-3 control-label">Sale Price</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_sale_price" placeholder="Enter product sale price">
+              <p class="help-block" style="margin-bottom: 0;">Leave it blank if this product is not on sale</p>
             </div>
           </div>
           <div class="form-group">
-            <label for="txt_data_active" class="col-lg-4 col-sm-4 control-label">Status</label>
-            <div class="col-lg-8 col-sm-8">
+            <label for="txt_data_reseller_price" class="col-lg-3 col-sm-3 control-label">Reseller Price</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_reseller_price" placeholder="Enter product reseller price">
+              <p class="help-block" style="margin-bottom: 0;">Leave it blank if this product is not on reseller program</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_weight" class="col-lg-3 col-sm-3 control-label">Weight</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_weight" placeholder="Enter product weight">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_attribute" class="col-lg-3 col-sm-3 control-label">Attribute</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_attribute" placeholder="Enter product attribute">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_description" class="col-lg-3 col-sm-3 control-label">Description</label>
+            <div class="col-lg-9 col-sm-9" id="txt_data_description"></div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_short_description" class="col-lg-3 col-sm-3 control-label">Short Description</label>
+            <div class="col-lg-9 col-sm-9" id="txt_data_short_description"></div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_info" class="col-lg-3 col-sm-3 control-label">Info</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_info" placeholder="Enter product Info">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_size_guideline" class="col-lg-3 col-sm-3 control-label">Size Guidelines</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_size_guideline" placeholder="Enter product size guideline">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_active" class="col-lg-3 col-sm-3 control-label">Status</label>
+            <div class="col-lg-9 col-sm-9">
               <div class="checkbox">
                 <label>
                   <input type="checkbox" id="txt_data_active" value=""> Active

@@ -1,17 +1,17 @@
 $(document).ready(function () {
   get_data = function (page) {
     //Filter
-    var username = $('#txt_username').val();
+    var name = $('#txt_name').val();
     var active = $('#sel_active').val();
     var order = $('#sel_order').val();
     //End Filter
 
     $.ajax({
-      url: base_url + 'admin/get_data',
+      url: base_url + 'products/get_data',
       type: 'POST',
       data: {
         page: page,
-        username: username,
+        name: name,
         active: active,
         order: order
       },
@@ -22,7 +22,7 @@ $(document).ready(function () {
         $('#table_content').append("\
           <tr>\
             <th>No</th>\
-            <th>Username</th>\
+            <th>Name</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -61,7 +61,7 @@ $(document).ready(function () {
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
-                <td>" + result['username'][x] + "</td>\
+                <td>" + result['name'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>\
@@ -101,7 +101,7 @@ $(document).ready(function () {
       $(document).on('click', '#btn_edit' + val, function () {
         set_state("edit");
         $.ajax({
-          url: base_url + 'admin/get_specific_data',
+          url: base_url + 'products/get_specific_data',
           type: 'POST',
           data:{
             id: val
@@ -110,7 +110,15 @@ $(document).ready(function () {
           success: function (result) {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
-              $("#txt_data_username").val(result['username']);
+              $("#txt_data_name").val(result['name']);
+              $("#txt_data_price").val(result['price']);
+              $("#txt_data_sale_price").val(result['sale_price']);
+              $("#txt_data_reseller_price").val(result['reseller_price']);
+              $("#txt_data_weight").val(result['weight']);
+              $("#txt_data_description").code(result['description']);
+              $("#txt_data_short_description").code(result['short_description']);
+              $("#txt_data_info").val(result['info']);
+              $("#txt_data_size_guideline").val(result['size_guideline']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -137,7 +145,7 @@ $(document).ready(function () {
     $.each(id, function (x, val) {
       $(document).off('click', '#btn_remove' + val);
       $(document).on('click', '#btn_remove' + val, function () {
-        $('#remove_message').html("Are you sure you want to remove this admin?");
+        $('#remove_message').html("Are you sure you want to remove this products?");
         $('#txt_remove_id').val(val);
         $('#modal_remove').modal("show");
       });
@@ -147,35 +155,39 @@ $(document).ready(function () {
   set_state = function (x) {
     state = x;
     if (x == "add") {
-      $('#modal_data_title').html("Add Admin");
-      $('#txt_data_username').prop("readonly", false);
-
-      $('#txt_data_username').val('');
-      $('#txt_data_password').val('');
-      $('#txt_data_conf_password').val('');
+      $('#modal_data_title').html("Add Product");
+      
+      $('.form_data').val('');
+      $('#txt_data_description').code('');
+      $('#txt_data_short_description').code('');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     } else {
-      $('#modal_data_title').html("Edit Admin");
-      $('#txt_data_username').prop("readonly", true);
+      $('#modal_data_title').html("Edit Product");
 
-      $('#txt_data_password').val('');
-      $('#txt_data_conf_password').val('');
+      $('.form_data').val('');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
   };
 
-  add_data = function (username, password, conf_password, active) {
+  add_data = function (name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, active) {
     $.ajax({
-      url: base_url + 'admin/add_data',
+      url: base_url + 'products/add_data',
       type: 'POST',
       data: {
-        username: username,
-        password: password,
-        conf_password: conf_password,
+        name: name,
+        price: price,
+        sale_price: sale_price,
+        reseller_price: reseller_price,
+        weight: weight,
+        attribute: attribute,
+        description: description,
+        short_description: short_description,
+        info: info,
+        size_guideline: size_guideline,
         active: active
       },
       dataType: 'json',
@@ -195,14 +207,22 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, password, conf_password, active) {
+  edit_data = function (id, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, active) {
     $.ajax({
-      url: base_url + 'admin/edit_data',
+      url: base_url + 'products/edit_data',
       type: 'POST',
       data: {
         id: id,
-        password: password,
-        conf_password: conf_password,
+        name: name,
+        price: price,
+        sale_price: sale_price,
+        reseller_price: reseller_price,
+        weight: weight,
+        attribute: attribute,
+        description: description,
+        short_description: short_description,
+        info: info,
+        size_guideline: size_guideline,
         active: active
       },
       dataType: 'json',
@@ -228,7 +248,7 @@ $(document).ready(function () {
     //end param
     
     $.ajax({
-      url: base_url + 'admin/remove_data',
+      url: base_url + 'products/remove_data',
       type: 'POST',
       data: {
         id: id

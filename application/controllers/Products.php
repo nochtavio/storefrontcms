@@ -26,7 +26,6 @@ class Products extends CI_Controller {
   
   public function get_data(){
     //param
-    $param['id'] = 0;
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "";
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
@@ -45,7 +44,7 @@ class Products extends CI_Controller {
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
-        $data['username'][$temp] = $row->username;
+        $data['name'][$temp] = $row->name;
         $data['active'][$temp] = $row->active;
         $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
         $data['creby'][$temp] = $row->creby;
@@ -58,7 +57,7 @@ class Products extends CI_Controller {
       $data['totalpage'] = ceil($get_data->num_rows() / $size);
     } else {
       $data['result'] = "r2";
-      $data['message'] = "No Admin";
+      $data['message'] = "No Products";
     }
     
     echo json_encode($data);
@@ -67,16 +66,22 @@ class Products extends CI_Controller {
   public function get_specific_data(){
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
-    $param['username'] = "";
-    $param['active'] = -1;
-    $param['order'] = -1;
     //end param
     
     $result_data = $this->Model_products->get_data($param);
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
-      $data['username'] = $result_data->row()->username;
+      $data['name'] = $result_data->row()->name;
+      $data['price'] = $result_data->row()->price;
+      $data['sale_price'] = $result_data->row()->sale_price;
+      $data['reseller_price'] = $result_data->row()->reseller_price;
+      $data['weight'] = $result_data->row()->weight;
+      $data['attribute'] = $result_data->row()->attribute;
+      $data['description'] = $result_data->row()->description;
+      $data['short_description'] = $result_data->row()->short_description;
+      $data['info'] = $result_data->row()->info;
+      $data['size_guideline'] = $result_data->row()->size_guideline;
       $data['active'] = $result_data->row()->active;
     }else{
       $data['result'] = "r2";
@@ -86,25 +91,35 @@ class Products extends CI_Controller {
     echo json_encode($data);
   }
   
-  public function validate_post($param, $state = "add", $edit_password = TRUE){
+  public function validate_post($param){
+    //param
+    $name = (isset($param['name'])) ? $param['name'] : "";
+    $price = (isset($param['price'])) ? $param['price'] : 0;
+    $weight = (isset($param['weight'])) ? $param['weight'] : 0;
+    //end param
+    
     $data['result'] = "r1";
     $data['result_message'] = "";
     
-    if($state == "add"){
-      if($param['username'] == ""){
-        $data['result'] = "r2";
-        $data['result_message'] .= "<strong>Username</strong> must be filled !<br/>";
-      }
+    if($name == ""){
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Name</strong> must be filled !<br/>";
     }
     
-    if($edit_password){
-      if($param['password'] == ""){
-        $data['result'] = "r2";
-        $data['result_message'] .= "<strong>Password</strong> must be filled !<br/>";
-      }elseif($param['password'] != $param['conf_password']){
-        $data['result'] = "r2";
-        $data['result_message'] .= "<strong>Password</strong> and <strong>Confirmation Password</strong> must match !<br/>";
-      }
+    if($price == ""){
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Price</strong> must be filled !<br/>";
+    }elseif(!is_numeric($price)){
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Price</strong> must be a number !<br/>";
+    }
+    
+    if($weight == ""){
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Weight</strong> must be filled !<br/>";
+    }elseif(!is_numeric($weight)){
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Weight</strong> must be a number !<br/>";
     }
     
     return $data;
@@ -112,13 +127,20 @@ class Products extends CI_Controller {
   
   public function add_data(){
     //param
-    $param['username'] = ($this->input->post('username', TRUE)) ? $this->input->post('username', TRUE) : "" ;
-    $param['password'] = ($this->input->post('password', TRUE)) ? $this->input->post('password', TRUE) : "" ;
-    $param['conf_password'] = ($this->input->post('conf_password', TRUE)) ? $this->input->post('conf_password', TRUE) : "" ;
+    $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "" ;
+    $param['price'] = ($this->input->post('price', TRUE)) ? $this->input->post('price', TRUE) : 0 ;
+    $param['sale_price'] = ($this->input->post('sale_price', TRUE)) ? $this->input->post('sale_price', TRUE) : 0 ;
+    $param['reseller_price'] = ($this->input->post('reseller_price', TRUE)) ? $this->input->post('reseller_price', TRUE) : 0 ;
+    $param['weight'] = ($this->input->post('weight', TRUE)) ? $this->input->post('weight', TRUE) : 0 ;
+    $param['attribute'] = ($this->input->post('attribute', TRUE)) ? $this->input->post('attribute', TRUE) : "" ;
+    $param['description'] = ($this->input->post('description', FALSE)) ? $this->input->post('description', FALSE) : "" ;
+    $param['short_description'] = ($this->input->post('short_description', FALSE)) ? $this->input->post('short_description', FALSE) : "" ;
+    $param['info'] = ($this->input->post('info', TRUE)) ? $this->input->post('info', TRUE) : "" ;
+    $param['size_guideline'] = ($this->input->post('size_guideline', TRUE)) ? $this->input->post('size_guideline', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     
-    $validate_post = $this->validate_post($param, "add", TRUE);
+    $validate_post = $this->validate_post($param);
     if($validate_post['result'] == "r1"){
       $this->Model_products->add_data($param);
     }
@@ -129,21 +151,21 @@ class Products extends CI_Controller {
   public function edit_data(){
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
-    $param['username'] = "";
-    $param['password'] = ($this->input->post('password', TRUE)) ? $this->input->post('password', TRUE) : "" ;
-    $param['conf_password'] = ($this->input->post('conf_password', TRUE)) ? $this->input->post('conf_password', TRUE) : "" ;
+    $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "" ;
+    $param['price'] = ($this->input->post('price', TRUE)) ? $this->input->post('price', TRUE) : 0 ;
+    $param['sale_price'] = ($this->input->post('sale_price', TRUE)) ? $this->input->post('sale_price', TRUE) : 0 ;
+    $param['reseller_price'] = ($this->input->post('reseller_price', TRUE)) ? $this->input->post('reseller_price', TRUE) : 0 ;
+    $param['weight'] = ($this->input->post('weight', TRUE)) ? $this->input->post('weight', TRUE) : 0 ;
+    $param['attribute'] = ($this->input->post('attribute', TRUE)) ? $this->input->post('attribute', TRUE) : "" ;
+    $param['description'] = ($this->input->post('description', FALSE)) ? $this->input->post('description', FALSE) : "" ;
+    $param['short_description'] = ($this->input->post('short_description', FALSE)) ? $this->input->post('short_description', FALSE) : "" ;
+    $param['info'] = ($this->input->post('info', TRUE)) ? $this->input->post('info', TRUE) : "" ;
+    $param['size_guideline'] = ($this->input->post('size_guideline', TRUE)) ? $this->input->post('size_guideline', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     
-    //check password is edited or not
-    $edit_password = TRUE;
-    if($param['password'] == ""){
-      $edit_password = FALSE;
-    }
-    //end check
-    
     if($param['id'] != ""){
-      $validate_post = $this->validate_post($param, "edit", $edit_password);
+      $validate_post = $this->validate_post($param);
       if($validate_post['result'] == "r1"){
         $this->Model_products->edit_data($param);
       }
