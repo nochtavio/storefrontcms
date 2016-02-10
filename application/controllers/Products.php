@@ -8,6 +8,8 @@ class Products extends CI_Controller {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
     $this->load->model('Model_products');
+    $this->load->model('Model_category');
+    $this->load->model('Model_category_child');
   }
   
   public function index() {
@@ -17,6 +19,13 @@ class Products extends CI_Controller {
     array_push($content['js'], 'products/function.js');
     array_push($content['js'], 'products/init.js');
     array_push($content['js'], 'products/action.js');
+    
+    //get list category
+    $content['category'] = array();
+    $param['name'] = "";
+    $content['category'] = $this->Model_category->get_data($param, 1, 100)->result();
+    var_dump($content['category']);die();
+    //end get list category
     
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);

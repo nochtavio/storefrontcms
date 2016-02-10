@@ -66,7 +66,7 @@ $(document).ready(function () {
                 <td>" + date + "</td>\
                 <td>\
                   <a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;\
-                  <a href='/category_child/index/" + result['id'][x] + "' id='btn_detail" + result['id'][x] + "' class='fa fa-folder-open'></a> &nbsp;\
+                  <a href='/category_child/?id_category=" + result['id'][x] + "' id='btn_detail" + result['id'][x] + "' class='fa fa-folder-open'></a> &nbsp;\
                   <a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;\
                 </td>\
               </tr>");

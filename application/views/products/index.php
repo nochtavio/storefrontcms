@@ -68,14 +68,14 @@
             <label for="txt_data_sale_price" class="col-lg-3 col-sm-3 control-label">Sale Price</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_sale_price" placeholder="Enter product sale price">
-              <p class="help-block" style="margin-bottom: 0;">Leave it blank if this product is not on sale</p>
+              <p class="help-block" style="margin-bottom: 0;">Leave this 0 if this product is not on sale</p>
             </div>
           </div>
           <div class="form-group">
             <label for="txt_data_reseller_price" class="col-lg-3 col-sm-3 control-label">Reseller Price</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_reseller_price" placeholder="Enter product reseller price">
-              <p class="help-block" style="margin-bottom: 0;">Leave it blank if this product is not on reseller program</p>
+              <p class="help-block" style="margin-bottom: 0;">Leave this 0 if this product is not on reseller program</p>
             </div>
           </div>
           <div class="form-group">
@@ -108,6 +108,59 @@
             <label for="txt_data_size_guideline" class="col-lg-3 col-sm-3 control-label">Size Guidelines</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_size_guideline" placeholder="Enter product size guideline">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 col-sm-3 control-label">Category</label>
+            <div class="col-lg-9 col-sm-9">
+              <div class="col-lg-3 col-sm-3" style="padding: 7px 0 0 0px;">
+                <label>Test 1</label>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="category_homedecor" value="1">Test
+                  </label>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-3" style="padding: 7px 0 0 0px;">
+                <label>Test 1</label>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="category_homedecor" value="1">Test
+                  </label>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-3" style="padding: 7px 0 0 0px;">
+                <label>Test 1</label>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="category_homedecor" value="1">Test
+                  </label>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-3" style="padding: 7px 0 0 0px;">
+                <label>Test 1</label>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="category_homedecor" value="1">Test
+                  </label>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-3" style="padding: 7px 0 0 0px;">
+                <label>Test 1</label>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="category_homedecor" value="1">Test
+                  </label>
+                </div>
+              </div>
+              <div class="col-lg-3 col-sm-3" style="padding: 7px 0 0 0px;">
+                <label>Test 1</label>
+                <div class="checkbox">
+                  <label>
+                    <input type="checkbox" name="category_homedecor" value="1">Test
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
           <div class="form-group">

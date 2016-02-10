@@ -11,20 +11,25 @@ class Category_child extends CI_Controller {
     $this->load->model('Model_category_child');
   }
   
-  public function index($id_category = NULL) {
-    if($id_category == NULL){
+  public function validate_index(){
+    if(!$this->input->get('id_category', TRUE) || !is_numeric($this->input->get('id_category', TRUE))){
       redirect('/category/');die();
     }
+  }
+  
+  public function index() {
+    $this->validate_index();
+    
     $page = 'Category';
     $sidebar['page'] = $page;
     $content['js'] = array();
     array_push($content['js'], 'category_child/function.js');
     array_push($content['js'], 'category_child/init.js');
     array_push($content['js'], 'category_child/action.js');
-    $content['id_category'] = $id_category;
+    $content['id_category'] = $this->input->get('id_category', TRUE);
     
     //get category name
-    $param['id'] = $id_category;
+    $param['id'] = $content['id_category'];
     $result_data = $this->Model_category->get_data($param);
     if($result_data->num_rows() > 0){
       $content['category_name'] = $result_data->row()->name;
