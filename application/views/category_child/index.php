@@ -26,7 +26,7 @@
               <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm">Add Child</a>
             </div>
             <div class="input-group-btn">
-              <a href="/category/" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
+              <a href="<?php echo base_url() ?>category/" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
             </div>
           </div>
         </div>
