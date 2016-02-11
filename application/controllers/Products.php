@@ -24,7 +24,6 @@ class Products extends CI_Controller {
     $content['category'] = array();
     $param['name'] = "";
     $content['category'] = $this->Model_category->get_data($param, 1, 100)->result();
-    var_dump($content['category']);die();
     //end get list category
     
     $data['header'] = $this->load->view('header', '', TRUE);
