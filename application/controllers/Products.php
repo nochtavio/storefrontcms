@@ -21,9 +21,9 @@ class Products extends CI_Controller {
     array_push($content['js'], 'products/action.js');
     
     //get list category
-    $content['category'] = array();
-    $param['name'] = "";
-    $content['category'] = $this->Model_category->get_data($param, 1, 100)->result();
+    $param['active'] = 1;
+    $content['category'] = $this->Model_category->get_data($param, 0, 100)->result();
+    $content['category_child'] = $this->Model_category_child->get_data($param, 0, 100)->result();
     //end get list category
     
     $data['header'] = $this->load->view('header', '', TRUE);
