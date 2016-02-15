@@ -51,6 +51,7 @@ class Model_products extends CI_Model {
     $short_description = (isset($param['short_description'])) ? $param['short_description'] : "";
     $info = (isset($param['info'])) ? $param['info'] : "";
     $size_guideline = (isset($param['size_guideline'])) ? $param['size_guideline'] : "";
+    $category = (isset($param['category'])) ? $param['category'] : array();
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
@@ -73,6 +74,19 @@ class Model_products extends CI_Model {
     $this->db->insert('products', $data);
     $insert_id = $this->db->insert_id();
     
+    //add new category
+    if(!empty($category)){
+      foreach ($category as $cat) {
+        $data = array(
+          'id_category_child' => $cat,
+          'id_products' => $insert_id,
+          'cretime' => date('Y-m-d H:i:s'),
+          'creby' => 'SYSTEM'
+        );
+        $this->db->insert('category_detail', $data);
+      }
+    }
+    
     return $insert_id;
   }
 
@@ -89,6 +103,7 @@ class Model_products extends CI_Model {
     $short_description = (isset($param['short_description'])) ? $param['short_description'] : "";
     $info = (isset($param['info'])) ? $param['info'] : "";
     $size_guideline = (isset($param['size_guideline'])) ? $param['size_guideline'] : "";
+    $category = (isset($param['category'])) ? $param['category'] : array();
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
@@ -111,6 +126,23 @@ class Model_products extends CI_Model {
     
     $this->db->where('id', $id);
     $this->db->update('products', $data);
+    
+    //remove category
+    $this->db->where('id_products', $id);
+    $this->db->delete('category_detail');
+    
+    //add new category
+    if(!empty($category)){
+      foreach ($category as $cat) {
+        $data = array(
+          'id_category_child' => $cat,
+          'id_products' => $id,
+          'cretime' => date('Y-m-d H:i:s'),
+          'creby' => 'SYSTEM'
+        );
+        $this->db->insert('category_detail', $data);
+      }
+    }
   }
   
   function remove_data($param){
@@ -126,5 +158,22 @@ class Model_products extends CI_Model {
     
     $this->db->where('id', $id);
     $this->db->update('products', $data);
+  }
+  
+  function get_category_detail($param){
+    //Set Param
+    $id = (isset($param['id'])) ? $param['id'] : 0;
+    //End Set Param
+    
+    $this->db->select('category_detail.*');
+    $this->db->from('category_detail');
+    
+    //Validation
+    $this->db->where('category_detail.id_products', $id);
+    //End Validation
+    
+    $query = $this->db->get();
+    
+    return $query;
   }
 }

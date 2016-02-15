@@ -77,6 +77,12 @@ class Products extends CI_Controller {
     //end param
     
     $result_data = $this->Model_products->get_data($param);
+    $result_category = $this->Model_products->get_category_detail($param);
+    $category = array();
+    foreach ($result_category->result() as $row) {
+      array_push($category, $row->id_category_child);
+    }
+    
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
@@ -90,6 +96,7 @@ class Products extends CI_Controller {
       $data['short_description'] = $result_data->row()->short_description;
       $data['info'] = $result_data->row()->info;
       $data['size_guideline'] = $result_data->row()->size_guideline;
+      $data['category'] = $category;
       $data['active'] = $result_data->row()->active;
     }else{
       $data['result'] = "r2";
@@ -145,6 +152,7 @@ class Products extends CI_Controller {
     $param['short_description'] = ($this->input->post('short_description', FALSE)) ? $this->input->post('short_description', FALSE) : "" ;
     $param['info'] = ($this->input->post('info', TRUE)) ? $this->input->post('info', TRUE) : "" ;
     $param['size_guideline'] = ($this->input->post('size_guideline', TRUE)) ? $this->input->post('size_guideline', TRUE) : "" ;
+    $param['category'] = ($this->input->post('category', TRUE)) ? $this->input->post('category', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     
@@ -169,6 +177,7 @@ class Products extends CI_Controller {
     $param['short_description'] = ($this->input->post('short_description', FALSE)) ? $this->input->post('short_description', FALSE) : "" ;
     $param['info'] = ($this->input->post('info', TRUE)) ? $this->input->post('info', TRUE) : "" ;
     $param['size_guideline'] = ($this->input->post('size_guideline', TRUE)) ? $this->input->post('size_guideline', TRUE) : "" ;
+    $param['category'] = ($this->input->post('category', TRUE)) ? $this->input->post('category', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     
@@ -196,6 +205,31 @@ class Products extends CI_Controller {
     }else{
       $data['result'] = "r2";
       $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
+    }
+    
+    echo json_encode($data);
+  }
+  
+  public function get_category_detail(){
+    //param
+    $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
+    //end param
+    
+    //paging
+    $get_data = $this->Model_products->get_category_detail($param);
+    //End Set totalpaging
+
+    if ($get_data->num_rows() > 0) {
+      $temp = 0;
+      foreach ($get_data->result() as $row) {
+        $data['result'] = "r1";
+        $data['id_category_child'][$temp] = $row->id_category_child;
+        $temp++;
+      }
+      $data['total'] = $temp;
+    } else {
+      $data['result'] = "r2";
+      $data['message'] = "No Category";
     }
     
     echo json_encode($data);
