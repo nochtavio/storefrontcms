@@ -2,65 +2,44 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Category_child extends CI_Controller {
+class Color extends CI_Controller {
   
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
-    $this->load->model('Model_category');
-    $this->load->model('Model_category_child');
-  }
-  
-  public function validate_index(){
-    if(!$this->input->get('id_category', TRUE) || !is_numeric($this->input->get('id_category', TRUE))){
-      redirect('/category/');die();
-    }
+    $this->load->model('Model_color');
   }
   
   public function index() {
-    $this->validate_index();
-    
-    $page = 'Category';
+    $page = 'Color';
     $sidebar['page'] = $page;
     $content['js'] = array();
-    array_push($content['js'], 'category_child/function.js');
-    array_push($content['js'], 'category_child/init.js');
-    array_push($content['js'], 'category_child/action.js');
-    $content['id_category'] = $this->input->get('id_category', TRUE);
-    
-    //get category name
-    $param['id'] = $content['id_category'];
-    $result_data = $this->Model_category->get_data($param);
-    if($result_data->num_rows() > 0){
-      $content['category_name'] = $result_data->row()->name;
-    }else{
-      redirect('/category/');die();
-    }
-    //end get category name
+    array_push($content['js'], 'color/function.js');
+    array_push($content['js'], 'color/init.js');
+    array_push($content['js'], 'color/action.js');
     
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
-    $data['content'] = $this->load->view('category_child/index', $content, TRUE);
+    $data['content'] = $this->load->view('color/index', $content, TRUE);
     $this->load->view('template_index', $data);
   }
   
   public function get_data(){
     //param
-    $param['id_category'] = ($this->input->post('id_category', TRUE)) ? $this->input->post('id_category', TRUE) : 0;
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "";
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
     
     //paging
-    $get_data = $this->Model_category_child->get_data($param);
+    $get_data = $this->Model_color->get_data($param);
     $page = ($this->input->post('page', TRUE)) ? $this->input->post('page', TRUE) : 1 ;
     $size = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : 10 ;
     $limit = ($page - 1) * $size;
     //End Set totalpaging
 
     if ($get_data->num_rows() > 0) {
-      $get_data_paging = $this->Model_category_child->get_data($param, $limit, $size);
+      $get_data_paging = $this->Model_color->get_data($param, $limit, $size);
       $temp = 0;
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
@@ -78,7 +57,7 @@ class Category_child extends CI_Controller {
       $data['totalpage'] = ceil($get_data->num_rows() / $size);
     } else {
       $data['result'] = "r2";
-      $data['message'] = "No Categories";
+      $data['message'] = "No Color";
     }
     
     echo json_encode($data);
@@ -89,7 +68,7 @@ class Category_child extends CI_Controller {
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
     //end param
     
-    $result_data = $this->Model_category_child->get_data($param);
+    $result_data = $this->Model_color->get_data($param);
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
@@ -121,14 +100,13 @@ class Category_child extends CI_Controller {
   
   public function add_data(){
     //param
-    $param['id_category'] = ($this->input->post('id_category', TRUE)) ? $this->input->post('id_category', TRUE) : 0;
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     
     $validate_post = $this->validate_post($param);
     if($validate_post['result'] == "r1"){
-      $this->Model_category_child->add_data($param);
+      $this->Model_color->add_data($param);
     }
     
     echo json_encode($validate_post);
@@ -144,7 +122,7 @@ class Category_child extends CI_Controller {
     if($param['id'] != ""){
       $validate_post = $this->validate_post($param);
       if($validate_post['result'] == "r1"){
-        $this->Model_category_child->edit_data($param);
+        $this->Model_color->edit_data($param);
       }
     }else{
       $validate_post['result'] = "r2";
@@ -161,7 +139,7 @@ class Category_child extends CI_Controller {
     
     if($param['id'] != ""){
       $data['result'] = "r1";
-      $this->Model_category_child->remove_data($param);
+      $this->Model_color->remove_data($param);
     }else{
       $data['result'] = "r2";
       $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";

@@ -1,6 +1,6 @@
 <?php
 
-class Model_category_child extends CI_Model {
+class Model_products_variant extends CI_Model {
   function __construct() {
     parent::__construct();
   }
@@ -8,13 +8,13 @@ class Model_category_child extends CI_Model {
   function get_data($param, $limit = 0, $size = 0) {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
-    $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
+    $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
-    $this->db->select('category_child.*');
+    $this->db->select('category_child.*, category.name AS category_name');
     $this->db->from('category_child');
     $this->db->join('category', 'category.id = category_child.id_category');
     

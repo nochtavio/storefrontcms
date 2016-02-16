@@ -1,6 +1,6 @@
 <?php
 
-class Model_category_child extends CI_Model {
+class Model_color extends CI_Model {
   function __construct() {
     parent::__construct();
   }
@@ -8,32 +8,29 @@ class Model_category_child extends CI_Model {
   function get_data($param, $limit = 0, $size = 0) {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
-    $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
-    $this->db->select('category_child.*');
-    $this->db->from('category_child');
-    $this->db->join('category', 'category.id = category_child.id_category');
+    $this->db->select('color.*');
+    $this->db->from('color');
     
     //Validation
-    if($id > 0){$this->db->where('category_child.id', $id);}
-    if($id_category > 0){$this->db->where('category.id', $id_category);}
-    if($name != ""){$this->db->like('category_child.name', $name);}
-    if($active > -1){$this->db->where('category_child.active', $active);}
+    if($id > 0){$this->db->where('color.id', $id);}
+    if($name != ""){$this->db->like('color.name', $name);}
+    if($active > -1){$this->db->where('color.active', $active);}
     //End Validation
     
-    $this->db->where('category_child.deleted', 0);
+    $this->db->where('color.deleted', 0);
     if($order == 1){
-      $this->db->order_by("category_child.name", "desc");
+      $this->db->order_by("color.name", "desc");
     }else if($order == 2){
-      $this->db->order_by("category_child.cretime", "desc");
+      $this->db->order_by("color.cretime", "desc");
     }else if($order == 3){
-      $this->db->order_by("category_child.cretime", "asc");
+      $this->db->order_by("color.cretime", "asc");
     }else{
-      $this->db->order_by("category_child.name", "asc");
+      $this->db->order_by("color.name", "asc");
     }
     
     if($size >= 0){$this->db->limit($size, $limit);}
@@ -44,19 +41,17 @@ class Model_category_child extends CI_Model {
   
   function add_data($param){
     //Set Param
-    $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
     $data = array(
-      'id_category' => $id_category,
       'name' => $name,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
       'creby' => 'SYSTEM'
     );
-    $this->db->insert('category_child', $data);
+    $this->db->insert('color', $data);
     $insert_id = $this->db->insert_id();
     
     return $insert_id;
@@ -77,7 +72,7 @@ class Model_category_child extends CI_Model {
     );
     
     $this->db->where('id', $id);
-    $this->db->update('category_child', $data);
+    $this->db->update('color', $data);
   }
   
   function remove_data($param){
@@ -92,6 +87,6 @@ class Model_category_child extends CI_Model {
     );
     
     $this->db->where('id', $id);
-    $this->db->update('category_child', $data);
+    $this->db->update('color', $data);
   }
 }
