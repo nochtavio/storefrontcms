@@ -27,7 +27,6 @@ $(document).ready(function () {
             <th>Color</th>\
             <th>Size</th>\
             <th>Quantity</th>\
-            <th>Quantity Warehouse</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -69,7 +68,6 @@ $(document).ready(function () {
                 <td>" + result['color_name'][x] + "</td>\
                 <td>" + result['variant_size'][x] + "</td>\
                 <td>" + result['quantity'][x] + "</td>\
-                <td>" + result['quantity_warehouse'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>\
@@ -91,7 +89,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='7'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -121,7 +119,6 @@ $(document).ready(function () {
               $("#txt_data_id_color").val(result['id_color']);
               $("#txt_data_size").val(result['size']);
               $("#txt_data_quantity").val(result['quantity']);
-              $("#txt_data_quantity_warehouse").val(result['quantity_warehouse']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -163,7 +160,6 @@ $(document).ready(function () {
       $('.form_data').val('');
       $('#txt_data_id_color').val(0);
       $('#txt_data_id_color').prop("readonly", false);
-      $('#txt_data_size').prop("readonly", false);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
@@ -172,14 +168,13 @@ $(document).ready(function () {
 
       $('.form_data').val('');
       $('#txt_data_id_color').prop("readonly", true);
-      $('#txt_data_size').prop("readonly", true);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
   };
 
-  add_data = function (id_color, size, quantity, quantity_warehouse, active) {
+  add_data = function (id_color, size, quantity, active) {
     $.ajax({
       url: base_url + 'products_variant/add_data',
       type: 'POST',
@@ -188,7 +183,6 @@ $(document).ready(function () {
         id_color: id_color,
         size: size,
         quantity: quantity,
-        quantity_warehouse: quantity_warehouse,
         active: active
       },
       dataType: 'json',
@@ -208,14 +202,16 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, quantity, quantity_warehouse, active) {
+  edit_data = function (id, id_color, size, quantity, active) {
     $.ajax({
       url: base_url + 'products_variant/edit_data',
       type: 'POST',
       data: {
         id: id,
+        id_products: id_products,
+        id_color: id_color,
+        size: size,
         quantity: quantity,
-        quantity_warehouse: quantity_warehouse,
         active: active
       },
       dataType: 'json',

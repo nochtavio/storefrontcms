@@ -75,7 +75,6 @@ class Products_variant extends CI_Controller {
         $data['color_name'][$temp] = ($row->color_name == NULL) ? '-' : $row->color_name;
         $data['variant_size'][$temp] = ($row->size == NULL) ? '-' : $row->size;
         $data['quantity'][$temp] = $row->quantity;
-        $data['quantity_warehouse'][$temp] = $row->quantity_warehouse;
         $data['active'][$temp] = $row->active;
         $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
         $data['creby'][$temp] = $row->creby;
@@ -106,7 +105,6 @@ class Products_variant extends CI_Controller {
       $data['id_color'] = $result_data->row()->id_color;
       $data['size'] = ($result_data->row()->size == NULL) ? '-' : $result_data->row()->size;
       $data['quantity'] = $result_data->row()->quantity;
-      $data['quantity_warehouse'] = $result_data->row()->quantity_warehouse;
       $data['active'] = $result_data->row()->active;
     } else {
       $data['result'] = "r2";
@@ -116,12 +114,12 @@ class Products_variant extends CI_Controller {
     echo json_encode($data);
   }
 
-  public function validate_post($param, $state) {
+  public function validate_post($param, $state, $edit_size = TRUE) {
     //param
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
     $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
+    $size = (isset($param['size'])) ? $param['size'] : "";
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
-    $quantity_warehouse = (isset($param['quantity_warehouse'])) ? $param['quantity_warehouse'] : 0;
     //end param
 
     $data['result'] = "r1";
@@ -131,27 +129,25 @@ class Products_variant extends CI_Controller {
       if ($id_color == 0) {
         $data['result'] = "r2";
         $data['result_message'] .= "<strong>Color</strong> must be filled !<br/>";
-      }else{
-        //check duplicate variant
-        $param['id_products'] = $id_products;
-        $param['id_color'] = $id_color;
-        $param['active'] = 1;
-        $check_duplicate_variant = $this->Model_products_variant->get_data($param);
-        if($check_duplicate_variant->num_rows() > 0){
-          $data['result'] = "r2";
-          $data['result_message'] .= "<strong>Color</strong> is already exist!<br/>";
-        }
       }
+    }
+    
+    if($edit_size){
+      //check duplicate variant
+      $param_check['id_products'] = $id_products;
+      $param_check['id_color'] = $id_color;
+      $param_check['size'] = $size;
+      $check_duplicate_variant = $this->Model_products_variant->get_data($param_check);
+      if($check_duplicate_variant->num_rows() > 0){
+        $data['result'] = "r2";
+        $data['result_message'] .= "<strong>Color</strong> with this size is already exist!<br/>";
+      }
+      //end check duplicate variant
     }
     
     if (!is_numeric($quantity)) {
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Quantity</strong> must be a number !<br/>";
-    }
-    
-    if (!is_numeric($quantity_warehouse)) {
-      $data['result'] = "r2";
-      $data['result_message'] .= "<strong>Quantity Warehouse</strong> must be a number !<br/>";
     }
 
     return $data;
@@ -163,11 +159,10 @@ class Products_variant extends CI_Controller {
     $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
     $param['size'] = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : NULL;
     $param['quantity'] = ($this->input->post('quantity', TRUE)) ? $this->input->post('quantity', TRUE) : 0;
-    $param['quantity_warehouse'] = ($this->input->post('quantity_warehouse', TRUE)) ? $this->input->post('quantity_warehouse', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
 
-    $validate_post = $this->validate_post($param, "add");
+    $validate_post = $this->validate_post($param, "add", TRUE);
     if ($validate_post['result'] == "r1") {
       $this->Model_products_variant->add_data($param);
     }
@@ -178,13 +173,24 @@ class Products_variant extends CI_Controller {
   public function edit_data() {
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
+    $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
+    $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
+    $param['size'] = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : NULL;
     $param['quantity'] = ($this->input->post('quantity', TRUE)) ? $this->input->post('quantity', TRUE) : 0;
-    $param['quantity_warehouse'] = ($this->input->post('quantity_warehouse', TRUE)) ? $this->input->post('quantity_warehouse', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
+    
+    //check size is edited or not
+    $edit_size = TRUE;
+    $param_check['id'] = $param['id'];
+    $check_edited_size = $this->Model_products_variant->get_data($param_check);
+    if($check_edited_size->row()->size == $param['size']){
+      $edit_size = FALSE;
+    }
+    //end check
 
     if ($param['id'] != "") {
-      $validate_post = $this->validate_post($param, "edit");
+      $validate_post = $this->validate_post($param, "edit", $edit_size);
       if ($validate_post['result'] == "r1") {
         $this->Model_products_variant->edit_data($param);
       }
@@ -192,7 +198,8 @@ class Products_variant extends CI_Controller {
       $validate_post['result'] = "r2";
       $validate_post['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
     }
-
+    
+    $validate_post['edit_size'] = $edit_size;
     echo json_encode($validate_post);
   }
 

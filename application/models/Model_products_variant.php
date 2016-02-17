@@ -10,6 +10,7 @@ class Model_products_variant extends CI_Model {
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
     $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
+    $variant_size = (isset($param['size'])) ? $param['size'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
@@ -21,7 +22,8 @@ class Model_products_variant extends CI_Model {
     //Validation
     if($id > 0){$this->db->where('products_variant.id', $id);}
     if($id_products > 0){$this->db->where('products_variant.id_products', $id_products);}
-    if($id_color != ""){$this->db->where('products_variant.id_color', $id_color);}
+    if($id_color > 0){$this->db->where('products_variant.id_color', $id_color);}
+    if($variant_size != ""){$this->db->where('products_variant.size', $variant_size);}
     if($active > -1){$this->db->where('products_variant.active', $active);}
     //End Validation
     
@@ -32,10 +34,6 @@ class Model_products_variant extends CI_Model {
       $this->db->order_by("products_variant.quantity", "desc");
     }else if($order == 3){
       $this->db->order_by("products_variant.quantity", "asc");
-    }else if($order == 4){
-      $this->db->order_by("products_variant.quantity_warehouse", "desc");
-    }else if($order == 5){
-      $this->db->order_by("products_variant.quantity_warehouse", "asc");
     }else{
       $this->db->order_by("products_variant.cretime", "asc");
     }
@@ -52,7 +50,6 @@ class Model_products_variant extends CI_Model {
     $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $size = (isset($param['size'])) ? $param['size'] : "";
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
-    $quantity_warehouse = (isset($param['quantity_warehouse'])) ? $param['quantity_warehouse'] : 0;
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
@@ -61,7 +58,7 @@ class Model_products_variant extends CI_Model {
       'id_color' => $id_color,
       'size' => $size,
       'quantity' => $quantity,
-      'quantity_warehouse' => $quantity_warehouse,
+      'quantity_warehouse' => $quantity,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
       'creby' => 'SYSTEM'
@@ -75,14 +72,15 @@ class Model_products_variant extends CI_Model {
   function edit_data($param){
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
+    $size = (isset($param['size'])) ? $param['size'] : "";
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
-    $quantity_warehouse = (isset($param['quantity_warehouse'])) ? $param['quantity_warehouse'] : 0;
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
     $data = array(
+      'size' => $size,
       'quantity' => $quantity,
-      'quantity_warehouse' => $quantity_warehouse,
+      'quantity_warehouse' => $quantity,
       'active' => $active,
       'modtime' => date('Y-m-d H:i:s'),
       'modby' => 'SYSTEM'

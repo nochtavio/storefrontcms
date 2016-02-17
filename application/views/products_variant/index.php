@@ -19,8 +19,6 @@
               <option value="1">Order by Oldest Data</option>
               <option value="2">Order by Quantity &uarr;</option> 
               <option value="3">Order by Quantity &darr;</option>
-              <option value="4">Order by Quantity Warehouse &uarr;</option> 
-              <option value="5">Order by Quantity Warehouse &darr;</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
             <div class="input-group-btn">
@@ -84,12 +82,6 @@
             <label for="txt_data_quantity" class="col-lg-3 col-sm-3 control-label">Quantity</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_quantity" placeholder="Enter product quantity">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="txt_data_quantity_warehouse" class="col-lg-3 col-sm-3 control-label">Quantity Warehouse</label>
-            <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_quantity_warehouse" placeholder="Enter product quantity warehouse">
             </div>
           </div>
           <div class="form-group">

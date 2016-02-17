@@ -17,7 +17,6 @@ $(document).ready(function () {
     var id_color = $('#txt_data_id_color').val();
     var size = $('#txt_data_size').val();
     var quantity = $('#txt_data_quantity').val();
-    var quantity_warehouse = $('#txt_data_quantity_warehouse').val();
     var active = 0;
     if ($('#txt_data_active').prop('checked')) {
       active = 1;
@@ -25,9 +24,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(id_color, size, quantity, quantity_warehouse, active);
+      add_data(id_color, size, quantity, active);
     }else{
-      edit_data(id, quantity, quantity_warehouse, active);
+      edit_data(id, id_color, size, quantity, active);
     }
   });
   
