@@ -17,6 +17,16 @@ class Category_child extends CI_Controller {
     }
   }
   
+  public function get_category_name($id_category){
+    $param['id'] = $id_category;
+    $result_data = $this->Model_category->get_data($param);
+    if($result_data->num_rows() > 0){
+      return $result_data->row()->name;
+    }else{
+      return false;
+    }
+  }
+  
   public function index() {
     $this->validate_index();
     
@@ -27,16 +37,10 @@ class Category_child extends CI_Controller {
     array_push($content['js'], 'category_child/init.js');
     array_push($content['js'], 'category_child/action.js');
     $content['id_category'] = $this->input->get('id_category', TRUE);
-    
-    //get category name
-    $param['id'] = $content['id_category'];
-    $result_data = $this->Model_category->get_data($param);
-    if($result_data->num_rows() > 0){
-      $content['category_name'] = $result_data->row()->name;
-    }else{
+    $content['category_name'] = $this->get_category_name($content['id_category']);
+    if(!$content['category_name']){
       redirect('/category/');die();
     }
-    //end get category name
     
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);

@@ -9,31 +9,35 @@ class Model_products_variant extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
-    $name = (isset($param['name'])) ? $param['name'] : "";
+    $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
-    $this->db->select('category_child.*, category.name AS category_name');
-    $this->db->from('category_child');
-    $this->db->join('category', 'category.id = category_child.id_category');
+    $this->db->select('products_variant.*, color.name AS color_name');
+    $this->db->from('products_variant');
+    $this->db->join('color', 'color.id = products_variant.id_color');
     
     //Validation
-    if($id > 0){$this->db->where('category_child.id', $id);}
-    if($id_category > 0){$this->db->where('category.id', $id_category);}
-    if($name != ""){$this->db->like('category_child.name', $name);}
-    if($active > -1){$this->db->where('category_child.active', $active);}
+    if($id > 0){$this->db->where('products_variant.id', $id);}
+    if($id_products > 0){$this->db->where('products_variant.id_products', $id_products);}
+    if($id_color != ""){$this->db->where('products_variant.id_color', $id_color);}
+    if($active > -1){$this->db->where('products_variant.active', $active);}
     //End Validation
     
-    $this->db->where('category_child.deleted', 0);
+    $this->db->where('products_variant.deleted', 0);
     if($order == 1){
-      $this->db->order_by("category_child.name", "desc");
+      $this->db->order_by("products_variant.cretime", "asc");
     }else if($order == 2){
-      $this->db->order_by("category_child.cretime", "desc");
+      $this->db->order_by("products_variant.quantity", "desc");
     }else if($order == 3){
-      $this->db->order_by("category_child.cretime", "asc");
+      $this->db->order_by("products_variant.quantity", "asc");
+    }else if($order == 4){
+      $this->db->order_by("products_variant.quantity_warehouse", "desc");
+    }else if($order == 5){
+      $this->db->order_by("products_variant.quantity_warehouse", "asc");
     }else{
-      $this->db->order_by("category_child.name", "asc");
+      $this->db->order_by("products_variant.cretime", "asc");
     }
     
     if($size >= 0){$this->db->limit($size, $limit);}
@@ -44,19 +48,25 @@ class Model_products_variant extends CI_Model {
   
   function add_data($param){
     //Set Param
-    $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
-    $name = (isset($param['name'])) ? $param['name'] : "";
+    $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
+    $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
+    $size = (isset($param['size'])) ? $param['size'] : "";
+    $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
+    $quantity_warehouse = (isset($param['quantity_warehouse'])) ? $param['quantity_warehouse'] : 0;
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
     $data = array(
-      'id_category' => $id_category,
-      'name' => $name,
+      'id_products' => $id_products,
+      'id_color' => $id_color,
+      'size' => $size,
+      'quantity' => $quantity,
+      'quantity_warehouse' => $quantity_warehouse,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
       'creby' => 'SYSTEM'
     );
-    $this->db->insert('category_child', $data);
+    $this->db->insert('products_variant', $data);
     $insert_id = $this->db->insert_id();
     
     return $insert_id;
@@ -65,19 +75,21 @@ class Model_products_variant extends CI_Model {
   function edit_data($param){
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
-    $name = (isset($param['name'])) ? $param['name'] : "";
+    $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
+    $quantity_warehouse = (isset($param['quantity_warehouse'])) ? $param['quantity_warehouse'] : 0;
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
     $data = array(
-      'name' => $name,
+      'quantity' => $quantity,
+      'quantity_warehouse' => $quantity_warehouse,
       'active' => $active,
       'modtime' => date('Y-m-d H:i:s'),
       'modby' => 'SYSTEM'
     );
     
     $this->db->where('id', $id);
-    $this->db->update('category_child', $data);
+    $this->db->update('products_variant', $data);
   }
   
   function remove_data($param){
@@ -92,6 +104,6 @@ class Model_products_variant extends CI_Model {
     );
     
     $this->db->where('id', $id);
-    $this->db->update('category_child', $data);
+    $this->db->update('products_variant', $data);
   }
 }
