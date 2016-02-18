@@ -120,6 +120,7 @@ $(document).ready(function () {
               $("#txt_data_short_description").code(result['short_description']);
               $("#txt_data_info").val(result['info']);
               $("#txt_data_size_guideline").val(result['size_guideline']);
+              $('#sel_data_category').multiselect('select', result['category']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -161,6 +162,10 @@ $(document).ready(function () {
       $('.form_data').val('');
       $('#txt_data_description').code('');
       $('#txt_data_short_description').code('');
+      $('option', $('#sel_data_category')).each(function(element) {
+          $(this).removeAttr('selected').prop('selected', false);
+      });
+      $('#sel_data_category').multiselect('refresh');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
@@ -168,13 +173,17 @@ $(document).ready(function () {
       $('#modal_data_title').html("Edit Product");
 
       $('.form_data').val('');
+      $('option', $('#sel_data_category')).each(function(element) {
+          $(this).removeAttr('selected').prop('selected', false);
+      });
+      $('#sel_data_category').multiselect('refresh');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
   };
 
-  add_data = function (name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, active) {
+  add_data = function (name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active) {
     $.ajax({
       url: base_url + 'products/add_data',
       type: 'POST',
@@ -189,6 +198,7 @@ $(document).ready(function () {
         short_description: short_description,
         info: info,
         size_guideline: size_guideline,
+        category: category,
         active: active
       },
       dataType: 'json',
@@ -208,7 +218,7 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, active) {
+  edit_data = function (id, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active) {
     $.ajax({
       url: base_url + 'products/edit_data',
       type: 'POST',
@@ -224,6 +234,7 @@ $(document).ready(function () {
         short_description: short_description,
         info: info,
         size_guideline: size_guideline,
+        category: category,
         active: active
       },
       dataType: 'json',

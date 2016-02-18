@@ -24,6 +24,7 @@ $(document).ready(function () {
     var short_description = $('#txt_data_short_description').code();
     var info = $('#txt_data_info').val();
     var size_guideline = $('#txt_data_size_guideline').val();
+    var category = $('#sel_data_category').val();
     var active = 0;
     if ($('#txt_data_active').prop('checked')) {
       active = 1;
@@ -31,9 +32,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, active);
+      add_data(name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active);
     }else{
-      edit_data(id, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, active);
+      edit_data(id, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active);
     }
   });
   

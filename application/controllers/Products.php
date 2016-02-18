@@ -92,6 +92,12 @@ class Products extends CI_Controller {
       $data['short_description'] = $result_data->row()->short_description;
       $data['info'] = $result_data->row()->info;
       $data['size_guideline'] = $result_data->row()->size_guideline;
+      $category = array();
+      $result_category_detail = $this->Model_products->get_category_detail($param);
+      foreach ($result_category_detail->result() as $row) {
+        array_push($category, $row->id_category_child);
+      }
+      $data['category'] = $category;
       $data['active'] = $result_data->row()->active;
     }else{
       $data['result'] = "r2";
@@ -147,6 +153,7 @@ class Products extends CI_Controller {
     $param['short_description'] = ($this->input->post('short_description', FALSE)) ? $this->input->post('short_description', FALSE) : "" ;
     $param['info'] = ($this->input->post('info', TRUE)) ? $this->input->post('info', TRUE) : "" ;
     $param['size_guideline'] = ($this->input->post('size_guideline', TRUE)) ? $this->input->post('size_guideline', TRUE) : "" ;
+    $param['category'] = ($this->input->post('category', TRUE)) ? $this->input->post('category', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     
@@ -171,6 +178,7 @@ class Products extends CI_Controller {
     $param['short_description'] = ($this->input->post('short_description', FALSE)) ? $this->input->post('short_description', FALSE) : "" ;
     $param['info'] = ($this->input->post('info', TRUE)) ? $this->input->post('info', TRUE) : "" ;
     $param['size_guideline'] = ($this->input->post('size_guideline', TRUE)) ? $this->input->post('size_guideline', TRUE) : "" ;
+    $param['category'] = ($this->input->post('category', TRUE)) ? $this->input->post('category', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     
