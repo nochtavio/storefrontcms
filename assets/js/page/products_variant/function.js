@@ -3,7 +3,7 @@ $(document).ready(function () {
   
   get_data = function (page) {
     //Filter
-    var name = $('#txt_name').val();
+    var sku = $('#txt_sku').val();
     var active = $('#sel_active').val();
     var order = $('#sel_order').val();
     //End Filter
@@ -14,6 +14,7 @@ $(document).ready(function () {
       data: {
         page: page,
         id_products: id_products,
+        sku:sku,
         active: active,
         order: order
       },
@@ -24,6 +25,7 @@ $(document).ready(function () {
         $('#table_content').append("\
           <tr>\
             <th>No</th>\
+            <th>SKU</th>\
             <th>Color</th>\
             <th>Size</th>\
             <th>Quantity</th>\
@@ -65,6 +67,7 @@ $(document).ready(function () {
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
+                <td>" + result['sku'][x] + "</td>\
                 <td>" + result['color_name'][x] + "</td>\
                 <td>" + result['variant_size'][x] + "</td>\
                 <td>" + result['quantity'][x] + "</td>\
@@ -89,7 +92,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='7'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }

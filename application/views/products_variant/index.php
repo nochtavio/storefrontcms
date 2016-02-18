@@ -9,6 +9,7 @@
       <div class="panel-body table-responsive">
         <div class="box-tools m-b-15">
           <div class="input-group">
+            <input id="txt_sku" name="txt_sku" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter SKU">
             <select id="sel_active" name="sel_active" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status</option>
               <option value="1">Active</option>

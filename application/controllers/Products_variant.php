@@ -28,6 +28,30 @@ class Products_variant extends CI_Controller {
       return false;
     }
   }
+  
+  public function generate_sku($id_products, $id_color){
+    $this->load->helper('string');
+    
+    //Get Products Name
+    $param['id'] = $id_products;
+    $result_products_name = $this->Model_products->get_data($param);
+    $products_name = $result_products_name->row()->name;
+    $text_1 = substr(preg_replace('/\s+/', '', $products_name), 0, 3);
+    $text_2 = substr(preg_replace('/\s+/', '', $products_name), -2);
+    //End Get Products Name
+    
+    //Get Color Name
+    $param['id'] = $id_color;
+    $result_color_name = $this->Model_color->get_data($param);
+    $color_name = $result_color_name->row()->name;
+    $text_3 = substr(preg_replace('/\s+/', '', $color_name), 0, 1);
+    $text_4 = substr(preg_replace('/\s+/', '', $color_name), -1, 1);
+    //End Get Color Name
+    
+    $sku = strtoupper($text_1.$text_2.$text_3.$text_4.random_string('numeric', 3));
+    
+    return $sku;
+  }
 
   public function index() {
     $this->validate_index();
@@ -56,6 +80,7 @@ class Products_variant extends CI_Controller {
   public function get_data() {
     //param
     $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
+    $param['sku'] = ($this->input->post('sku', TRUE)) ? $this->input->post('sku', TRUE) : '';
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
@@ -72,6 +97,7 @@ class Products_variant extends CI_Controller {
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
+        $data['sku'][$temp] = $row->SKU;
         $data['color_name'][$temp] = ($row->color_name == NULL) ? '-' : $row->color_name;
         $data['variant_size'][$temp] = ($row->size == NULL) ? '-' : $row->size;
         $data['quantity'][$temp] = $row->quantity;
@@ -132,7 +158,7 @@ class Products_variant extends CI_Controller {
       }
     }
     
-    if($edit_size){
+    if($edit_size && $id_color != 0){
       //check duplicate variant
       $param_check['id_products'] = $id_products;
       $param_check['id_color'] = $id_color;
@@ -161,6 +187,18 @@ class Products_variant extends CI_Controller {
     $param['quantity'] = ($this->input->post('quantity', TRUE)) ? $this->input->post('quantity', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
+    
+    //generate sku
+    $sku = $this->generate_sku($param['id_products'], $param['id_color']);
+    $param_check['sku'] = $sku;
+    $check_duplicate_sku = $this->Model_products_variant->get_data($param_check);
+    while($check_duplicate_sku->num_rows() > 0){
+      $sku = $this->generate_sku($param['id_products'], $param['id_color']);
+      $param_check['sku'] = $sku;
+      $check_duplicate_sku = $this->Model_products_variant->get_data($param_check);
+    }
+    $param['sku'] = $sku; 
+    //end generate sku
 
     $validate_post = $this->validate_post($param, "add", TRUE);
     if ($validate_post['result'] == "r1") {
