@@ -1,10 +1,11 @@
 <input type="hidden" id="txt_id_category" name="txt_id_category" value="<?php echo $id_category ?>" />
+<input type="hidden" id="txt_parent" name="txt_parent" value="<?php echo $parent ?>" />
 
 <div class="row" style="margin-bottom:5px;">
   <div class="col-xs-12">
     <div id="main_panel" class="panel">
       <header class="panel-heading">
-        <?php echo $category_name ?> Child Menu
+        <?php echo $parent_name ?> Child Menu
       </header>
       <div class="panel-body table-responsive">
         <div class="box-tools m-b-15">
@@ -26,7 +27,7 @@
               <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm">Add Child</a>
             </div>
             <div class="input-group-btn">
-              <a href="<?php echo base_url() ?>category/" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
+              <a href="<?php echo base_url() ?>category_child/?id_category=<?php echo $id_category ?>" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
             </div>
           </div>
         </div>

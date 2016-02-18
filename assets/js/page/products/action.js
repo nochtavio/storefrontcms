@@ -11,7 +11,7 @@ $(document).ready(function () {
 
   $('#btn_submit_data').click(function (event) {
     event.preventDefault();
-
+    
     //Parameter
     var id = $('#txt_data_id').val();
     var name = $('#txt_data_name').val();

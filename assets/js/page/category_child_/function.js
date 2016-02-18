@@ -1,5 +1,6 @@
 $(document).ready(function () {
   id_category = $('#txt_id_category').val();
+  parent = $('#txt_parent').val();
   
   get_data = function (page) {
     //Filter
@@ -9,11 +10,11 @@ $(document).ready(function () {
     //End Filter
 
     $.ajax({
-      url: base_url + 'category_child/get_data',
+      url: base_url + 'category_child_/get_data',
       type: 'POST',
       data: {
         page: page,
-        id_category: id_category,
+        parent: parent,
         name: name,
         active: active,
         order: order
@@ -69,7 +70,6 @@ $(document).ready(function () {
                 <td>" + date + "</td>\
                 <td>\
                   <a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;\
-                  <a href='"+base_url+"category_child_/?id_category=" + id_category + "&parent=" + result['id'][x] + "' id='btn_detail" + result['id'][x] + "' class='fa fa-folder-open'></a> &nbsp;\
                   <a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;\
                 </td>\
               </tr>");
@@ -105,7 +105,7 @@ $(document).ready(function () {
       $(document).on('click', '#btn_edit' + val, function () {
         set_state("edit");
         $.ajax({
-          url: base_url + 'category_child/get_specific_data',
+          url: base_url + 'category_child_/get_specific_data',
           type: 'POST',
           data:{
             id: val
@@ -169,10 +169,11 @@ $(document).ready(function () {
 
   add_data = function (name, active) {
     $.ajax({
-      url: base_url + 'category_child/add_data',
+      url: base_url + 'category_child_/add_data',
       type: 'POST',
       data: {
         id_category: id_category,
+        parent: parent,
         name: name,
         active: active
       },
@@ -195,7 +196,7 @@ $(document).ready(function () {
 
   edit_data = function (id, name, active) {
     $.ajax({
-      url: base_url + 'category_child/edit_data',
+      url: base_url + 'category_child_/edit_data',
       type: 'POST',
       data: {
         id: id,
@@ -225,7 +226,7 @@ $(document).ready(function () {
     //end param
     
     $.ajax({
-      url: base_url + 'category_child/remove_data',
+      url: base_url + 'category_child_/remove_data',
       type: 'POST',
       data: {
         id: id

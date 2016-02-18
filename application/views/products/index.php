@@ -114,26 +114,47 @@
             <label class="col-lg-3 col-sm-3 control-label">Category</label>
             <div class="col-lg-9 col-sm-9">
               <?php 
+
                 foreach($category as $cat){
+
                   ?>
+
                     <div class="col-lg-3 col-sm-3" style="padding: 7px 0 0 0px;">
+
                       <label><?php echo $cat->name ?></label>
+
                       <?php 
+
                         foreach($category_child as $cat_child){
+
                           if($cat_child->id_category == $cat->id){
+
                             ?>
+
                               <div class="checkbox">
+
                                 <label>
+
                                   <input type="checkbox" name="cb_category" value="<?php echo $cat_child->id; ?>"><?php echo $cat_child->name; ?>
+
                                 </label>
+
                               </div>
+
                             <?php
+
                           }
+
                         }
+
                       ?>
+
                     </div>
+
                   <?php
+
                 }
+
               ?>
             </div>
           </div>

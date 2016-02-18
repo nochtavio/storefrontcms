@@ -36,5 +36,11 @@ $(document).ready(function () {
     }
   });
   
+  $('#sel_data_category').multiselect({
+    enableFiltering: true,
+    buttonWidth: '400px',
+    maxHeight: 400
+  });
+  
   get_data(page);
 });

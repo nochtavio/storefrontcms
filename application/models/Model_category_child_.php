@@ -1,6 +1,6 @@
 <?php
 
-class Model_category_child extends CI_Model {
+class Model_category_child_ extends CI_Model {
   function __construct() {
     parent::__construct();
   }
@@ -8,7 +8,7 @@ class Model_category_child extends CI_Model {
   function get_data($param, $limit = 0, $size = 0) {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
-    $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
+    $parent = (isset($param['parent'])) ? $param['parent'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
@@ -20,12 +20,11 @@ class Model_category_child extends CI_Model {
     
     //Validation
     if($id > 0){$this->db->where('category_child.id', $id);}
-    if($id_category > 0){$this->db->where('category.id', $id_category);}
+    if($parent > 0){$this->db->where('category_child.parent', $parent);}
     if($name != ""){$this->db->like('category_child.name', $name);}
     if($active > -1){$this->db->where('category_child.active', $active);}
     //End Validation
     
-    $this->db->where('category_child.parent', 0);
     $this->db->where('category_child.deleted', 0);
     if($order == 1){
       $this->db->order_by("category_child.name", "desc");
@@ -46,12 +45,14 @@ class Model_category_child extends CI_Model {
   function add_data($param){
     //Set Param
     $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
+    $parent = (isset($param['parent'])) ? $param['parent'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
     $data = array(
       'id_category' => $id_category,
+      'parent' => $parent,
       'name' => $name,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
