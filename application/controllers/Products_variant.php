@@ -142,6 +142,7 @@ class Products_variant extends CI_Controller {
 
   public function validate_post($param, $state, $edit_size = TRUE) {
     //param
+    $id = (isset($param['id'])) ? $param['id'] : 0;
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
     $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $size = (isset($param['size'])) ? $param['size'] : "";
@@ -164,7 +165,7 @@ class Products_variant extends CI_Controller {
       $param_check['id_color'] = $id_color;
       $param_check['size'] = $size;
       $check_duplicate_variant = $this->Model_products_variant->get_data($param_check);
-      if($check_duplicate_variant->num_rows() > 0){
+      if($check_duplicate_variant->num_rows() > 0 && $check_duplicate_variant->row()->id !== $id){
         $data['result'] = "r2";
         $data['result_message'] .= "<strong>Color</strong> with this size is already exist!<br/>";
       }
