@@ -130,18 +130,22 @@ class Products_image extends CI_Controller {
     echo json_encode($data);
   }
 
-  public function validate_post($param, $edit_url = TRUE) {
+  public function validate_post($param, $state) {
     //param
-    $url = (isset($param['url'])) ? $param['url'] : "";
+    $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
+    $id_products_variant = (isset($param['id_products_variant'])) ? $param['id_products_variant'] : 0;
     //end param
 
     $data['result'] = "r1";
     $data['result_message'] = "";
     
-    if($edit_url){
-      if ($url == "") {
+    if($state == 'add'){
+      $param_check['id_products'] = $id_products;
+      $param_check['id_products_variant'] = $id_products_variant;
+      $result_data = $this->Model_products_image->get_data($param_check);
+      if ($result_data->num_rows() >= 5) {
         $data['result'] = "r2";
-        $data['result_message'] .= "<strong>URL</strong> must be filled !<br/>";
+        $data['result_message'] = "Maximum images per product variant is exceeded (5 out 5 images)!";
       }
     }
 
@@ -152,15 +156,47 @@ class Products_image extends CI_Controller {
     //param
     $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
     $param['id_products_variant'] = ($this->input->post('id_products_variant', TRUE)) ? $this->input->post('id_products_variant', TRUE) : 0;
-    $param['url'] = ($this->input->post('url', TRUE)) ? $this->input->post('url', TRUE) : "";
     $param['default'] = ($this->input->post('default', TRUE)) ? $this->input->post('default', TRUE) : 0;
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
-
-    $validate_post = $this->validate_post($param, TRUE);
+    
+    $validate_post = $this->validate_post($param, "add");
     if ($validate_post['result'] == "r1") {
-      $this->Model_products_image->add_data($param);
+      //Upload Image
+      $result_last_id = $this->Model_products_image->get_last_id();
+      if ($result_last_id->result()) {
+        $last_id = $result_last_id->row()->id + 1;
+        $image_name = "products_".$last_id.".jpg";
+      } else {
+        $image_name = "products_1.jpg";
+      }
+      $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/'.$image_name;
+
+      //Check Directory
+      if (!is_dir('images/products/'.$param['id_products'])){
+        mkdir('./images/products/'.$param['id_products'].'/', 0777, true);
+      }else if(!is_dir('images/products/'.$param['id_products'].'/'.$param['id_products_variant'])){
+        mkdir('./images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/', 0777, true);
+      }
+
+      $file_element_name = 'txt_data_file';
+      $config['upload_path'] = './images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/';
+      $config['allowed_types'] = 'jpg';
+      $config['max_size'] = 500;
+      $config['file_name'] = $image_name;
+      $config['overwrite'] = TRUE;
+
+      $this->upload->initialize($config);
+      if (!$this->upload->do_upload($file_element_name)) {
+        $validate_post['result'] = "r2";
+        $validate_post['result_message'] = $this->upload->display_errors('', '');
+      } else {
+        $this->upload->data();
+        $this->Model_products_image->add_data($param);
+      }
+      @unlink($_FILES[$file_element_name]);
+      //End Upload Image
     }
 
     echo json_encode($validate_post);
@@ -169,27 +205,40 @@ class Products_image extends CI_Controller {
   public function edit_data() {
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
-    $param['url'] = ($this->input->post('url', TRUE)) ? $this->input->post('url', TRUE) : "";
+    $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
+    $param['id_products_variant'] = ($this->input->post('id_products_variant', TRUE)) ? $this->input->post('id_products_variant', TRUE) : 0;
     $param['default'] = ($this->input->post('default', TRUE)) ? $this->input->post('default', TRUE) : 0;
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
-    
-    //check url is edited or not
-    $edit_url = TRUE;
-    $param_check['url'] = $param['url'];
-    $check_edited_url = $this->Model_products_image->get_data($param_check);
-    if($check_edited_url->num_rows() > 0){
-      if($check_edited_url->row()->url == $param['url']){
-        $edit_url = FALSE;
-      }
-    }
-    //end check
 
     if ($param['id'] != "") {
-      $validate_post = $this->validate_post($param, $edit_url);
+      $validate_post = $this->validate_post($param, 'edit');
       if ($validate_post['result'] == "r1") {
-        $this->Model_products_image->edit_data($param);
+        //Upload Image
+        $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/products_'.$param['id'].'.jpg';
+
+        $file_element_name = 'txt_data_file';
+        $config['upload_path'] = './images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/';
+        $config['allowed_types'] = 'jpg';
+        $config['max_size'] = 500;
+        $config['file_name'] = 'products_'.$param['id'].'.jpg';
+        $config['overwrite'] = TRUE;
+
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload($file_element_name)) {
+          if($this->upload->display_errors('', '') !== "You did not select a file to upload."){
+            $validate_post['result'] = "r2";
+            $validate_post['result_message'] = $this->upload->display_errors('', '');
+          }else{
+            $this->Model_products_image->edit_data($param);
+          }
+        } else {
+          $this->upload->data();
+          $this->Model_products_image->edit_data($param);
+        }
+        @unlink($_FILES[$file_element_name]);
+        //End Upload Image
       }
     } else {
       $validate_post['result'] = "r2";

@@ -8,6 +8,7 @@ class Model_products_image extends CI_Model {
   function get_data($param, $limit = 0, $size = 0) {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
+    $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
     $id_products_variant = (isset($param['id_products_variant'])) ? $param['id_products_variant'] : 0;
     $url = (isset($param['url'])) ? $param['url'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
@@ -20,6 +21,7 @@ class Model_products_image extends CI_Model {
     
     //Validation
     if($id > 0){$this->db->where('products_image.id', $id);}
+    if($id_products > 0){$this->db->where('products_image.id_products', $id_products);}
     if($id_products_variant > 0){$this->db->where('products_image.id_products_variant', $id_products_variant);}
     if($url != ""){$this->db->like('products_image.url', $url);}
     if($active > -1){$this->db->where('products_image.active', $active);}
@@ -99,5 +101,15 @@ class Model_products_image extends CI_Model {
     
     $this->db->where('id', $id);
     $this->db->update('products_image', $data);
+  }
+  
+  function get_last_id(){
+    $this->db->select('products_image.id');
+    $this->db->from('products_image');
+    $this->db->order_by("products_image.id", "desc");
+    $this->db->limit(1);
+    $query = $this->db->get();
+
+    return $query;
   }
 }
