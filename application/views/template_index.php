@@ -7,6 +7,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <meta charset="UTF-8">
     <title>Storefront CMS</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
     <!-- bootstrap 3.0.2 -->
     <link href="<?php echo base_url() ?>assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url() ?>assets/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -17,6 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <link href="<?php echo base_url() ?>assets/css/all.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url() ?>assets/css/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo base_url() ?>assets/css/summernote.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo base_url() ?>assets/css/bootstrap-multiselect.css" rel="stylesheet" type="text/css" />
     <link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
     <link href="<?php echo base_url() ?>assets/css/style.css" rel="stylesheet" type="text/css" />
     <!--[if lt IE 9]>
@@ -77,6 +79,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?php echo base_url() ?>assets/js/jquery.easy-overlay.js" type="text/javascript"></script>
     <script src="<?php echo base_url() ?>assets/js/app.js" type="text/javascript"></script>
     <script src="<?php echo base_url() ?>assets/js/summernote.js" type="text/javascript"></script>
+    <script src="<?php echo base_url() ?>assets/js/bootstrap-multiselect.js" type="text/javascript"></script>
     <script type="text/javascript">
       base_url = "<?php echo base_url() ?>";
     </script>

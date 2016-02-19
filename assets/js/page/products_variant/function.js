@@ -1,17 +1,20 @@
 $(document).ready(function () {
+  id_products = $('#txt_id_products').val();
+  
   get_data = function (page) {
     //Filter
-    var name = $('#txt_name').val();
+    var sku = $('#txt_sku').val();
     var active = $('#sel_active').val();
     var order = $('#sel_order').val();
     //End Filter
 
     $.ajax({
-      url: base_url + 'products/get_data',
+      url: base_url + 'products_variant/get_data',
       type: 'POST',
       data: {
         page: page,
-        name: name,
+        id_products: id_products,
+        sku:sku,
         active: active,
         order: order
       },
@@ -22,7 +25,10 @@ $(document).ready(function () {
         $('#table_content').append("\
           <tr>\
             <th>No</th>\
-            <th>Name</th>\
+            <th>SKU</th>\
+            <th>Color</th>\
+            <th>Size</th>\
+            <th>Quantity</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -61,12 +67,14 @@ $(document).ready(function () {
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
-                <td>" + result['name'][x] + "</td>\
+                <td>" + result['sku'][x] + "</td>\
+                <td>" + result['color_name'][x] + "</td>\
+                <td>" + result['variant_size'][x] + "</td>\
+                <td>" + result['quantity'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>\
                   <a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;\
-                  <a href='"+base_url+"products_variant/?id_products=" + result['id'][x] + "' id='btn_detail" + result['id'][x] + "' class='fa fa-folder-open'></a> &nbsp;\
                   <a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;\
                 </td>\
               </tr>");
@@ -84,7 +92,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='5'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -102,7 +110,7 @@ $(document).ready(function () {
       $(document).on('click', '#btn_edit' + val, function () {
         set_state("edit");
         $.ajax({
-          url: base_url + 'products/get_specific_data',
+          url: base_url + 'products_variant/get_specific_data',
           type: 'POST',
           data:{
             id: val
@@ -111,16 +119,9 @@ $(document).ready(function () {
           success: function (result) {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
-              $("#txt_data_name").val(result['name']);
-              $("#txt_data_price").val(result['price']);
-              $("#txt_data_sale_price").val(result['sale_price']);
-              $("#txt_data_reseller_price").val(result['reseller_price']);
-              $("#txt_data_weight").val(result['weight']);
-              $("#txt_data_description").code(result['description']);
-              $("#txt_data_short_description").code(result['short_description']);
-              $("#txt_data_info").val(result['info']);
-              $("#txt_data_size_guideline").val(result['size_guideline']);
-              $('#sel_data_category').multiselect('select', result['category']);
+              $("#txt_data_id_color").val(result['id_color']);
+              $("#txt_data_size").val(result['size']);
+              $("#txt_data_quantity").val(result['quantity']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -147,7 +148,7 @@ $(document).ready(function () {
     $.each(id, function (x, val) {
       $(document).off('click', '#btn_remove' + val);
       $(document).on('click', '#btn_remove' + val, function () {
-        $('#remove_message').html("Are you sure you want to remove this products?");
+        $('#remove_message').html("Are you sure you want to remove this variant?");
         $('#txt_remove_id').val(val);
         $('#modal_remove').modal("show");
       });
@@ -157,48 +158,34 @@ $(document).ready(function () {
   set_state = function (x) {
     state = x;
     if (x == "add") {
-      $('#modal_data_title').html("Add Product");
+      $('#modal_data_title').html("Add Products Variant");
       
       $('.form_data').val('');
-      $('#txt_data_description').code('');
-      $('#txt_data_short_description').code('');
-      $('option', $('#sel_data_category')).each(function(element) {
-          $(this).removeAttr('selected').prop('selected', false);
-      });
-      $('#sel_data_category').multiselect('refresh');
+      $('#txt_data_id_color').val(0);
+      $('#txt_data_id_color').prop("readonly", false);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     } else {
-      $('#modal_data_title').html("Edit Product");
+      $('#modal_data_title').html("Edit Products Variant");
 
       $('.form_data').val('');
-      $('option', $('#sel_data_category')).each(function(element) {
-          $(this).removeAttr('selected').prop('selected', false);
-      });
-      $('#sel_data_category').multiselect('refresh');
+      $('#txt_data_id_color').prop("readonly", true);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
   };
 
-  add_data = function (name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active) {
+  add_data = function (id_color, size, quantity, active) {
     $.ajax({
-      url: base_url + 'products/add_data',
+      url: base_url + 'products_variant/add_data',
       type: 'POST',
       data: {
-        name: name,
-        price: price,
-        sale_price: sale_price,
-        reseller_price: reseller_price,
-        weight: weight,
-        attribute: attribute,
-        description: description,
-        short_description: short_description,
-        info: info,
-        size_guideline: size_guideline,
-        category: category,
+        id_products: id_products,
+        id_color: id_color,
+        size: size,
+        quantity: quantity,
         active: active
       },
       dataType: 'json',
@@ -218,23 +205,16 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active) {
+  edit_data = function (id, id_color, size, quantity, active) {
     $.ajax({
-      url: base_url + 'products/edit_data',
+      url: base_url + 'products_variant/edit_data',
       type: 'POST',
       data: {
         id: id,
-        name: name,
-        price: price,
-        sale_price: sale_price,
-        reseller_price: reseller_price,
-        weight: weight,
-        attribute: attribute,
-        description: description,
-        short_description: short_description,
-        info: info,
-        size_guideline: size_guideline,
-        category: category,
+        id_products: id_products,
+        id_color: id_color,
+        size: size,
+        quantity: quantity,
         active: active
       },
       dataType: 'json',
@@ -260,7 +240,7 @@ $(document).ready(function () {
     //end param
     
     $.ajax({
-      url: base_url + 'products/remove_data',
+      url: base_url + 'products_variant/remove_data',
       type: 'POST',
       data: {
         id: id

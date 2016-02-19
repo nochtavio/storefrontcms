@@ -11,7 +11,7 @@ $(document).ready(function () {
 
   $('#btn_submit_data').click(function (event) {
     event.preventDefault();
-
+    
     //Parameter
     var id = $('#txt_data_id').val();
     var name = $('#txt_data_name').val();
@@ -24,10 +24,7 @@ $(document).ready(function () {
     var short_description = $('#txt_data_short_description').code();
     var info = $('#txt_data_info').val();
     var size_guideline = $('#txt_data_size_guideline').val();
-    var category = [];
-    $('input:checkbox[name=cb_category]:checked').each(function(){
-      category.push(this.value);
-    });
+    var category = $('#sel_data_category').val();
     var active = 0;
     if ($('#txt_data_active').prop('checked')) {
       active = 1;

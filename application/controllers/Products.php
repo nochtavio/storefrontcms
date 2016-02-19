@@ -10,6 +10,7 @@ class Products extends CI_Controller {
     $this->load->model('Model_products');
     $this->load->model('Model_category');
     $this->load->model('Model_category_child');
+    $this->load->model('Model_category_child_');
   }
   
   public function index() {
@@ -24,6 +25,7 @@ class Products extends CI_Controller {
     $param['active'] = 1;
     $content['category'] = $this->Model_category->get_data($param, 0, 100)->result();
     $content['category_child'] = $this->Model_category_child->get_data($param, 0, 100)->result();
+    $content['category_child_'] = $this->Model_category_child_->get_data($param, 0, 100)->result();
     //end get list category
     
     $data['header'] = $this->load->view('header', '', TRUE);
@@ -96,6 +98,11 @@ class Products extends CI_Controller {
       $data['short_description'] = $result_data->row()->short_description;
       $data['info'] = $result_data->row()->info;
       $data['size_guideline'] = $result_data->row()->size_guideline;
+      $category = array();
+      $result_category_detail = $this->Model_products->get_category_detail($param);
+      foreach ($result_category_detail->result() as $row) {
+        array_push($category, $row->id_category_child);
+      }
       $data['category'] = $category;
       $data['active'] = $result_data->row()->active;
     }else{

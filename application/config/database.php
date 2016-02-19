@@ -75,10 +75,10 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => 'root',
-	'password' => '',
-	'database' => 'storefront',
+	'hostname' => 'storefrontindo.com',
+	'username' => 'storefro_test',
+	'password' => 'test220790',
+	'database' => 'storefro_ffstore',
 	'dbdriver' => 'mysqli',
 	'dbprefix' => '',
 	'pconnect' => FALSE,

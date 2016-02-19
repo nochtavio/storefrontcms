@@ -1,32 +1,32 @@
-<input type="hidden" id="txt_id_category" name="txt_id_category" value="<?php echo $id_category ?>" />
+<input type="hidden" id="txt_id_products" name="txt_id_products" value="<?php echo $id_products ?>" />
 
 <div class="row" style="margin-bottom:5px;">
   <div class="col-xs-12">
     <div id="main_panel" class="panel">
       <header class="panel-heading">
-        <?php echo $category_name ?> Child Menu
+        <?php echo $products_name ?> Variants
       </header>
       <div class="panel-body table-responsive">
         <div class="box-tools m-b-15">
           <div class="input-group">
-            <input id="txt_name" name="txt_name" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Name">
+            <input id="txt_sku" name="txt_sku" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter SKU">
             <select id="sel_active" name="sel_active" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status</option>
               <option value="1">Active</option>
               <option value="0">Not Active</option>
             </select>
             <select id="sel_order" name="sel_order" class="form-control input-sm" style="margin-right: 7px;width: 200px;">
-              <option value="-1">Order by Name A-Z</option>
-              <option value="1">Order by Name Z-A</option>
-              <option value="2">Order by Latest Data</option> 
-              <option value="3">Order by Oldest Data</option>
+              <option value="-1">Order by Latest Data</option>
+              <option value="1">Order by Oldest Data</option>
+              <option value="2">Order by Quantity &uarr;</option> 
+              <option value="3">Order by Quantity &darr;</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
             <div class="input-group-btn">
-              <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm">Add Child</a>
+              <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm">Add Variant</a>
             </div>
             <div class="input-group-btn">
-              <a href="<?php echo base_url() ?>category/" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
+              <a href="<?php echo base_url() ?>products/" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
             </div>
           </div>
         </div>
@@ -58,9 +58,31 @@
         <form class="form-horizontal" role="form">
           <input type="hidden" id="txt_data_id" name="txt_data_id" />
           <div class="form-group">
-            <label for="txt_data_name" class="col-lg-3 col-sm-3 control-label">Name</label>
+            <label for="txt_data_name" class="col-lg-3 col-sm-3 control-label">Color</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_name" placeholder="Enter child name">
+              <select id="txt_data_id_color" name="txt_data_id_color" class="form-control">
+                <option value="0">Select Color</option>
+                <?php 
+                  foreach($color as $col){
+                    ?>
+                      <option value="<?php echo $col->id ?>"><?php echo $col->name ?></option>
+                    <?php
+                  }
+                ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_size" class="col-lg-3 col-sm-3 control-label">Size</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_size" placeholder="Enter size">
+              <p class="help-block" style="margin-bottom: 0;">Leave this empty if the product is all size.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_quantity" class="col-lg-3 col-sm-3 control-label">Quantity</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_quantity" placeholder="Enter product quantity">
             </div>
           </div>
           <div class="form-group">

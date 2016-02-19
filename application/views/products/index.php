@@ -113,28 +113,29 @@
           <div class="form-group">
             <label class="col-lg-3 col-sm-3 control-label">Category</label>
             <div class="col-lg-9 col-sm-9">
-              <?php 
+              <select id="sel_data_category" class="form-control" multiple="multiple">
+                <?php 
                 foreach($category as $cat){
                   ?>
-                    <div class="col-lg-3 col-sm-3" style="padding: 7px 0 0 0px;">
-                      <label><?php echo $cat->name ?></label>
+                    <optgroup label="<?php echo $cat->name ?>">
                       <?php 
                         foreach($category_child as $cat_child){
                           if($cat_child->id_category == $cat->id){
-                            ?>
-                              <div class="checkbox">
-                                <label>
-                                  <input type="checkbox" name="cb_category" value="<?php echo $cat_child->id; ?>"><?php echo $cat_child->name; ?>
-                                </label>
-                              </div>
-                            <?php
+                            foreach($category_child_ as $cat_child_){
+                              if($cat_child->id == $cat_child_->parent){
+                                ?>
+                                  <option value="<?php echo $cat_child_->id; ?>">[<?php echo $cat_child->name; ?>]<?php echo $cat_child_->name; ?></option>
+                                <?php
+                              }
+                            }
                           }
                         }
                       ?>
-                    </div>
+                    </optgroup>
                   <?php
                 }
               ?>
+              </select>
             </div>
           </div>
           <div class="form-group">
