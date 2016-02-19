@@ -80,6 +80,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <script src="<?php echo base_url() ?>assets/js/app.js" type="text/javascript"></script>
     <script src="<?php echo base_url() ?>assets/js/summernote.js" type="text/javascript"></script>
     <script src="<?php echo base_url() ?>assets/js/bootstrap-multiselect.js" type="text/javascript"></script>
+    <script src="<?php echo base_url() ?>assets/js/ajaxfileupload.js" type="text/javascript"></script>
     <script type="text/javascript">
       base_url = "<?php echo base_url() ?>";
     </script>

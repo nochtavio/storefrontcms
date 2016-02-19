@@ -238,7 +238,6 @@ class Products_variant extends CI_Controller {
       $validate_post['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
     }
     
-    $validate_post['edit_size'] = $edit_size;
     echo json_encode($validate_post);
   }
 

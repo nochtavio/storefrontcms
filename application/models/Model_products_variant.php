@@ -25,7 +25,7 @@ class Model_products_variant extends CI_Model {
     if($id_products > 0){$this->db->where('products_variant.id_products', $id_products);}
     if($id_color > 0){$this->db->where('products_variant.id_color', $id_color);}
     if($variant_size != ""){$this->db->where('products_variant.size', $variant_size);}
-    if($sku != ""){$this->db->where('products_variant.SKU', $sku);}
+    if($sku != ""){$this->db->like('products_variant.SKU', $sku);}
     if($active > -1){$this->db->where('products_variant.active', $active);}
     //End Validation
     
