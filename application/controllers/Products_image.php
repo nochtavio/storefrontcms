@@ -134,6 +134,7 @@ class Products_image extends CI_Controller {
     //param
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
     $id_products_variant = (isset($param['id_products_variant'])) ? $param['id_products_variant'] : 0;
+    $total_uploads = (isset($param['total_uploads'])) ? $param['total_uploads'] : 0;
     //end param
 
     $data['result'] = "r1";
@@ -143,7 +144,7 @@ class Products_image extends CI_Controller {
       $param_check['id_products'] = $id_products;
       $param_check['id_products_variant'] = $id_products_variant;
       $result_data = $this->Model_products_image->get_data($param_check);
-      if ($result_data->num_rows() >= 5) {
+      if ($result_data->num_rows() + $total_uploads > 5) {
         $data['result'] = "r2";
         $data['result_message'] = "Maximum images per product variant is exceeded (5 out 5 images)!";
       }
@@ -159,43 +160,53 @@ class Products_image extends CI_Controller {
     $param['default'] = ($this->input->post('default', TRUE)) ? $this->input->post('default', TRUE) : 0;
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
+    
+    $param['total_uploads'] = count($_FILES['txt_data_add_file']['name']);
     //end param
+    
+    //Check Directory
+    if (!is_dir('images/products/'.$param['id_products'])){
+      mkdir('./images/products/'.$param['id_products'].'/', 0777, true);
+    }else if(!is_dir('images/products/'.$param['id_products'].'/'.$param['id_products_variant'])){
+      mkdir('./images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/', 0777, true);
+    }
+    //End Check Directory
     
     $validate_post = $this->validate_post($param, "add");
     if ($validate_post['result'] == "r1") {
       //Upload Image
-      $result_last_id = $this->Model_products_image->get_last_id();
-      if ($result_last_id->result()) {
-        $last_id = $result_last_id->row()->id + 1;
-        $image_name = "products_".$last_id.".jpg";
-      } else {
-        $image_name = "products_1.jpg";
-      }
-      $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/'.$image_name;
-
-      //Check Directory
-      if (!is_dir('images/products/'.$param['id_products'])){
-        mkdir('./images/products/'.$param['id_products'].'/', 0777, true);
-      }else if(!is_dir('images/products/'.$param['id_products'].'/'.$param['id_products_variant'])){
-        mkdir('./images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/', 0777, true);
-      }
-
-      $file_element_name = 'txt_data_file';
       $config['upload_path'] = './images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/';
       $config['allowed_types'] = 'jpg';
       $config['max_size'] = 500;
-      $config['file_name'] = $image_name;
       $config['overwrite'] = TRUE;
+      
+      foreach ($_FILES['txt_data_add_file']['name'] as $key => $image) {
+        $_FILES['txt_data_add_file[]']['name']= $_FILES['txt_data_add_file']['name'][$key];
+        $_FILES['txt_data_add_file[]']['type']= $_FILES['txt_data_add_file']['type'][$key];
+        $_FILES['txt_data_add_file[]']['tmp_name']= $_FILES['txt_data_add_file']['tmp_name'][$key];
+        $_FILES['txt_data_add_file[]']['error']= $_FILES['txt_data_add_file']['error'][$key];
+        $_FILES['txt_data_add_file[]']['size']= $_FILES['txt_data_add_file']['size'][$key];
 
-      $this->upload->initialize($config);
-      if (!$this->upload->do_upload($file_element_name)) {
-        $validate_post['result'] = "r2";
-        $validate_post['result_message'] = $this->upload->display_errors('', '');
-      } else {
-        $this->upload->data();
-        $this->Model_products_image->add_data($param);
+        $result_last_id = $this->Model_products_image->get_last_id();
+        if ($result_last_id->result()) {
+          $last_id = $result_last_id->row()->id + 1;
+          $image_name = "products_".$last_id.".jpg";
+        } else {
+          $image_name = "products_1.jpg";
+        }
+        $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/'.$image_name;
+        
+        $config['file_name'] = $image_name;
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('txt_data_add_file[]')) {
+          $validate_post['result'] = "r2";
+          $validate_post['result_message'] = $this->upload->display_errors('', '');
+        } else {
+          $this->upload->data();
+          $this->Model_products_image->add_data($param);
+        }
+        @unlink($_FILES['txt_data_add_file[]']);
       }
-      @unlink($_FILES[$file_element_name]);
       //End Upload Image
     }
 
@@ -218,7 +229,7 @@ class Products_image extends CI_Controller {
         //Upload Image
         $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/products_'.$param['id'].'.jpg';
 
-        $file_element_name = 'txt_data_file';
+        $file_element_name = 'txt_data_edit_file';
         $config['upload_path'] = './images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/';
         $config['allowed_types'] = 'jpg';
         $config['max_size'] = 500;

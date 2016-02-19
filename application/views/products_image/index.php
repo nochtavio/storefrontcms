@@ -60,7 +60,8 @@
             <label class="col-lg-3 col-sm-3 control-label">Image</label>
             <div class="col-lg-9 col-sm-9">
               <img id="txt_data_img" width="200px" height="200px" alt="No Image" />
-              <input type="file" class="form-control form_data" name="txt_data_file" id="txt_data_file" size="20" />
+              <input type="file" multiple="multiple" class="form-control form_data" name="txt_data_add_file[]" id="txt_data_add_file" size="20" />
+              <input type="file" class="form-control form_data" name="txt_data_edit_file" id="txt_data_edit_file" size="20" />
               <p class="help-block" style="margin-bottom: 0;">Allowed file is JPG | Maximum size is 500 KB</p>
             </div>
           </div>

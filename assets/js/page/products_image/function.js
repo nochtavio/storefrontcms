@@ -1,8 +1,6 @@
 $(document).ready(function () {
   id_products = $('#txt_id_products').val();
   id_products_variant = $('#txt_id_products_variant').val();
-  var d = new Date();
-  time = d.getTime();
   
   get_data = function (page) {
     //Filter
@@ -65,7 +63,10 @@ $(document).ready(function () {
               date += "<br/><br/> Modified by <strong>" + result['modby'][x] + "</strong> <br/> on <strong>" + result['modtime'][x] + "</strong>";
             }
             //End Date
-
+            
+            var d = new Date();
+            var time = d.getTime(); 
+            
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
@@ -119,6 +120,9 @@ $(document).ready(function () {
           dataType: 'json',
           success: function (result) {
             if (result['result'] === 'r1') {
+              var d = new Date();
+              var time = d.getTime(); 
+              
               $("#txt_data_id").val(val);
               $("#txt_data_url").val(result['url']);
               $("#txt_data_img").attr("src", base_url + result['url'] + "?" + time);
@@ -164,6 +168,8 @@ $(document).ready(function () {
       
       $('.form_data').val('');
       $("#txt_data_img").hide();
+      $('#txt_data_add_file').show();
+      $('#txt_data_edit_file').hide();
 
       $('#error_container').hide();
       $('#error_container_message').empty();
@@ -172,6 +178,8 @@ $(document).ready(function () {
 
       $('.form_data').val('');
       $("#txt_data_img").show();
+      $('#txt_data_add_file').hide();
+      $('#txt_data_edit_file').show();
 
       $('#error_container').hide();
       $('#error_container_message').empty();
@@ -182,7 +190,7 @@ $(document).ready(function () {
     $.ajaxFileUpload({
       url: base_url + 'products_image/add_data',
       secureuri: false,
-      fileElementId: 'txt_data_file',
+      fileElementId: 'txt_data_add_file',
       dataType: 'json',
       data:{
         id_products: id_products,
@@ -201,6 +209,7 @@ $(document).ready(function () {
         } else {
           $('#error_container').show();
           $('#error_container_message').append(result['result_message']);
+          get_data(page);
         }
       }
     });
@@ -210,7 +219,7 @@ $(document).ready(function () {
     $.ajaxFileUpload({
       url: base_url + 'products_image/edit_data',
       secureuri: false,
-      fileElementId: 'txt_data_file',
+      fileElementId: 'txt_data_edit_file',
       dataType: 'json',
       data:{
         id: id,
