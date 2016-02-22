@@ -2,27 +2,31 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Category extends CI_Controller {
+class Brand extends CI_Controller {
   
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
-    $this->load->model('Model_category');
-    $this->load->model('Model_category_child');
     $this->load->model('Model_brand');
+    $this->load->model('Model_category');
   }
   
   public function index() {
-    $page = 'Category';
+    $page = 'Brand';
     $sidebar['page'] = $page;
     $content['js'] = array();
-    array_push($content['js'], 'category/function.js');
-    array_push($content['js'], 'category/init.js');
-    array_push($content['js'], 'category/action.js');
+    array_push($content['js'], 'brand/function.js');
+    array_push($content['js'], 'brand/init.js');
+    array_push($content['js'], 'brand/action.js');
+    
+    //Get List Category
+    $param['active'] = 1;
+    $content['category'] = $this->Model_category->get_data($param, 0, 100)->result();
+    //End Get List Category
     
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
-    $data['content'] = $this->load->view('category/index', $content, TRUE);
+    $data['content'] = $this->load->view('brand/index', $content, TRUE);
     $this->load->view('template_index', $data);
   }
   
@@ -34,14 +38,14 @@ class Category extends CI_Controller {
     //end param
     
     //paging
-    $get_data = $this->Model_category->get_data($param);
+    $get_data = $this->Model_brand->get_data($param);
     $page = ($this->input->post('page', TRUE)) ? $this->input->post('page', TRUE) : 1 ;
     $size = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : 10 ;
     $limit = ($page - 1) * $size;
     //End Set totalpaging
 
     if ($get_data->num_rows() > 0) {
-      $get_data_paging = $this->Model_category->get_data($param, $limit, $size);
+      $get_data_paging = $this->Model_brand->get_data($param, $limit, $size);
       $temp = 0;
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
@@ -59,7 +63,7 @@ class Category extends CI_Controller {
       $data['totalpage'] = ceil($get_data->num_rows() / $size);
     } else {
       $data['result'] = "r2";
-      $data['message'] = "No Categories";
+      $data['message'] = "No Brands";
     }
     
     echo json_encode($data);
@@ -70,11 +74,17 @@ class Category extends CI_Controller {
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
     //end param
     
-    $result_data = $this->Model_category->get_data($param);
+    $result_data = $this->Model_brand->get_data($param);
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['name'] = $result_data->row()->name;
+      $category = array();
+      $result_category = $this->Model_brand->get_category($param);
+      foreach ($result_category->result() as $row) {
+        array_push($category, $row->id_category);
+      }
+      $data['category'] = $category;
       $data['active'] = $result_data->row()->active;
     }else{
       $data['result'] = "r2";
@@ -104,11 +114,12 @@ class Category extends CI_Controller {
     //param
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
+    $param['category'] = ($this->input->post('category', TRUE)) ? $this->input->post('category', TRUE) : "" ;
     //end param
     
     $validate_post = $this->validate_post($param);
     if($validate_post['result'] == "r1"){
-      $this->Model_category->add_data($param);
+      $this->Model_brand->add_data($param);
     }
     
     echo json_encode($validate_post);
@@ -118,28 +129,14 @@ class Category extends CI_Controller {
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "" ;
+    $param['category'] = ($this->input->post('category', TRUE)) ? $this->input->post('category', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     
     if($param['id'] != ""){
       $validate_post = $this->validate_post($param);
       if($validate_post['result'] == "r1"){
-        $this->Model_category->edit_data($param);
-        
-        //Set Child to not active if parent not active
-        if($param['active'] == 0){
-          $param_category['id_category'] = $param['id'];
-          $result_category_child = $this->Model_category_child->get_data($param_category);
-          if($result_category_child->num_rows() > 0){
-            foreach ($result_category_child->result() as $row) {
-              $param_category_child['id'] = $row->id;
-              $param_category_child['name'] = $row->name;
-              $param_category_child['active'] = 0;
-              $this->Model_category_child->edit_data($param_category_child);
-            }
-          }
-        }
-        //End Set Child
+        $this->Model_brand->edit_data($param);
       }
     }else{
       $validate_post['result'] = "r2";
@@ -156,18 +153,7 @@ class Category extends CI_Controller {
     
     if($param['id'] != ""){
       $data['result'] = "r1";
-      $this->Model_category->remove_data($param);
-      
-      //Delete child
-      $param_category['id_category'] = $param['id'];
-      $result_category_child = $this->Model_category_child->get_data($param_category);
-      if($result_category_child->num_rows() > 0){
-        foreach ($result_category_child->result() as $row) {
-          $param_category_child['id'] = $row->id;
-          $this->Model_category_child->remove_data($param_category_child);
-        }
-      }
-      //End Delete child
+      $this->Model_brand->remove_data($param);
     }else{
       $data['result'] = "r2";
       $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";

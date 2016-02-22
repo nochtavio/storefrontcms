@@ -89,4 +89,22 @@ class Model_category extends CI_Model {
     $this->db->where('id', $id);
     $this->db->update('category', $data);
   }
+  
+  function remove_category_detail($param){
+    //Set Param
+    $id_category_child = (isset($param['id_category_child'])) ? $param['id_category_child'] : 0;
+    //End Set Param
+    
+    $this->db->where('id_category_child', $id_category_child);
+    $this->db->delete('category_detail');
+  }
+  
+  function remove_category_brand($param){
+    //Set Param
+    $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
+    //End Set Param
+    
+    $this->db->where('id_category', $id_category);
+    $this->db->delete('category_brand');
+  }
 }

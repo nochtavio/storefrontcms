@@ -99,7 +99,8 @@ $(document).ready(function () {
 
     $.each(id, function (x, val) {
       $(document).off('click', '#btn_edit' + val);
-      $(document).on('click', '#btn_edit' + val, function () {
+      $(document).on('click', '#btn_edit' + val, function (event) {
+        event.preventDefault();
         set_state("edit");
         $.ajax({
           url: base_url + 'products/get_specific_data',
@@ -146,7 +147,8 @@ $(document).ready(function () {
 
     $.each(id, function (x, val) {
       $(document).off('click', '#btn_remove' + val);
-      $(document).on('click', '#btn_remove' + val, function () {
+      $(document).on('click', '#btn_remove' + val, function (event) {
+        event.preventDefault();
         $('#remove_message').html("Are you sure you want to remove this products?");
         $('#txt_remove_id').val(val);
         $('#modal_remove').modal("show");

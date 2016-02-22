@@ -98,7 +98,8 @@ $(document).ready(function () {
 
     $.each(id, function (x, val) {
       $(document).off('click', '#btn_edit' + val);
-      $(document).on('click', '#btn_edit' + val, function () {
+      $(document).on('click', '#btn_edit' + val, function (event) {
+        event.preventDefault();
         set_state("edit");
         $.ajax({
           url: base_url + 'admin/get_specific_data',

@@ -1,20 +1,17 @@
 $(document).ready(function () {
-  id_products = $('#txt_id_products').val();
-  
   get_data = function (page) {
     //Filter
-    var sku = $('#txt_sku').val();
+    var name = $('#txt_name').val();
     var active = $('#sel_active').val();
     var order = $('#sel_order').val();
     //End Filter
 
     $.ajax({
-      url: base_url + 'products_variant/get_data',
+      url: base_url + 'brand/get_data',
       type: 'POST',
       data: {
         page: page,
-        id_products: id_products,
-        sku:sku,
+        name: name,
         active: active,
         order: order
       },
@@ -25,10 +22,7 @@ $(document).ready(function () {
         $('#table_content').append("\
           <tr>\
             <th>No</th>\
-            <th>SKU</th>\
-            <th>Color</th>\
-            <th>Size</th>\
-            <th>Quantity</th>\
+            <th>Name</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -67,15 +61,11 @@ $(document).ready(function () {
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
-                <td>" + result['sku'][x] + "</td>\
-                <td>" + result['color_name'][x] + "</td>\
-                <td>" + result['variant_size'][x] + "</td>\
-                <td>" + result['quantity'][x] + "</td>\
+                <td>" + result['name'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>\
                   <a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;\
-                  <a href='"+base_url+"products_image/?id_products=" + id_products + "&id_products_variant=" + result['id'][x] + "' id='btn_detail" + result['id'][x] + "' class='fa fa-picture-o'></a> &nbsp;\
                   <a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;\
                 </td>\
               </tr>");
@@ -93,7 +83,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='5'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -112,7 +102,7 @@ $(document).ready(function () {
         event.preventDefault();
         set_state("edit");
         $.ajax({
-          url: base_url + 'products_variant/get_specific_data',
+          url: base_url + 'brand/get_specific_data',
           type: 'POST',
           data:{
             id: val
@@ -121,9 +111,8 @@ $(document).ready(function () {
           success: function (result) {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
-              $("#txt_data_id_color").val(result['id_color']);
-              $("#txt_data_size").val(result['size']);
-              $("#txt_data_quantity").val(result['quantity']);
+              $("#txt_data_name").val(result['name']);
+              $('#sel_data_category').multiselect('select', result['category']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -151,7 +140,7 @@ $(document).ready(function () {
       $(document).off('click', '#btn_remove' + val);
       $(document).on('click', '#btn_remove' + val, function (event) {
         event.preventDefault();
-        $('#remove_message').html("Are you sure you want to remove this variant?");
+        $('#remove_message').html("Are you sure you want to remove this brand?");
         $('#txt_remove_id').val(val);
         $('#modal_remove').modal("show");
       });
@@ -161,34 +150,37 @@ $(document).ready(function () {
   set_state = function (x) {
     state = x;
     if (x == "add") {
-      $('#modal_data_title').html("Add Products Variant");
+      $('#modal_data_title').html("Add Category");
       
       $('.form_data').val('');
-      $('#txt_data_id_color').val(0);
-      $('#txt_data_id_color').prop("disabled", false);
+      $('option', $('#sel_data_category')).each(function(element) {
+          $(this).removeAttr('selected').prop('selected', false);
+      });
+      $('#sel_data_category').multiselect('refresh');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     } else {
-      $('#modal_data_title').html("Edit Products Variant");
+      $('#modal_data_title').html("Edit Category");
 
       $('.form_data').val('');
-      $('#txt_data_id_color').prop("disabled", true);
+      $('option', $('#sel_data_category')).each(function(element) {
+          $(this).removeAttr('selected').prop('selected', false);
+      });
+      $('#sel_data_category').multiselect('refresh');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
   };
 
-  add_data = function (id_color, size, quantity, active) {
+  add_data = function (name, category, active) {
     $.ajax({
-      url: base_url + 'products_variant/add_data',
+      url: base_url + 'brand/add_data',
       type: 'POST',
       data: {
-        id_products: id_products,
-        id_color: id_color,
-        size: size,
-        quantity: quantity,
+        name: name,
+        category:category,
         active: active
       },
       dataType: 'json',
@@ -208,16 +200,14 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, id_color, size, quantity, active) {
+  edit_data = function (id, name, category, active) {
     $.ajax({
-      url: base_url + 'products_variant/edit_data',
+      url: base_url + 'brand/edit_data',
       type: 'POST',
       data: {
         id: id,
-        id_products: id_products,
-        id_color: id_color,
-        size: size,
-        quantity: quantity,
+        name: name,
+        category:category,
         active: active
       },
       dataType: 'json',
@@ -243,7 +233,7 @@ $(document).ready(function () {
     //end param
     
     $.ajax({
-      url: base_url + 'products_variant/remove_data',
+      url: base_url + 'brand/remove_data',
       type: 'POST',
       data: {
         id: id
