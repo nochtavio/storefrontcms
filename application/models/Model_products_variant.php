@@ -36,6 +36,10 @@ class Model_products_variant extends CI_Model {
       $this->db->order_by("products_variant.quantity", "desc");
     }else if($order == 3){
       $this->db->order_by("products_variant.quantity", "asc");
+    }else if($order == 4){
+      $this->db->order_by("products_variant.show_order", "asc");
+    }else if($order == 5){
+      $this->db->order_by("products_variant.show_order", "desc");
     }else{
       $this->db->order_by("products_variant.cretime", "asc");
     }
@@ -53,6 +57,7 @@ class Model_products_variant extends CI_Model {
     $sku = (isset($param['sku'])) ? $param['sku'] : '';
     $size = (isset($param['size'])) ? $param['size'] : "";
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
+    $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
@@ -63,6 +68,7 @@ class Model_products_variant extends CI_Model {
       'size' => $size,
       'quantity' => $quantity,
       'quantity_warehouse' => $quantity,
+      'show_order' => $show_order,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
       'creby' => 'SYSTEM'
@@ -78,6 +84,7 @@ class Model_products_variant extends CI_Model {
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $size = (isset($param['size'])) ? $param['size'] : "";
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
+    $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
@@ -85,6 +92,7 @@ class Model_products_variant extends CI_Model {
       'size' => $size,
       'quantity' => $quantity,
       'quantity_warehouse' => $quantity,
+      'show_order' => $show_order,
       'active' => $active,
       'modtime' => date('Y-m-d H:i:s'),
       'modby' => 'SYSTEM'

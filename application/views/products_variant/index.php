@@ -20,6 +20,8 @@
               <option value="1">Order by Oldest Data</option>
               <option value="2">Order by Quantity &uarr;</option> 
               <option value="3">Order by Quantity &darr;</option>
+              <option value="4">Order by Show Order &uarr;</option>
+              <option value="5">Order by Show Order &darr;</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
             <div class="input-group-btn">
@@ -83,6 +85,13 @@
             <label for="txt_data_quantity" class="col-lg-3 col-sm-3 control-label">Quantity</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_quantity" placeholder="Enter product quantity">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_show_order" class="col-lg-3 col-sm-3 control-label">Show Order</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_show_order" placeholder="Enter show order">
+              <p class="help-block" style="margin-bottom: 0;">Define which product variants listed first</p>
             </div>
           </div>
           <div class="form-group">

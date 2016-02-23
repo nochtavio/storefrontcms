@@ -29,6 +29,7 @@ $(document).ready(function () {
             <th>Color</th>\
             <th>Size</th>\
             <th>Quantity</th>\
+            <th>Show Order</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -71,6 +72,7 @@ $(document).ready(function () {
                 <td>" + result['color_name'][x] + "</td>\
                 <td>" + result['variant_size'][x] + "</td>\
                 <td>" + result['quantity'][x] + "</td>\
+                <td>" + result['show_order'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>\
@@ -124,6 +126,7 @@ $(document).ready(function () {
               $("#txt_data_id_color").val(result['id_color']);
               $("#txt_data_size").val(result['size']);
               $("#txt_data_quantity").val(result['quantity']);
+              $("#txt_data_show_order").val(result['show_order']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -180,7 +183,7 @@ $(document).ready(function () {
     }
   };
 
-  add_data = function (id_color, size, quantity, active) {
+  add_data = function (id_color, size, quantity, show_order, active) {
     $.ajax({
       url: base_url + 'products_variant/add_data',
       type: 'POST',
@@ -189,6 +192,7 @@ $(document).ready(function () {
         id_color: id_color,
         size: size,
         quantity: quantity,
+        show_order: show_order,
         active: active
       },
       dataType: 'json',
@@ -208,7 +212,7 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, id_color, size, quantity, active) {
+  edit_data = function (id, id_color, size, quantity, show_order, active) {
     $.ajax({
       url: base_url + 'products_variant/edit_data',
       type: 'POST',
@@ -218,6 +222,7 @@ $(document).ready(function () {
         id_color: id_color,
         size: size,
         quantity: quantity,
+        show_order: show_order,
         active: active
       },
       dataType: 'json',
