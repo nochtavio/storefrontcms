@@ -125,21 +125,6 @@ class Category extends CI_Controller {
       $validate_post = $this->validate_post($param);
       if($validate_post['result'] == "r1"){
         $this->Model_category->edit_data($param);
-        
-        //Set Child to not active if parent not active
-        if($param['active'] == 0){
-          $param_category['id_category'] = $param['id'];
-          $result_category_child = $this->Model_category_child->get_data($param_category);
-          if($result_category_child->num_rows() > 0){
-            foreach ($result_category_child->result() as $row) {
-              $param_category_child['id'] = $row->id;
-              $param_category_child['name'] = $row->name;
-              $param_category_child['active'] = 0;
-              $this->Model_category_child->edit_data($param_category_child);
-            }
-          }
-        }
-        //End Set Child
       }
     }else{
       $validate_post['result'] = "r2";
@@ -157,17 +142,6 @@ class Category extends CI_Controller {
     if($param['id'] != ""){
       $data['result'] = "r1";
       $this->Model_category->remove_data($param);
-      
-      //Delete child
-      $param_category['id_category'] = $param['id'];
-      $result_category_child = $this->Model_category_child->get_data($param_category);
-      if($result_category_child->num_rows() > 0){
-        foreach ($result_category_child->result() as $row) {
-          $param_category_child['id'] = $row->id;
-          $this->Model_category_child->remove_data($param_category_child);
-        }
-      }
-      //End Delete child
     }else{
       $data['result'] = "r2";
       $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";

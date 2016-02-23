@@ -79,6 +79,11 @@ class Model_category_child extends CI_Model {
     
     $this->db->where('id', $id);
     $this->db->update('category_child', $data);
+    
+    //Remove Child
+    $this->db->where('id_category_child', $id);
+    $this->db->delete('category_detail');
+    //End Remove Child
   }
   
   function remove_data($param){
@@ -94,20 +99,10 @@ class Model_category_child extends CI_Model {
     
     $this->db->where('id', $id);
     $this->db->update('category_child', $data);
-  }
-  
-  function remove_detail($param){
-    //Set Param
-    $id = (isset($param['id'])) ? $param['id'] : 0;
-    //End Set Param
     
-    $data = array(
-      'deleted' => 1,
-      'modtime' => date('Y-m-d H:i:s'),
-      'modby' => 'SYSTEM'
-    );
-    
+    //Remove Child
     $this->db->where('id_category_child', $id);
-    $this->db->update('category_detail', $data);
+    $this->db->delete('category_detail');
+    //End Remove Child
   }
 }

@@ -73,6 +73,33 @@ class Model_category extends CI_Model {
     
     $this->db->where('id', $id);
     $this->db->update('category', $data);
+    
+    //Unset Child
+    if($active == 0){
+      $data = array(
+        'active' => 0,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => 'SYSTEM'
+      );
+
+      $this->db->where('id_category', $id);
+      $this->db->update('category_child', $data);
+      
+      $this->db->select('id');
+      $this->db->from('category_child');
+      $this->db->where('id_category', $id);
+      $result_category_child = $this->db->get();
+      if ($result_category_child->num_rows() > 0) {
+        foreach ($result_category_child->result() as $row) {
+          $this->db->where('id_category_child', $row->id);
+          $this->db->delete('category_detail');
+        }
+      }
+      
+      $this->db->where('id_category', $row->id);
+      $this->db->delete('category_brand');
+    }
+    //End Unset Child
   }
   
   function remove_data($param){
@@ -88,23 +115,24 @@ class Model_category extends CI_Model {
     
     $this->db->where('id', $id);
     $this->db->update('category', $data);
-  }
-  
-  function remove_category_detail($param){
-    //Set Param
-    $id_category_child = (isset($param['id_category_child'])) ? $param['id_category_child'] : 0;
-    //End Set Param
     
-    $this->db->where('id_category_child', $id_category_child);
-    $this->db->delete('category_detail');
-  }
-  
-  function remove_category_brand($param){
-    //Set Param
-    $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
-    //End Set Param
+    //Delete Child
+    $this->db->where('id_category', $id);
+    $this->db->update('category_child', $data);
+
+    $this->db->select('id');
+    $this->db->from('category_child');
+    $this->db->where('id_category', $id);
+    $result_category_child = $this->db->get();
+    if ($result_category_child->num_rows() > 0) {
+      foreach ($result_category_child->result() as $row) {
+        $this->db->where('id_category_child', $row->id);
+        $this->db->delete('category_detail');
+      }
+    }
     
-    $this->db->where('id_category', $id_category);
+    $this->db->where('id_category', $id);
     $this->db->delete('category_brand');
+    //End Delete Child
   }
 }
