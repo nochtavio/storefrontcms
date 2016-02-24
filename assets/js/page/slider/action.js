@@ -16,7 +16,7 @@ $(document).ready(function () {
     var id = $('#txt_data_id').val();
     var show_order = $('#txt_data_show_order').val();
     var link = $('#txt_data_link').val();
-    var target = $('#txt_data_target').val();
+    var target = $('#sel_data_target').val();
     var title = $('#txt_data_title').val();
     var description = $('#txt_data_description').val();
     var active = 0;

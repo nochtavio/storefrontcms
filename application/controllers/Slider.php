@@ -47,6 +47,7 @@ class Slider extends CI_Controller {
         $data['show_order'][$temp] = $row->show_order;
         $data['url'][$temp] = $row->url;
         $data['link'][$temp] = $row->link;
+        $data['target'][$temp] = $row->target;
         $data['title'][$temp] = $row->title;
         $data['description'][$temp] = $row->description;
         $data['active'][$temp] = $row->active;
@@ -117,7 +118,7 @@ class Slider extends CI_Controller {
     //param
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['link'] = ($this->input->post('link', TRUE)) ? $this->input->post('link', TRUE) : '';
-    $param['target'] = ($this->input->post('target', TRUE)) ? $this->input->post('target', TRUE) : '';
+    $param['target'] = ($this->input->post('target', TRUE)) ? $this->input->post('target', TRUE) : 0;
     $param['title'] = ($this->input->post('title', TRUE)) ? $this->input->post('title', TRUE) : '';
     $param['description'] = ($this->input->post('description', TRUE)) ? $this->input->post('description', TRUE) : '';
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
@@ -175,7 +176,7 @@ class Slider extends CI_Controller {
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['link'] = ($this->input->post('link', TRUE)) ? $this->input->post('link', TRUE) : '';
-    $param['target'] = ($this->input->post('target', TRUE)) ? $this->input->post('target', TRUE) : '';
+    $param['target'] = ($this->input->post('target', TRUE)) ? $this->input->post('target', TRUE) : 0;
     $param['title'] = ($this->input->post('title', TRUE)) ? $this->input->post('title', TRUE) : '';
     $param['description'] = ($this->input->post('description', TRUE)) ? $this->input->post('description', TRUE) : '';
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";

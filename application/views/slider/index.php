@@ -74,9 +74,12 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="txt_data_target" class="col-lg-3 col-sm-3 control-label">Target</label>
+            <label for="sel_data_target" class="col-lg-3 col-sm-3 control-label">Target</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_target" placeholder="Enter target">
+              <select id="sel_data_target" name="sel_data_target" class="form-control">
+                <option value="0">New Window</option>
+                <option value="1">Current Window</option>
+              </select>
             </div>
           </div>
           <div class="form-group">

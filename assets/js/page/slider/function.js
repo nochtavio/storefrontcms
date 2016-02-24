@@ -124,7 +124,7 @@ $(document).ready(function () {
               $("#txt_data_img").attr("src", base_url + result['url'] + "?" + time);
               $("#txt_data_show_order").val(result['show_order']);
               $("#txt_data_link").val(result['link']);
-              $("#txt_data_target").val(result['target']);
+              $("#sel_data_target").val(result['target']);
               $("#txt_data_title").val(result['title']);
               $("#txt_data_description").val(result['description']);
               if (result['active'] == "1") {

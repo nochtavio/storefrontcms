@@ -46,7 +46,7 @@ class Model_slider extends CI_Model {
     $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
     $url = (isset($param['url'])) ? $param['url'] : "";
     $link = (isset($param['link'])) ? $param['link'] : "";
-    $target = (isset($param['target'])) ? $param['target'] : "";
+    $target = (isset($param['target'])) ? $param['target'] : 0;
     $title = (isset($param['title'])) ? $param['title'] : "";
     $description = (isset($param['description'])) ? $param['description'] : "";
     $active = (isset($param['active'])) ? $param['active'] : 0;
@@ -75,7 +75,7 @@ class Model_slider extends CI_Model {
     $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
     $url = (isset($param['url'])) ? $param['url'] : "";
     $link = (isset($param['link'])) ? $param['link'] : "";
-    $target = (isset($param['target'])) ? $param['target'] : "";
+    $target = (isset($param['target'])) ? $param['target'] : 0;
     $title = (isset($param['title'])) ? $param['title'] : "";
     $description = (isset($param['description'])) ? $param['description'] : "";
     $active = (isset($param['active'])) ? $param['active'] : 0;
