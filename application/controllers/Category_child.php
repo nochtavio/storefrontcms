@@ -158,6 +158,28 @@ class Category_child extends CI_Controller {
     echo json_encode($validate_post);
   }
   
+  public function set_active(){
+    //param
+    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
+    //end param
+    
+    $data['result'] = "r1";
+    $data['result_message'] = '';
+    
+    $result_data = $this->Model_category_child->get_data($param);
+    if($result_data->num_rows() > 0){
+      $param_set['id'] = $result_data->row()->id;
+      $param_set['name'] = $result_data->row()->name;
+      $param_set['active'] = ($result_data->row()->active == 0) ? 1 : 0;
+      $this->Model_category_child->edit_data($param_set);
+    }else{
+      $data['result'] = "r2";
+      $data['result_message'] = '<strong>Data ID</strong> is not found, please refresh your browser!<br/>';
+    }
+    
+    echo json_encode($data);
+  }
+  
   public function remove_data(){
     //post
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;

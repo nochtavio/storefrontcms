@@ -250,6 +250,31 @@ class Products_variant extends CI_Controller {
     
     echo json_encode($validate_post);
   }
+  
+  public function set_active(){
+    //param
+    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
+    //end param
+    
+    $data['result'] = "r1";
+    $data['result_message'] = '';
+    
+    $result_data = $this->Model_products_variant->get_data($param);
+    if($result_data->num_rows() > 0){
+      $param_set['id'] = $result_data->row()->id;
+      $param_set['id_color'] = $result_data->row()->id_color;
+      $param_set['size'] = ($result_data->row()->size == NULL) ? '-' : $result_data->row()->size;
+      $param_set['quantity'] = $result_data->row()->quantity;
+      $param_set['show_order'] = $result_data->row()->show_order;
+      $param_set['active'] = ($result_data->row()->active == 0) ? 1 : 0;
+      $this->Model_products_variant->edit_data($param_set);
+    }else{
+      $data['result'] = "r2";
+      $data['result_message'] = '<strong>Data ID</strong> is not found, please refresh your browser!<br/>';
+    }
+    
+    echo json_encode($data);
+  }
 
   public function remove_data() {
     //post

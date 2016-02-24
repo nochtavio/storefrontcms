@@ -96,7 +96,7 @@ class Model_category extends CI_Model {
         }
       }
       
-      $this->db->where('id_category', $row->id);
+      $this->db->where('id_category', $id);
       $this->db->delete('category_brand');
     }
     //End Unset Child

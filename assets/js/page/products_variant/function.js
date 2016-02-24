@@ -52,9 +52,9 @@ $(document).ready(function () {
 
           for (var x = 0; x < result['total']; x++) {
             //Status
-            var status = "<span class='label label-success'>Active</span>";
+            var status = "<a href='#' id='btn_active" + result['id'][x] + "' class='label label-success'>Active</a>";
             if (result['active'][x] != 1) {
-              status = "<span class='label label-danger'>Not Active</span>";
+              status = "<a href='#' id='btn_active" + result['id'][x] + "' class='label label-danger'>Not Active</a>";
             }
             //End Status
 
@@ -89,7 +89,8 @@ $(document).ready(function () {
             total_data++;
             //End Set Object ID
           }
-
+          
+          set_active();
           set_edit();
           set_remove();
         } else {
@@ -99,6 +100,37 @@ $(document).ready(function () {
           </tr>");
         }
       }
+    });
+  };
+  
+  set_active = function () {
+    var id = [];
+    for (var x = 0; x < total_data; x++) {
+      id[x] = $('#object' + x).val();
+    }
+
+    $.each(id, function (x, val) {
+      $(document).off('click', '#btn_active' + val);
+      $(document).on('click', '#btn_active' + val, function (event) {
+        event.preventDefault();
+        $.ajax({
+          url: base_url + 'products_variant/set_active',
+          type: 'POST',
+          data:{
+            id: val
+          },
+          dataType: 'json',
+          success: function (result) {
+            if (result['result'] === 'r1') {
+              get_data(page);
+            }
+            else {
+              alert("Error in connection");
+              get_data(page);
+            }
+          }
+        });
+      });
     });
   };
 

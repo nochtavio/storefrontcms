@@ -201,6 +201,43 @@ class Products extends CI_Controller {
     echo json_encode($validate_post);
   }
   
+  public function set_active(){
+    //param
+    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
+    //end param
+    
+    $data['result'] = "r1";
+    $data['result_message'] = '';
+    
+    $result_data = $this->Model_products->get_data($param);
+    if($result_data->num_rows() > 0){
+      $param_set['id'] = $result_data->row()->id;
+      $param_set['name'] = $result_data->row()->name;
+      $param_set['price'] = $result_data->row()->price;
+      $param_set['sale_price'] = $result_data->row()->sale_price;
+      $param_set['reseller_price'] = $result_data->row()->reseller_price;
+      $param_set['weight'] = $result_data->row()->weight;
+      $param_set['attribute'] = $result_data->row()->attribute;
+      $param_set['description'] = $result_data->row()->description;
+      $param_set['short_description'] = $result_data->row()->short_description;
+      $param_set['info'] = $result_data->row()->info;
+      $param_set['size_guideline'] = $result_data->row()->size_guideline;
+      $category = array();
+      $result_category_detail = $this->Model_products->get_category_detail($param);
+      foreach ($result_category_detail->result() as $row) {
+        array_push($category, $row->id_category_child);
+      }
+      $param_set['category'] = $category;
+      $param_set['active'] = ($result_data->row()->active == 0) ? 1 : 0;
+      $this->Model_products->edit_data($param_set);
+    }else{
+      $data['result'] = "r2";
+      $data['result_message'] = '<strong>Data ID</strong> is not found, please refresh your browser!<br/>';
+    }
+    
+    echo json_encode($data);
+  }
+  
   public function remove_data(){
     //post
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
