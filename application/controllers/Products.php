@@ -101,7 +101,7 @@ class Products extends CI_Controller {
       $category = array();
       $result_category_detail = $this->Model_products->get_category_detail($param);
       foreach ($result_category_detail->result() as $row) {
-        array_push($category, $row->id_category_child);
+        array_push($category, $row->id_category);
       }
       $data['category'] = $category;
       $data['active'] = $result_data->row()->active;

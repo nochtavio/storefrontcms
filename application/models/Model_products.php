@@ -78,7 +78,7 @@ class Model_products extends CI_Model {
     if(!empty($category)){
       foreach ($category as $cat) {
         $data = array(
-          'id_category_child' => $cat,
+          'id_category' => $cat,
           'id_products' => $insert_id,
           'cretime' => date('Y-m-d H:i:s'),
           'creby' => 'SYSTEM'
@@ -135,7 +135,7 @@ class Model_products extends CI_Model {
     if(!empty($category)){
       foreach ($category as $cat) {
         $data = array(
-          'id_category_child' => $cat,
+          'id_category' => $cat,
           'id_products' => $id,
           'cretime' => date('Y-m-d H:i:s'),
           'creby' => 'SYSTEM'

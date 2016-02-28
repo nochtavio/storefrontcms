@@ -117,21 +117,7 @@
                 <?php 
                 foreach($category as $cat){
                   ?>
-                    <optgroup label="<?php echo $cat->name ?>">
-                      <?php 
-                        foreach($category_child as $cat_child){
-                          if($cat_child->id_category == $cat->id){
-                            foreach($category_child_ as $cat_child_){
-                              if($cat_child->id == $cat_child_->parent){
-                                ?>
-                                  <option value="<?php echo $cat_child_->id; ?>">[<?php echo $cat_child->name; ?>]<?php echo $cat_child_->name; ?></option>
-                                <?php
-                              }
-                            }
-                          }
-                        }
-                      ?>
-                    </optgroup>
+                    <option value="<?php echo $cat->id; ?>"><?php echo $cat->name; ?></option>
                   <?php
                 }
               ?>
