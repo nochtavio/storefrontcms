@@ -9,7 +9,7 @@ class Model_products_image extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
-    $id_products_variant = (isset($param['id_products_variant'])) ? $param['id_products_variant'] : 0;
+    $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $url = (isset($param['url'])) ? $param['url'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
@@ -17,12 +17,12 @@ class Model_products_image extends CI_Model {
     
     $this->db->select('products_image.*');
     $this->db->from('products_image');
-    $this->db->join('products_variant', 'products_variant.id = products_image.id_products_variant');
+    $this->db->join('color', 'color.id = products_image.id_color');
     
     //Validation
     if($id > 0){$this->db->where('products_image.id', $id);}
     if($id_products > 0){$this->db->where('products_image.id_products', $id_products);}
-    if($id_products_variant > 0){$this->db->where('products_image.id_products_variant', $id_products_variant);}
+    if($id_color > 0){$this->db->where('products_image.id_color', $id_color);}
     if($url != ""){$this->db->like('products_image.url', $url);}
     if($active > -1){$this->db->where('products_image.active', $active);}
     //End Validation
@@ -43,7 +43,7 @@ class Model_products_image extends CI_Model {
   function add_data($param){
     //Set Param
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
-    $id_products_variant = (isset($param['id_products_variant'])) ? $param['id_products_variant'] : 0;
+    $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $url = (isset($param['url'])) ? $param['url'] : "";
     $default = (isset($param['default'])) ? $param['default'] : 0;
     $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
@@ -52,7 +52,7 @@ class Model_products_image extends CI_Model {
     
     $data = array(
       'id_products' => $id_products,
-      'id_products_variant' => $id_products_variant,
+      'id_color' => $id_color,
       'url' => $url,
       'default' => $default,
       'show_order' => $show_order,

@@ -9,12 +9,12 @@ class Products_image extends CI_Controller {
     parent::__construct();
     $this->load->model('Model_color');
     $this->load->model('Model_products');
-    $this->load->model('Model_products_variant');
+    $this->load->model('Model_color');
     $this->load->model('Model_products_image');
   }
 
   public function validate_index() {
-    if (!$this->input->get('id_products', TRUE) || !is_numeric($this->input->get('id_products', TRUE)) || !$this->input->get('id_products_variant', TRUE) || !is_numeric($this->input->get('id_products_variant', TRUE))) {
+    if (!$this->input->get('id_products', TRUE) || !is_numeric($this->input->get('id_products', TRUE)) || !$this->input->get('id_color', TRUE) || !is_numeric($this->input->get('id_color', TRUE))) {
       redirect('/products/');
       die();
     }
@@ -30,11 +30,11 @@ class Products_image extends CI_Controller {
     }
   }
   
-  public function get_products_variant_name($id_products_variant) {
-    $param['id'] = $id_products_variant;
-    $result_data = $this->Model_products_variant->get_data($param);
+  public function get_color_name($id_color) {
+    $param['id'] = $id_color;
+    $result_data = $this->Model_color->get_data($param);
     if ($result_data->num_rows() > 0) {
-      return $result_data->row()->color_name;
+      return $result_data->row()->name;
     } else {
       return false;
     }
@@ -55,9 +55,9 @@ class Products_image extends CI_Controller {
       redirect('/products/');
       die();
     }
-    $content['id_products_variant'] = $this->input->get('id_products_variant', TRUE);
-    $content['products_variant_name'] = $this->get_products_variant_name($content['id_products_variant']);
-    if (!$content['products_variant_name']) {
+    $content['id_color'] = $this->input->get('id_color', TRUE);
+    $content['color_name'] = $this->get_color_name($content['id_color']);
+    if (!$content['color_name']) {
       redirect('/products/');
       die();
     }
@@ -70,7 +70,7 @@ class Products_image extends CI_Controller {
 
   public function get_data() {
     //param
-    $param['id_products_variant'] = ($this->input->post('id_products_variant', TRUE)) ? $this->input->post('id_products_variant', TRUE) : 0;
+    $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
     $param['url'] = ($this->input->post('url', TRUE)) ? $this->input->post('url', TRUE) : '';
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
@@ -133,7 +133,7 @@ class Products_image extends CI_Controller {
   public function validate_post($param, $state) {
     //param
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
-    $id_products_variant = (isset($param['id_products_variant'])) ? $param['id_products_variant'] : 0;
+    $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $total_uploads = (isset($param['total_uploads'])) ? $param['total_uploads'] : 0;
     //end param
 
@@ -142,7 +142,7 @@ class Products_image extends CI_Controller {
     
     if($state == 'add'){
       $param_check['id_products'] = $id_products;
-      $param_check['id_products_variant'] = $id_products_variant;
+      $param_check['id_color'] = $id_color;
       $result_data = $this->Model_products_image->get_data($param_check);
       if ($result_data->num_rows() + $total_uploads > 5) {
         $data['result'] = "r2";
@@ -156,7 +156,7 @@ class Products_image extends CI_Controller {
   public function add_data() {
     //param
     $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
-    $param['id_products_variant'] = ($this->input->post('id_products_variant', TRUE)) ? $this->input->post('id_products_variant', TRUE) : 0;
+    $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
     $param['default'] = ($this->input->post('default', TRUE)) ? $this->input->post('default', TRUE) : 0;
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
@@ -167,15 +167,15 @@ class Products_image extends CI_Controller {
     //Check Directory
     if (!is_dir('images/products/'.$param['id_products'])){
       mkdir('./images/products/'.$param['id_products'].'/', 0777, true);
-    }else if(!is_dir('images/products/'.$param['id_products'].'/'.$param['id_products_variant'])){
-      mkdir('./images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/', 0777, true);
+    }else if(!is_dir('images/products/'.$param['id_products'].'/'.$param['id_color'])){
+      mkdir('./images/products/'.$param['id_products'].'/'.$param['id_color'].'/', 0777, true);
     }
     //End Check Directory
     
     $validate_post = $this->validate_post($param, "add");
     if ($validate_post['result'] == "r1") {
       //Upload Image
-      $config['upload_path'] = './images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/';
+      $config['upload_path'] = './images/products/'.$param['id_products'].'/'.$param['id_color'].'/';
       $config['allowed_types'] = 'jpg';
       $config['max_size'] = 500;
       $config['overwrite'] = TRUE;
@@ -194,7 +194,7 @@ class Products_image extends CI_Controller {
         } else {
           $image_name = "products_1.jpg";
         }
-        $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/'.$image_name;
+        $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_color'].'/'.$image_name;
         
         $config['file_name'] = $image_name;
         $this->upload->initialize($config);
@@ -217,7 +217,7 @@ class Products_image extends CI_Controller {
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
     $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
-    $param['id_products_variant'] = ($this->input->post('id_products_variant', TRUE)) ? $this->input->post('id_products_variant', TRUE) : 0;
+    $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
     $param['default'] = ($this->input->post('default', TRUE)) ? $this->input->post('default', TRUE) : 0;
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
@@ -227,10 +227,10 @@ class Products_image extends CI_Controller {
       $validate_post = $this->validate_post($param, 'edit');
       if ($validate_post['result'] == "r1") {
         //Upload Image
-        $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/products_'.$param['id'].'.jpg';
+        $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_color'].'/products_'.$param['id'].'.jpg';
 
         $file_element_name = 'txt_data_edit_file';
-        $config['upload_path'] = './images/products/'.$param['id_products'].'/'.$param['id_products_variant'].'/';
+        $config['upload_path'] = './images/products/'.$param['id_products'].'/'.$param['id_color'].'/';
         $config['allowed_types'] = 'jpg';
         $config['max_size'] = 500;
         $config['file_name'] = 'products_'.$param['id'].'.jpg';

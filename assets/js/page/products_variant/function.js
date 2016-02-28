@@ -77,7 +77,7 @@ $(document).ready(function () {
                 <td>" + date + "</td>\
                 <td>\
                   <a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;\
-                  <a href='"+base_url+"products_image/?id_products=" + id_products + "&id_products_variant=" + result['id'][x] + "' id='btn_detail" + result['id'][x] + "' class='fa fa-picture-o'></a> &nbsp;\
+                  <a href='"+base_url+"products_image/?id_products=" + id_products + "&id_color=" + result['color_id'][x] + "' id='btn_detail" + result['id'][x] + "' class='fa fa-picture-o'></a> &nbsp;\
                   <a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;\
                 </td>\
               </tr>");

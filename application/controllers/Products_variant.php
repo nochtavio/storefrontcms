@@ -98,6 +98,7 @@ class Products_variant extends CI_Controller {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
         $data['sku'][$temp] = $row->SKU;
+        $data['color_id'][$temp] = $row->color_id;
         $data['color_name'][$temp] = ($row->color_name == NULL) ? '-' : $row->color_name;
         $data['variant_size'][$temp] = ($row->size == NULL) ? '-' : $row->size;
         $data['quantity'][$temp] = $row->quantity;

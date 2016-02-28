@@ -1,11 +1,11 @@
 <input type="hidden" id="txt_id_products" name="txt_id_products" value="<?php echo $id_products ?>" />
-<input type="hidden" id="txt_id_products_variant" name="txt_id_products_variant" value="<?php echo $id_products_variant ?>" />
+<input type="hidden" id="txt_id_color" name="txt_id_color" value="<?php echo $id_color ?>" />
 
 <div class="row" style="margin-bottom:5px;">
   <div class="col-xs-12">
     <div id="main_panel" class="panel">
       <header class="panel-heading">
-        <?php echo $products_name ?> - <?php echo $products_variant_name ?> - Images
+        <?php echo $products_name ?> - <?php echo $color_name ?> - Images
       </header>
       <div class="panel-body table-responsive">
         <div class="box-tools m-b-15">

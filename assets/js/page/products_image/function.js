@@ -1,6 +1,6 @@
 $(document).ready(function () {
   id_products = $('#txt_id_products').val();
-  id_products_variant = $('#txt_id_products_variant').val();
+  id_color = $('#txt_id_color').val();
   
   get_data = function (page) {
     //Filter
@@ -14,7 +14,7 @@ $(document).ready(function () {
       type: 'POST',
       data: {
         page: page,
-        id_products_variant: id_products_variant,
+        id_color: id_color,
         url:url,
         active: active,
         order: order
@@ -228,7 +228,7 @@ $(document).ready(function () {
       dataType: 'json',
       data:{
         id_products: id_products,
-        id_products_variant: id_products_variant,
+        id_color: id_color,
         url: url,
         default: default_,
         show_order: show_order,
@@ -258,7 +258,7 @@ $(document).ready(function () {
       data:{
         id: id,
         id_products: id_products,
-        id_products_variant: id_products_variant,
+        id_color: id_color,
         url: url,
         default: default_,
         show_order: show_order,

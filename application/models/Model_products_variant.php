@@ -16,7 +16,7 @@ class Model_products_variant extends CI_Model {
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
-    $this->db->select('products_variant.*, color.name AS color_name');
+    $this->db->select('products_variant.*, color.id AS color_id, color.name AS color_name');
     $this->db->from('products_variant');
     $this->db->join('color', 'color.id = products_variant.id_color');
     
