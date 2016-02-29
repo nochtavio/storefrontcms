@@ -111,14 +111,4 @@ class Model_slider extends CI_Model {
     $this->db->where('id', $id);
     $this->db->update('slider', $data);
   }
-  
-  function get_last_id(){
-    $this->db->select('slider.id');
-    $this->db->from('slider');
-    $this->db->order_by("slider.id", "desc");
-    $this->db->limit(1);
-    $query = $this->db->get();
-
-    return $query;
-  }
 }

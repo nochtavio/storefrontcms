@@ -23,6 +23,7 @@ $(document).ready(function () {
           <tr>\
             <th>No</th>\
             <th>Name</th>\
+            <th>URL</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -62,6 +63,7 @@ $(document).ready(function () {
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
                 <td>" + result['name'][x] + "</td>\
+                <td>" + result['url'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>\
@@ -85,7 +87,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='5'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='6'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }

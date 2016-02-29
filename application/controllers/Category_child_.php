@@ -72,6 +72,7 @@ class Category_child_ extends CI_Controller {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
         $data['name'][$temp] = $row->name;
+        $data['url'][$temp] = $row->url;
         $data['active'][$temp] = $row->active;
         $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
         $data['creby'][$temp] = $row->creby;

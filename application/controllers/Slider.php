@@ -8,6 +8,19 @@ class Slider extends CI_Controller {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
     $this->load->model('Model_slider');
+    $this->load->library('image_lib');
+  }
+  
+  public function resize_image($source){
+    $config_resize['image_library'] = 'gd2';
+    $config_resize['source_image'] = $source;
+    $config_resize['create_thumb'] = FALSE;
+    $config_resize['maintain_ratio'] = FALSE;
+    $config_resize['width']         = 1920;
+    $config_resize['height']       = 800;
+
+    $this->image_lib->initialize($config_resize);
+    $this->image_lib->resize();
   }
 
   public function index() {
@@ -144,23 +157,16 @@ class Slider extends CI_Controller {
         $_FILES['txt_data_add_file[]']['tmp_name']= $_FILES['txt_data_add_file']['tmp_name'][$key];
         $_FILES['txt_data_add_file[]']['error']= $_FILES['txt_data_add_file']['error'][$key];
         $_FILES['txt_data_add_file[]']['size']= $_FILES['txt_data_add_file']['size'][$key];
-
-        $result_last_id = $this->Model_slider->get_last_id();
-        if ($result_last_id->result()) {
-          $last_id = $result_last_id->row()->id + 1;
-          $image_name = "slider_".$last_id.".jpg";
-        } else {
-          $image_name = "slider_1.jpg";
-        }
-        $param['url'] = '/images/slider/'.$image_name;
         
-        $config['file_name'] = $image_name;
         $this->upload->initialize($config);
         if (!$this->upload->do_upload('txt_data_add_file[]')) {
           $validate_post['result'] = "r2";
           $validate_post['result_message'] = $this->upload->display_errors('', '');
         } else {
           $this->upload->data();
+          $file_name = $this->upload->data('file_name');
+          $param['url'] = '/images/slider/'.$file_name;
+          $this->resize_image('./images/slider/'.$file_name);
           $this->Model_slider->add_data($param);
         }
         @unlink($_FILES['txt_data_add_file[]']);
@@ -186,13 +192,10 @@ class Slider extends CI_Controller {
       $validate_post = $this->validate_post($param);
       if ($validate_post['result'] == "r1") {
         //Upload Image
-        $param['url'] = '/images/slider/slider_'.$param['id'].'.jpg';
-
         $file_element_name = 'txt_data_edit_file';
         $config['upload_path'] = './images/slider/';
         $config['allowed_types'] = 'jpg';
         $config['max_size'] = 1000;
-        $config['file_name'] = 'slider_'.$param['id'].'.jpg';
         $config['overwrite'] = TRUE;
 
         $this->upload->initialize($config);
@@ -205,6 +208,9 @@ class Slider extends CI_Controller {
           }
         } else {
           $this->upload->data();
+          $file_name = $this->upload->data('file_name');
+          $param['url'] = '/images/slider/'.$file_name;
+          $this->resize_image('./images/slider/'.$file_name);
           $this->Model_slider->edit_data($param);
         }
         @unlink($_FILES[$file_element_name]);

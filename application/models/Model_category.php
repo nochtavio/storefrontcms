@@ -9,6 +9,7 @@ class Model_category extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $url = (isset($param['url'])) ? $param['url'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
@@ -19,6 +20,7 @@ class Model_category extends CI_Model {
     //Validation
     if($id > 0){$this->db->where('category.id', $id);}
     if($name != ""){$this->db->like('category.name', $name);}
+    if($url != ""){$this->db->where('category.url', $url);}
     if($active > -1){$this->db->where('category.active', $active);}
     //End Validation
     
@@ -42,17 +44,33 @@ class Model_category extends CI_Model {
   function add_data($param){
     //Set Param
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $url = url_title($name, 'dash', true);
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
     $data = array(
       'name' => $name,
+      'url' => $url,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
       'creby' => 'SYSTEM'
     );
     $this->db->insert('category', $data);
     $insert_id = $this->db->insert_id();
+    
+    //Check Duplicate URL
+    $param_check['url'] = $url;
+    $result_check = $this->get_data($param_check);
+    if($result_check->num_rows() > 1){
+      $url = url_title($name.$insert_id, 'dash', true);
+      $data = array(
+        'url' => $url
+      );
+
+      $this->db->where('id', $insert_id);
+      $this->db->update('category', $data);
+    }
+    //End Check Duplicate URL
     
     return $insert_id;
   }

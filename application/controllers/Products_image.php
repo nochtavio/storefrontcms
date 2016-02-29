@@ -11,6 +11,7 @@ class Products_image extends CI_Controller {
     $this->load->model('Model_products');
     $this->load->model('Model_color');
     $this->load->model('Model_products_image');
+    $this->load->library('image_lib');
   }
 
   public function validate_index() {
@@ -38,6 +39,18 @@ class Products_image extends CI_Controller {
     } else {
       return false;
     }
+  }
+  
+  public function resize_image($source){
+    $config_resize['image_library'] = 'gd2';
+    $config_resize['source_image'] = $source;
+    $config_resize['create_thumb'] = FALSE;
+    $config_resize['maintain_ratio'] = FALSE;
+    $config_resize['width']         = 540;
+    $config_resize['height']       = 660;
+
+    $this->image_lib->initialize($config_resize);
+    $this->image_lib->resize();
   }
 
   public function index() {
@@ -186,23 +199,16 @@ class Products_image extends CI_Controller {
         $_FILES['txt_data_add_file[]']['tmp_name']= $_FILES['txt_data_add_file']['tmp_name'][$key];
         $_FILES['txt_data_add_file[]']['error']= $_FILES['txt_data_add_file']['error'][$key];
         $_FILES['txt_data_add_file[]']['size']= $_FILES['txt_data_add_file']['size'][$key];
-
-        $result_last_id = $this->Model_products_image->get_last_id();
-        if ($result_last_id->result()) {
-          $last_id = $result_last_id->row()->id + 1;
-          $image_name = "products_".$last_id.".jpg";
-        } else {
-          $image_name = "products_1.jpg";
-        }
-        $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_color'].'/'.$image_name;
         
-        $config['file_name'] = $image_name;
         $this->upload->initialize($config);
         if (!$this->upload->do_upload('txt_data_add_file[]')) {
           $validate_post['result'] = "r2";
           $validate_post['result_message'] = $this->upload->display_errors('', '');
         } else {
           $this->upload->data();
+          $file_name = $this->upload->data('file_name');
+          $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_color'].'/'.$file_name;
+          $this->resize_image('./images/products/'.$param['id_products'].'/'.$param['id_color'].'/'.$file_name);
           $this->Model_products_image->add_data($param);
         }
         @unlink($_FILES['txt_data_add_file[]']);
@@ -227,13 +233,10 @@ class Products_image extends CI_Controller {
       $validate_post = $this->validate_post($param, 'edit');
       if ($validate_post['result'] == "r1") {
         //Upload Image
-        $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_color'].'/products_'.$param['id'].'.jpg';
-
         $file_element_name = 'txt_data_edit_file';
         $config['upload_path'] = './images/products/'.$param['id_products'].'/'.$param['id_color'].'/';
         $config['allowed_types'] = 'jpg';
         $config['max_size'] = 500;
-        $config['file_name'] = 'products_'.$param['id'].'.jpg';
         $config['overwrite'] = TRUE;
 
         $this->upload->initialize($config);
@@ -246,6 +249,9 @@ class Products_image extends CI_Controller {
           }
         } else {
           $this->upload->data();
+          $file_name = $this->upload->data('file_name');
+          $param['url'] = '/images/products/'.$param['id_products'].'/'.$param['id_color'].'/'.$file_name;
+          $this->resize_image('./images/products/'.$param['id_products'].'/'.$param['id_color'].'/'.$file_name);
           $this->Model_products_image->edit_data($param);
         }
         @unlink($_FILES[$file_element_name]);

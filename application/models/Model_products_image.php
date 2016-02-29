@@ -102,14 +102,4 @@ class Model_products_image extends CI_Model {
     $this->db->where('id', $id);
     $this->db->update('products_image', $data);
   }
-  
-  function get_last_id(){
-    $this->db->select('products_image.id');
-    $this->db->from('products_image');
-    $this->db->order_by("products_image.id", "desc");
-    $this->db->limit(1);
-    $query = $this->db->get();
-
-    return $query;
-  }
 }

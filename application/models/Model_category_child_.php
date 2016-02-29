@@ -10,6 +10,7 @@ class Model_category_child_ extends CI_Model {
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $parent = (isset($param['parent'])) ? $param['parent'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $url = (isset($param['url'])) ? $param['url'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
@@ -22,6 +23,7 @@ class Model_category_child_ extends CI_Model {
     if($id > 0){$this->db->where('category_child.id', $id);}
     if($parent > 0){$this->db->where('category_child.parent', $parent);}
     if($name != ""){$this->db->like('category_child.name', $name);}
+    if($url != ""){$this->db->where('category_child.url', $url);}
     if($active > -1){$this->db->where('category_child.active', $active);}
     //End Validation
     
@@ -47,6 +49,7 @@ class Model_category_child_ extends CI_Model {
     $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
     $parent = (isset($param['parent'])) ? $param['parent'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $url = url_title($name, 'dash', true);
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
@@ -54,12 +57,27 @@ class Model_category_child_ extends CI_Model {
       'id_category' => $id_category,
       'parent' => $parent,
       'name' => $name,
+      'url' => $url,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
       'creby' => 'SYSTEM'
     );
     $this->db->insert('category_child', $data);
     $insert_id = $this->db->insert_id();
+    
+    //Check Duplicate URL
+    $param_check['url'] = $url;
+    $result_check = $this->get_data($param_check);
+    if($result_check->num_rows() > 1){
+      $url = url_title($name.$insert_id, 'dash', true);
+      $data = array(
+        'url' => $url
+      );
+
+      $this->db->where('id', $insert_id);
+      $this->db->update('category_child', $data);
+    }
+    //End Check Duplicate URL
     
     return $insert_id;
   }
