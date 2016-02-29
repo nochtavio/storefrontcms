@@ -14,6 +14,7 @@ $(document).ready(function () {
     
     //Parameter
     var id = $('#txt_data_id').val();
+    var id_brand = $('#sel_data_brand').val();
     var name = $('#txt_data_name').val();
     var price = $('#txt_data_price').val();
     var sale_price = $('#txt_data_sale_price').val();
@@ -25,6 +26,8 @@ $(document).ready(function () {
     var info = $('#txt_data_info').val();
     var size_guideline = $('#txt_data_size_guideline').val();
     var category = $('#sel_data_category').val();
+    var category_child = $('#sel_data_category_child').val();
+    var category_child_ = $('#sel_data_category_child_').val();
     var active = 0;
     if ($('#txt_data_active').prop('checked')) {
       active = 1;
@@ -32,9 +35,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active);
+      add_data(id_brand, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active);
     }else{
-      edit_data(id, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active);
+      edit_data(id, id_brand, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active);
     }
   });
   

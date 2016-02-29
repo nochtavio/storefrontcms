@@ -9,16 +9,19 @@ class Model_products extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $brand_name = (isset($param['brand_name'])) ? $param['brand_name'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
-    $this->db->select('products.*');
+    $this->db->select('products.*, brand.name AS brand_name');
     $this->db->from('products');
+    $this->db->join('brand', 'brand.id = products.id_brand');
     
     //Validation
     if($id > 0){$this->db->where('products.id', $id);}
     if($name != ""){$this->db->like('products.name', $name);}
+    if($brand_name != ""){$this->db->like('brand.name', $brand_name);}
     if($active > -1){$this->db->where('products.active', $active);}
     //End Validation
     
@@ -41,6 +44,7 @@ class Model_products extends CI_Model {
   
   function add_data($param){
     //Set Param
+    $id_brand = (isset($param['id_brand'])) ? $param['id_brand'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
     $price = (isset($param['price'])) ? $param['price'] : 0;
     $sale_price = (isset($param['sale_price'])) ? $param['sale_price'] : 0;
@@ -52,10 +56,13 @@ class Model_products extends CI_Model {
     $info = (isset($param['info'])) ? $param['info'] : "";
     $size_guideline = (isset($param['size_guideline'])) ? $param['size_guideline'] : "";
     $category = (isset($param['category'])) ? $param['category'] : array();
+    $category_child = (isset($param['category_child'])) ? $param['category_child'] : array();
+    $category_child_ = (isset($param['category_child_'])) ? $param['category_child_'] : array();
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
     $data = array(
+      'id_brand' => $id_brand,
       'name' => $name,
       'price' => $price,
       'sale_price' => $sale_price,
@@ -87,12 +94,37 @@ class Model_products extends CI_Model {
       }
     }
     
+    if(!empty($category_child)){
+      foreach ($category_child as $cat_child) {
+        $data = array(
+          'id_category_child' => $cat_child,
+          'id_products' => $insert_id,
+          'cretime' => date('Y-m-d H:i:s'),
+          'creby' => 'SYSTEM'
+        );
+        $this->db->insert('category_detail', $data);
+      }
+    }
+    
+    if(!empty($category_child_)){
+      foreach ($category_child_ as $cat_child_) {
+        $data = array(
+          'id_category_child_' => $cat_child_,
+          'id_products' => $insert_id,
+          'cretime' => date('Y-m-d H:i:s'),
+          'creby' => 'SYSTEM'
+        );
+        $this->db->insert('category_detail', $data);
+      }
+    }
+    
     return $insert_id;
   }
 
   function edit_data($param){
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
+    $id_brand = (isset($param['id_brand'])) ? $param['id_brand'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
     $price = (isset($param['price'])) ? $param['price'] : 0;
     $sale_price = (isset($param['sale_price'])) ? $param['sale_price'] : 0;
@@ -104,10 +136,13 @@ class Model_products extends CI_Model {
     $info = (isset($param['info'])) ? $param['info'] : "";
     $size_guideline = (isset($param['size_guideline'])) ? $param['size_guideline'] : "";
     $category = (isset($param['category'])) ? $param['category'] : array();
+    $category_child = (isset($param['category_child'])) ? $param['category_child'] : array();
+    $category_child_ = (isset($param['category_child_'])) ? $param['category_child_'] : array();
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
     $data = array(
+      'id_brand' => $id_brand,
       'name' => $name,
       'price' => $price,
       'sale_price' => $sale_price,
@@ -136,6 +171,30 @@ class Model_products extends CI_Model {
       foreach ($category as $cat) {
         $data = array(
           'id_category' => $cat,
+          'id_products' => $id,
+          'cretime' => date('Y-m-d H:i:s'),
+          'creby' => 'SYSTEM'
+        );
+        $this->db->insert('category_detail', $data);
+      }
+    }
+    
+    if(!empty($category_child)){
+      foreach ($category_child as $cat_child) {
+        $data = array(
+          'id_category_child' => $cat_child,
+          'id_products' => $id,
+          'cretime' => date('Y-m-d H:i:s'),
+          'creby' => 'SYSTEM'
+        );
+        $this->db->insert('category_detail', $data);
+      }
+    }
+    
+    if(!empty($category_child_)){
+      foreach ($category_child_ as $cat_child_) {
+        $data = array(
+          'id_category_child_' => $cat_child_,
           'id_products' => $id,
           'cretime' => date('Y-m-d H:i:s'),
           'creby' => 'SYSTEM'

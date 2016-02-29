@@ -8,6 +8,7 @@
         <div class="box-tools m-b-15">
           <div class="input-group">
             <input id="txt_name" name="txt_name" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Product Name">
+            <input id="txt_brand_name" name="txt_brand_name" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Product Brand">
             <select id="sel_active" name="sel_active" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status</option>
               <option value="1">Active</option>
@@ -56,6 +57,21 @@
             <label for="txt_data_name" class="col-lg-3 col-sm-3 control-label">Name</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_name" placeholder="Enter product name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 col-sm-3 control-label">Brand</label>
+            <div class="col-lg-9 col-sm-9">
+              <select id="sel_data_brand" class="form-control">
+                <option value="0">Select Brand</option>
+                <?php 
+                  foreach($brand as $bra){
+                    ?>
+                      <option value="<?php echo $bra->id; ?>"><?php echo $bra->name; ?></option>
+                    <?php
+                  }
+                ?>
+              </select>
             </div>
           </div>
           <div class="form-group">
@@ -111,16 +127,32 @@
             </div>
           </div>
           <div class="form-group">
-            <label class="col-lg-3 col-sm-3 control-label">Category</label>
+            <label class="col-lg-3 col-sm-3 control-label">Category [Level 0]</label>
             <div class="col-lg-9 col-sm-9">
               <select id="sel_data_category" class="form-control" multiple="multiple">
                 <?php 
-                foreach($category as $cat){
-                  ?>
-                    <option value="<?php echo $cat->id; ?>"><?php echo $cat->name; ?></option>
-                  <?php
-                }
-              ?>
+                  foreach($category as $cat){
+                    ?>
+                      <option value="<?php echo $cat->id; ?>"><?php echo $cat->name; ?></option>
+                    <?php
+                  }
+                ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group" id="category_child_container">
+            <label class="col-lg-3 col-sm-3 control-label">Category [Level 1]</label>
+            <div class="col-lg-9 col-sm-9">
+              <select id="sel_data_category_child" class="form-control" multiple="multiple">
+                
+              </select>
+            </div>
+          </div>
+          <div class="form-group" id="category_child__container">
+            <label class="col-lg-3 col-sm-3 control-label">Category [Level 2]</label>
+            <div class="col-lg-9 col-sm-9">
+              <select id="sel_data_category_child_" class="form-control" multiple="multiple">
+                
               </select>
             </div>
           </div>

@@ -2,6 +2,7 @@ $(document).ready(function () {
   get_data = function (page) {
     //Filter
     var name = $('#txt_name').val();
+    var brand_name = $('#txt_brand_name').val();
     var active = $('#sel_active').val();
     var order = $('#sel_order').val();
     //End Filter
@@ -12,6 +13,7 @@ $(document).ready(function () {
       data: {
         page: page,
         name: name,
+        brand_name: brand_name,
         active: active,
         order: order
       },
@@ -23,6 +25,7 @@ $(document).ready(function () {
           <tr>\
             <th>No</th>\
             <th>Name</th>\
+            <th>Brand</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -62,6 +65,7 @@ $(document).ready(function () {
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
                 <td>" + result['name'][x] + "</td>\
+                <td>" + result['brand_name'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>\
@@ -85,7 +89,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='5'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='6'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -145,6 +149,7 @@ $(document).ready(function () {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
               $("#txt_data_name").val(result['name']);
+              $("#sel_data_brand").val(result['id_brand']);
               $("#txt_data_price").val(result['price']);
               $("#txt_data_sale_price").val(result['sale_price']);
               $("#txt_data_reseller_price").val(result['reseller_price']);
@@ -153,7 +158,14 @@ $(document).ready(function () {
               $("#txt_data_short_description").code(result['short_description']);
               $("#txt_data_info").val(result['info']);
               $("#txt_data_size_guideline").val(result['size_guideline']);
+              //Category
+              category = result['category'];
+              category_child = result['category_child'];
+              category_child_ = result['category_child_'];
               $('#sel_data_category').multiselect('select', result['category']);
+              generate_category_child();
+              generate_category_child_();
+              //End Category
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -194,12 +206,17 @@ $(document).ready(function () {
       $('#modal_data_title').html("Add Product");
       
       $('.form_data').val('');
+      $("#sel_data_brand").val('0');
       $('#txt_data_description').code('');
       $('#txt_data_short_description').code('');
       $('option', $('#sel_data_category')).each(function(element) {
           $(this).removeAttr('selected').prop('selected', false);
       });
       $('#sel_data_category').multiselect('refresh');
+      $('#sel_data_category_child').empty();
+      $('#sel_data_category_child').multiselect('destroy');
+      $('#sel_data_category_child_').empty();
+      $('#sel_data_category_child_').multiselect('destroy');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
@@ -217,11 +234,12 @@ $(document).ready(function () {
     }
   };
 
-  add_data = function (name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active) {
+  add_data = function (id_brand, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active) {
     $.ajax({
       url: base_url + 'products/add_data',
       type: 'POST',
       data: {
+        id_brand: id_brand,
         name: name,
         price: price,
         sale_price: sale_price,
@@ -233,6 +251,8 @@ $(document).ready(function () {
         info: info,
         size_guideline: size_guideline,
         category: category,
+        category_child: category_child,
+        category_child_: category_child_,
         active: active
       },
       dataType: 'json',
@@ -252,12 +272,13 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, active) {
+  edit_data = function (id, id_brand, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active) {
     $.ajax({
       url: base_url + 'products/edit_data',
       type: 'POST',
       data: {
         id: id,
+        id_brand: id_brand,
         name: name,
         price: price,
         sale_price: sale_price,
@@ -269,6 +290,8 @@ $(document).ready(function () {
         info: info,
         size_guideline: size_guideline,
         category: category,
+        category_child: category_child,
+        category_child_: category_child_,
         active: active
       },
       dataType: 'json',
@@ -308,6 +331,97 @@ $(document).ready(function () {
           get_data(page);
         }
         $('#modal_remove').modal("hide");
+      }
+    });
+  };
+  
+  unique_array = function(list){
+    var result = [];
+    $.each(list, function(i, e) {
+      if ($.inArray(e, result) == -1) result.push(e);
+    });
+    return result;
+  };
+  
+  remove_array = function(list, val){
+    var result = jQuery.grep(list, function(value) {
+      return value != val;
+    });
+    
+    return result;
+  };
+  
+  generate_category_child = function(){
+    $.ajax({
+      url: base_url + 'products/get_category_child',
+      type: 'POST',
+      data: {
+        id_category: category
+      },
+      dataType: 'json',
+      success: function (result) {
+        $('#sel_data_category_child').empty();
+        $('#category_child_container').hide();
+        if(result['result'] === 'r1'){
+          $('#category_child_container').show();
+          for (var x = 0; x < result['total']; x++) {
+            $('#sel_data_category_child').append("\
+              <option value=" + result['id'][x] + ">" + result['name'][x] + "</option>\
+            ");
+          }
+          $('#sel_data_category_child').multiselect('destroy');
+          $('#sel_data_category_child').multiselect({
+            enableFiltering: true,
+            buttonWidth: '400px',
+            maxHeight: 400,
+            onChange: function(option, checked, select) {
+              if($(option).is(':selected')){
+                category_child.push($(option).val());
+                category_child = unique_array(category_child);
+              }else{
+                category_child = remove_array(category_child, $(option).val());
+              }
+              generate_category_child_();
+            }
+          });
+          $('#sel_data_category_child').multiselect('select', category_child);
+        }else{
+          $('#sel_data_category_child').empty();
+          $('#sel_data_category_child').multiselect('destroy');
+        }
+      }
+    });
+  };
+  
+  generate_category_child_ = function(){
+    $.ajax({
+      url: base_url + 'products/get_category_child_',
+      type: 'POST',
+      data: {
+        parent: category_child
+      },
+      dataType: 'json',
+      success: function (result) {
+        $('#sel_data_category_child_').empty();
+        $('#category_child__container').hide();
+        if(result['result'] === 'r1'){
+          $('#category_child__container').show();
+          for (var x = 0; x < result['total']; x++) {
+            $('#sel_data_category_child_').append("\
+              <option value=" + result['id'][x] + ">" + result['name'][x] + "</option>\
+            ");
+          }
+          $('#sel_data_category_child_').multiselect('destroy');
+          $('#sel_data_category_child_').multiselect({
+            enableFiltering: true,
+            buttonWidth: '400px',
+            maxHeight: 400
+          });
+          $('#sel_data_category_child_').multiselect('select', category_child_);
+        }else{
+          $('#sel_data_category_child_').empty();
+          $('#sel_data_category_child_').multiselect('destroy');
+        }
       }
     });
   };
