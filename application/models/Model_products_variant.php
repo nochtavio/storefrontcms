@@ -36,6 +36,10 @@ class Model_products_variant extends CI_Model {
       $this->db->order_by("total_quantity", "asc");
     }else if($order == 5){
       $this->db->order_by("total_quantity", "desc");
+    }else if($order == 6){
+      $this->db->order_by("total_images", "asc");
+    }else if($order == 7){
+      $this->db->order_by("total_images", "desc");
     }else{
       $this->db->order_by("pv.cretime", "asc");
     }

@@ -9,12 +9,6 @@
       <div class="panel-body table-responsive">
         <div class="box-tools m-b-15">
           <div class="input-group">
-            <input id="txt_sku" name="txt_sku" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter SKU">
-            <select id="sel_active" name="sel_active" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
-              <option value="-1">All Status</option>
-              <option value="1">Active</option>
-              <option value="0">Not Active</option>
-            </select>
             <select id="sel_order" name="sel_order" class="form-control input-sm" style="margin-right: 7px;width: 200px;">
               <option value="-1">Order by Latest Data</option>
               <option value="1">Order by Oldest Data</option>
@@ -22,6 +16,8 @@
               <option value="3">Order by Most Size Count</option> 
               <option value="4">Order by Least Quantity Count</option>
               <option value="5">Order by Most Quantity Count</option>
+              <option value="6">Order by Least Images</option>
+              <option value="7">Order by Most Images</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
             <div class="input-group-btn">
