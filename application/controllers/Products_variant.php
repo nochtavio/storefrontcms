@@ -10,6 +10,7 @@ class Products_variant extends CI_Controller {
     $this->load->model('Model_color');
     $this->load->model('Model_products');
     $this->load->model('Model_products_variant');
+    $this->load->model('Model_products_variant_detail');
   }
 
   public function validate_index() {
@@ -80,8 +81,6 @@ class Products_variant extends CI_Controller {
   public function get_data() {
     //param
     $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
-    $param['sku'] = ($this->input->post('sku', TRUE)) ? $this->input->post('sku', TRUE) : '';
-    $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
     //paging
@@ -96,18 +95,12 @@ class Products_variant extends CI_Controller {
       $temp = 0;
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
-        $data['id'][$temp] = $row->id;
-        $data['sku'][$temp] = $row->SKU;
-        $data['color_id'][$temp] = $row->color_id;
-        $data['color_name'][$temp] = ($row->color_name == NULL) ? '-' : $row->color_name;
-        $data['variant_size'][$temp] = ($row->size == NULL) ? '-' : $row->size;
-        $data['quantity'][$temp] = $row->quantity;
-        $data['show_order'][$temp] = $row->show_order;
-        $data['active'][$temp] = $row->active;
-        $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
-        $data['creby'][$temp] = $row->creby;
-        $data['modtime'][$temp] = ($row->modtime == NULL) ? NULL : date_format(date_create($row->modtime), 'd F Y H:i:s');
-        $data['modby'][$temp] = $row->modby;
+        $data['id_products'][$temp] = $row->id_products;
+        $data['id_color'][$temp] = $row->id_color;
+        $data['color_name'][$temp] = $row->color_name;
+        $data['total_size'][$temp] = $row->total_size;
+        $data['total_quantity'][$temp] = $row->total_quantity;
+        $data['total_images'][$temp] = $row->total_images;
         $temp++;
       }
       $data['total'] = $temp;
@@ -116,28 +109,6 @@ class Products_variant extends CI_Controller {
     } else {
       $data['result'] = "r2";
       $data['message'] = "No Variants";
-    }
-
-    echo json_encode($data);
-  }
-
-  public function get_specific_data() {
-    //param
-    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
-    //end param
-
-    $result_data = $this->Model_products_variant->get_data($param);
-    if ($result_data->num_rows() > 0) {
-      $data['result'] = "r1";
-      $data['id'] = $result_data->row()->id;
-      $data['id_color'] = $result_data->row()->id_color;
-      $data['size'] = ($result_data->row()->size == NULL) ? '-' : $result_data->row()->size;
-      $data['quantity'] = $result_data->row()->quantity;
-      $data['show_order'] = $result_data->row()->show_order;
-      $data['active'] = $result_data->row()->active;
-    } else {
-      $data['result'] = "r2";
-      $data['message'] = "No Data";
     }
 
     echo json_encode($data);
@@ -168,7 +139,7 @@ class Products_variant extends CI_Controller {
       $param_check['id_products'] = $id_products;
       $param_check['id_color'] = $id_color;
       $param_check['size'] = $size;
-      $check_duplicate_variant = $this->Model_products_variant->get_data($param_check);
+      $check_duplicate_variant = $this->Model_products_variant_detail->get_data($param_check);
       if($check_duplicate_variant->num_rows() > 0 && $check_duplicate_variant->row()->id !== $id){
         $data['result'] = "r2";
         $data['result_message'] .= "<strong>Color</strong> with this size is already exist!<br/>";
@@ -202,95 +173,21 @@ class Products_variant extends CI_Controller {
     //generate sku
     $sku = $this->generate_sku($param['id_products'], $param['id_color']);
     $param_check['sku'] = $sku;
-    $check_duplicate_sku = $this->Model_products_variant->get_data($param_check);
+    $check_duplicate_sku = $this->Model_products_variant_detail->get_data($param_check);
     while($check_duplicate_sku->num_rows() > 0){
       $sku = $this->generate_sku($param['id_products'], $param['id_color']);
       $param_check['sku'] = $sku;
-      $check_duplicate_sku = $this->Model_products_variant->get_data($param_check);
+      $check_duplicate_sku = $this->Model_products_variant_detail->get_data($param_check);
     }
     $param['sku'] = $sku; 
     //end generate sku
 
     $validate_post = $this->validate_post($param, "add", TRUE);
     if ($validate_post['result'] == "r1") {
-      $this->Model_products_variant->add_data($param);
+      $this->Model_products_variant_detail->add_data($param);
     }
 
     echo json_encode($validate_post);
-  }
-
-  public function edit_data() {
-    //param
-    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
-    $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
-    $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
-    $param['size'] = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : NULL;
-    $param['quantity'] = ($this->input->post('quantity', TRUE)) ? $this->input->post('quantity', TRUE) : 0;
-    $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
-    $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
-    //end param
-    
-    //check size is edited or not
-    $edit_size = TRUE;
-    $param_check['id'] = $param['id'];
-    $check_edited_size = $this->Model_products_variant->get_data($param_check);
-    if($check_edited_size->row()->size == $param['size']){
-      $edit_size = FALSE;
-    }
-    //end check
-
-    if ($param['id'] != "") {
-      $validate_post = $this->validate_post($param, "edit", $edit_size);
-      if ($validate_post['result'] == "r1") {
-        $this->Model_products_variant->edit_data($param);
-      }
-    } else {
-      $validate_post['result'] = "r2";
-      $validate_post['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
-    }
-    
-    echo json_encode($validate_post);
-  }
-  
-  public function set_active(){
-    //param
-    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
-    //end param
-    
-    $data['result'] = "r1";
-    $data['result_message'] = '';
-    
-    $result_data = $this->Model_products_variant->get_data($param);
-    if($result_data->num_rows() > 0){
-      $param_set['id'] = $result_data->row()->id;
-      $param_set['id_color'] = $result_data->row()->id_color;
-      $param_set['size'] = ($result_data->row()->size == NULL) ? '-' : $result_data->row()->size;
-      $param_set['quantity'] = $result_data->row()->quantity;
-      $param_set['show_order'] = $result_data->row()->show_order;
-      $param_set['active'] = ($result_data->row()->active == 0) ? 1 : 0;
-      $this->Model_products_variant->edit_data($param_set);
-    }else{
-      $data['result'] = "r2";
-      $data['result_message'] = '<strong>Data ID</strong> is not found, please refresh your browser!<br/>';
-    }
-    
-    echo json_encode($data);
-  }
-
-  public function remove_data() {
-    //post
-    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
-    //end post
-
-    if ($param['id'] != "") {
-      $data['result'] = "r1";
-      $this->Model_products_variant->remove_data($param);
-    } else {
-      $data['result'] = "r2";
-      $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
-    }
-
-    echo json_encode($data);
   }
 
 }

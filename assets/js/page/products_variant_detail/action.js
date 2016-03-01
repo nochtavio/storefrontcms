@@ -13,7 +13,7 @@ $(document).ready(function () {
     event.preventDefault();
 
     //Parameter
-    var id_color = $('#txt_data_id_color').val();
+    var id = $('#txt_data_id').val();
     var size = $('#txt_data_size').val();
     var quantity = $('#txt_data_quantity').val();
     var show_order = $('#txt_data_show_order').val();
@@ -24,7 +24,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(id_color, size, quantity, show_order, active);
+      add_data( size, quantity, show_order, active);
+    }else{
+      edit_data(id, size, quantity, show_order, active);
     }
   });
   

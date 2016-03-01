@@ -1,10 +1,11 @@
 <input type="hidden" id="txt_id_products" name="txt_id_products" value="<?php echo $id_products ?>" />
+<input type="hidden" id="txt_id_color" name="txt_id_color" value="<?php echo $id_color ?>" />
 
 <div class="row" style="margin-bottom:5px;">
   <div class="col-xs-12">
     <div id="main_panel" class="panel">
       <header class="panel-heading">
-        <?php echo $products_name ?> Variant
+        <?php echo $products_name ?> - <?php echo $color_name ?>
       </header>
       <div class="panel-body table-responsive">
         <div class="box-tools m-b-15">
@@ -18,17 +19,17 @@
             <select id="sel_order" name="sel_order" class="form-control input-sm" style="margin-right: 7px;width: 200px;">
               <option value="-1">Order by Latest Data</option>
               <option value="1">Order by Oldest Data</option>
-              <option value="2">Order by Least Size Count</option>
-              <option value="3">Order by Most Size Count</option> 
-              <option value="4">Order by Least Quantity Count</option>
-              <option value="5">Order by Most Quantity Count</option>
+              <option value="2">Order by Quantity &uarr;</option> 
+              <option value="3">Order by Quantity &darr;</option>
+              <option value="4">Order by Show Order &uarr;</option>
+              <option value="5">Order by Show Order &darr;</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
             <div class="input-group-btn">
               <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm">Add Variant</a>
             </div>
             <div class="input-group-btn">
-              <a href="<?php echo base_url() ?>products/" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
+              <a href="<?php echo base_url() ?>products_variant/?id_products=<?php echo $id_products ?>" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
             </div>
           </div>
         </div>

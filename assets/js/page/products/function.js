@@ -213,8 +213,10 @@ $(document).ready(function () {
           $(this).removeAttr('selected').prop('selected', false);
       });
       $('#sel_data_category').multiselect('refresh');
+      $('#category_child_container').hide();
       $('#sel_data_category_child').empty();
       $('#sel_data_category_child').multiselect('destroy');
+      $('#category_child__container').hide();
       $('#sel_data_category_child_').empty();
       $('#sel_data_category_child_').multiselect('destroy');
 

@@ -1,43 +1,47 @@
 <?php
 
-class Model_products_variant extends CI_Model {
+class Model_products_variant_detail extends CI_Model {
   function __construct() {
     parent::__construct();
   }
 
   function get_data($param, $limit = 0, $size = 0) {
     //Set Param
+    $id = (isset($param['id'])) ? $param['id'] : 0;
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
     $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
+    $variant_size = (isset($param['size'])) ? $param['size'] : "";
+    $sku = (isset($param['sku'])) ? $param['sku'] : "";
+    $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
-    $this->db->select('pv.id_products, pv.id_color, color.name AS color_name,  COUNT(pv.size) as total_size, SUM(pv.quantity) as total_quantity,  (SELECT COUNT(id) FROM products_image WHERE products_image.id_products = pv.id_products AND products_image.id_color = pv.id_color) AS total_images');
-    $this->db->from('products_variant pv');
-    $this->db->join('color', 'color.id = pv.id_color');
+    $this->db->select('products_variant.*, color.id AS color_id, color.name AS color_name');
+    $this->db->from('products_variant');
+    $this->db->join('color', 'color.id = products_variant.id_color');
     
     //Validation
-    if($id_products > 0){$this->db->where('pv.id_products', $id_products);}
-    if($id_color > 0){$this->db->where('pv.id_color', $id_color);}
+    if($id > 0){$this->db->where('products_variant.id', $id);}
+    if($id_products > 0){$this->db->where('products_variant.id_products', $id_products);}
+    if($id_color > 0){$this->db->where('products_variant.id_color', $id_color);}
+    if($variant_size != ""){$this->db->where('products_variant.size', $variant_size);}
+    if($sku != ""){$this->db->like('products_variant.SKU', $sku);}
+    if($active > -1){$this->db->where('products_variant.active', $active);}
     //End Validation
     
-    $this->db->where('pv.active', 1);
-    $this->db->where('pv.deleted', 0);
-    
-    $this->db->group_by('pv.id_products, pv.id_color'); 
-    
+    $this->db->where('products_variant.deleted', 0);
     if($order == 1){
-      $this->db->order_by("pv.cretime", "asc");
+      $this->db->order_by("products_variant.cretime", "asc");
     }else if($order == 2){
-      $this->db->order_by("total_size", "asc");
+      $this->db->order_by("products_variant.quantity", "desc");
     }else if($order == 3){
-      $this->db->order_by("total_size", "desc");
+      $this->db->order_by("products_variant.quantity", "asc");
     }else if($order == 4){
-      $this->db->order_by("total_quantity", "asc");
+      $this->db->order_by("products_variant.show_order", "asc");
     }else if($order == 5){
-      $this->db->order_by("total_quantity", "desc");
+      $this->db->order_by("products_variant.show_order", "desc");
     }else{
-      $this->db->order_by("pv.cretime", "asc");
+      $this->db->order_by("products_variant.cretime", "asc");
     }
     
     if($size >= 0){$this->db->limit($size, $limit);}
@@ -90,6 +94,21 @@ class Model_products_variant extends CI_Model {
       'quantity_warehouse' => $quantity,
       'show_order' => $show_order,
       'active' => $active,
+      'modtime' => date('Y-m-d H:i:s'),
+      'modby' => 'SYSTEM'
+    );
+    
+    $this->db->where('id', $id);
+    $this->db->update('products_variant', $data);
+  }
+  
+  function remove_data($param){
+    //Set Param
+    $id = (isset($param['id'])) ? $param['id'] : 0;
+    //End Set Param
+    
+    $data = array(
+      'deleted' => 1,
       'modtime' => date('Y-m-d H:i:s'),
       'modby' => 'SYSTEM'
     );

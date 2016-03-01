@@ -4,19 +4,19 @@ $(document).ready(function () {
   
   get_data = function (page) {
     //Filter
-    var url = $('#txt_url').val();
+    var sku = $('#txt_sku').val();
     var active = $('#sel_active').val();
     var order = $('#sel_order').val();
     //End Filter
 
     $.ajax({
-      url: base_url + 'products_image/get_data',
+      url: base_url + 'products_variant_detail/get_data',
       type: 'POST',
       data: {
         page: page,
         id_products: id_products,
-        id_color: id_color,
-        url:url,
+        id_color:id_color,
+        sku:sku,
         active: active,
         order: order
       },
@@ -27,8 +27,10 @@ $(document).ready(function () {
         $('#table_content').append("\
           <tr>\
             <th>No</th>\
-            <th>Images</th>\
-            <th>Default</th>\
+            <th>SKU</th>\
+            <th>Color</th>\
+            <th>Size</th>\
+            <th>Quantity</th>\
             <th>Show Order</th>\
             <th>Status</th>\
             <th>Date</th>\
@@ -64,15 +66,14 @@ $(document).ready(function () {
               date += "<br/><br/> Modified by <strong>" + result['modby'][x] + "</strong> <br/> on <strong>" + result['modtime'][x] + "</strong>";
             }
             //End Date
-            
-            var d = new Date();
-            var time = d.getTime(); 
-            
+
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
-                <td><img src='" + base_url + result['url'][x] + "?"+time+"' width='200px' height='200px' /> <br/> <strong>URL : </strong> " + result['url'][x] + "</td>\
-                <td>" + result['default'][x] + "</td>\
+                <td>" + result['sku'][x] + "</td>\
+                <td>" + result['color_name'][x] + "</td>\
+                <td>" + result['variant_size'][x] + "</td>\
+                <td>" + result['quantity'][x] + "</td>\
                 <td>" + result['show_order'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
@@ -96,7 +97,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='7'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -114,7 +115,7 @@ $(document).ready(function () {
       $(document).on('click', '#btn_active' + val, function (event) {
         event.preventDefault();
         $.ajax({
-          url: base_url + 'products_image/set_active',
+          url: base_url + 'products_variant_detail/set_active',
           type: 'POST',
           data:{
             id: val
@@ -146,7 +147,7 @@ $(document).ready(function () {
         event.preventDefault();
         set_state("edit");
         $.ajax({
-          url: base_url + 'products_image/get_specific_data',
+          url: base_url + 'products_variant_detail/get_specific_data',
           type: 'POST',
           data:{
             id: val
@@ -154,13 +155,9 @@ $(document).ready(function () {
           dataType: 'json',
           success: function (result) {
             if (result['result'] === 'r1') {
-              var d = new Date();
-              var time = d.getTime(); 
-              
               $("#txt_data_id").val(val);
-              $("#txt_data_url").val(result['url']);
-              $("#txt_data_img").attr("src", base_url + result['url'] + "?" + time);
-              $("#txt_data_default").val(result['default']);
+              $("#txt_data_size").val(result['size']);
+              $("#txt_data_quantity").val(result['quantity']);
               $("#txt_data_show_order").val(result['show_order']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
@@ -189,7 +186,7 @@ $(document).ready(function () {
       $(document).off('click', '#btn_remove' + val);
       $(document).on('click', '#btn_remove' + val, function (event) {
         event.preventDefault();
-        $('#remove_message').html("Are you sure you want to remove this image?");
+        $('#remove_message').html("Are you sure you want to remove this variant?");
         $('#txt_remove_id').val(val);
         $('#modal_remove').modal("show");
       });
@@ -199,75 +196,74 @@ $(document).ready(function () {
   set_state = function (x) {
     state = x;
     if (x == "add") {
-      $('#modal_data_title').html("Add Products Image");
+      $('#modal_data_title').html("Add Products Variant");
       
       $('.form_data').val('');
-      $("#txt_data_img").hide();
-      $('#txt_data_add_file').show();
-      $('#txt_data_edit_file').hide();
+      $('#txt_data_id_color').val(id_color);
+      $('#txt_data_id_color').prop("disabled", true);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     } else {
-      $('#modal_data_title').html("Edit Products Image");
+      $('#modal_data_title').html("Edit Products Variant");
 
       $('.form_data').val('');
-      $("#txt_data_img").show();
-      $('#txt_data_add_file').hide();
-      $('#txt_data_edit_file').show();
+      $('#txt_data_id_color').val(id_color);
+      $('#txt_data_id_color').prop("disabled", true);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
   };
 
-  add_data = function (url, default_, show_order, active) {
-    $.ajaxFileUpload({
-      url: base_url + 'products_image/add_data',
-      secureuri: false,
-      fileElementId: 'txt_data_add_file',
-      dataType: 'json',
-      data:{
+  add_data = function (size, quantity, show_order, active) {
+    $.ajax({
+      url: base_url + 'products_variant_detail/add_data',
+      type: 'POST',
+      data: {
         id_products: id_products,
         id_color: id_color,
-        url: url,
-        default: default_,
+        size: size,
+        quantity: quantity,
         show_order: show_order,
         active: active
       },
-      success: function (result){
+      dataType: 'json',
+      beforeSend: function () {
         $('#error_container').hide();
         $('#error_container_message').empty();
+      },
+      success: function (result) {
         if (result['result'] === 'r1') {
           $('#modal_data').modal('hide');
           get_data(page);
         } else {
           $('#error_container').show();
           $('#error_container_message').append(result['result_message']);
-          get_data(page);
         }
       }
     });
   };
 
-  edit_data = function (id, url, default_, show_order, active) {
-    $.ajaxFileUpload({
-      url: base_url + 'products_image/edit_data',
-      secureuri: false,
-      fileElementId: 'txt_data_edit_file',
-      dataType: 'json',
-      data:{
+  edit_data = function (id, size, quantity, show_order, active) {
+    $.ajax({
+      url: base_url + 'products_variant_detail/edit_data',
+      type: 'POST',
+      data: {
         id: id,
         id_products: id_products,
         id_color: id_color,
-        url: url,
-        default: default_,
+        size: size,
+        quantity: quantity,
         show_order: show_order,
         active: active
       },
-      success: function (result){
+      dataType: 'json',
+      beforeSend: function () {
         $('#error_container').hide();
         $('#error_container_message').empty();
+      },
+      success: function (result) {
         if (result['result'] === 'r1') {
           $('#modal_data').modal('hide');
           get_data(page);
@@ -285,7 +281,7 @@ $(document).ready(function () {
     //end param
     
     $.ajax({
-      url: base_url + 'products_image/remove_data',
+      url: base_url + 'products_variant_detail/remove_data',
       type: 'POST',
       data: {
         id: id
