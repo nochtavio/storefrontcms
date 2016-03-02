@@ -181,14 +181,14 @@ $(document).ready(function () {
   set_state = function (x) {
     state = x;
     if (x == "add") {
-      $('#modal_data_title').html("Add Category");
+      $('#modal_data_title').html("Add Color");
       
       $('.form_data').val('');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     } else {
-      $('#modal_data_title').html("Edit Category");
+      $('#modal_data_title').html("Edit Color");
 
       $('.form_data').val('');
 

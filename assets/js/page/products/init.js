@@ -41,7 +41,7 @@ $(document).ready(function () {
   
   $('#sel_data_category').multiselect({
     enableFiltering: true,
-    buttonWidth: '400px',
+    buttonClass: 'btn btn-default',
     maxHeight: 400,
     onChange: function(option, checked, select) {
       if($(option).is(':selected')){

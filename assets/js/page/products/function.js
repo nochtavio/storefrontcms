@@ -374,7 +374,7 @@ $(document).ready(function () {
           $('#sel_data_category_child').multiselect('destroy');
           $('#sel_data_category_child').multiselect({
             enableFiltering: true,
-            buttonWidth: '400px',
+            buttonClass: 'btn btn-default',
             maxHeight: 400,
             onChange: function(option, checked, select) {
               if($(option).is(':selected')){
@@ -416,7 +416,7 @@ $(document).ready(function () {
           $('#sel_data_category_child_').multiselect('destroy');
           $('#sel_data_category_child_').multiselect({
             enableFiltering: true,
-            buttonWidth: '400px',
+            buttonClass: 'btn btn-default',
             maxHeight: 400
           });
           $('#sel_data_category_child_').multiselect('select', category_child_);
