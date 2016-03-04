@@ -7,6 +7,7 @@ class Category_child_ extends CI_Controller {
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
+    check_login();
     $this->load->model('Model_category');
     $this->load->model('Model_category_child');
     $this->load->model('Model_category_child_');

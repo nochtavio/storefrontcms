@@ -8,6 +8,15 @@
         <div class="box-tools m-b-15">
           <div class="input-group">
             <input id="txt_username" name="txt_username" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Username">
+            <select id="sel_role" name="sel_role" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
+              <option value="-1">All Roles</option>
+              <option value="1">Superadmin</option>
+              <option value="2">Admin</option>
+              <option value="3">CS</option>
+              <option value="4">Pembukuan</option>
+              <option value="5">Checker</option>
+              <option value="6">Gudang</option>
+            </select>
             <select id="sel_active" name="sel_active" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status</option>
               <option value="1">Active</option>
@@ -56,6 +65,20 @@
             <label for="txt_data_username" class="col-lg-4 col-sm-4 control-label">Username</label>
             <div class="col-lg-8 col-sm-8">
               <input type="text" class="form-control form_data" id="txt_data_username" placeholder="Enter username">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-4 col-sm-4 control-label">Role</label>
+            <div class="col-lg-8 col-sm-8">
+              <select id="sel_data_role" class="form-control">
+                <option value="0">Select Role</option>
+                <option value="1">Superadmin</option>
+                <option value="2">Admin</option>
+                <option value="3">CS</option>
+                <option value="4">Pembukuan</option>
+                <option value="5">Checker</option>
+                <option value="6">Gudang</option>
+              </select>
             </div>
           </div>
           <div class="form-group">

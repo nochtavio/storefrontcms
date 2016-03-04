@@ -7,6 +7,7 @@ class Slider extends CI_Controller {
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
+    check_login();
     $this->load->model('Model_slider');
     $this->load->library('image_lib');
   }

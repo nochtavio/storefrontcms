@@ -61,7 +61,7 @@ class Model_slider extends CI_Model {
       'description' => $description,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
-      'creby' => 'SYSTEM'
+      'creby' => $this->session->userdata('username')
     );
     $this->db->insert('slider', $data);
     $insert_id = $this->db->insert_id();
@@ -90,7 +90,7 @@ class Model_slider extends CI_Model {
       'description' => $description,
       'active' => $active,
       'modtime' => date('Y-m-d H:i:s'),
-      'modby' => 'SYSTEM'
+      'modby' => $this->session->userdata('username')
     );
     
     $this->db->where('id', $id);
@@ -105,7 +105,7 @@ class Model_slider extends CI_Model {
     $data = array(
       'deleted' => 1,
       'modtime' => date('Y-m-d H:i:s'),
-      'modby' => 'SYSTEM'
+      'modby' => $this->session->userdata('username')
     );
     
     $this->db->where('id', $id);

@@ -2,6 +2,7 @@ $(document).ready(function () {
   get_data = function (page) {
     //Filter
     var username = $('#txt_username').val();
+    var id_role = $('#sel_role').val();
     var active = $('#sel_active').val();
     var order = $('#sel_order').val();
     //End Filter
@@ -12,6 +13,7 @@ $(document).ready(function () {
       data: {
         page: page,
         username: username,
+        id_role: id_role,
         active: active,
         order: order
       },
@@ -23,6 +25,7 @@ $(document).ready(function () {
           <tr>\
             <th>No</th>\
             <th>Username</th>\
+            <th>Role</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -62,6 +65,7 @@ $(document).ready(function () {
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
                 <td>" + result['username'][x] + "</td>\
+                <td>" + result['role_name'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>\
@@ -84,7 +88,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='5'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='6'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -144,6 +148,7 @@ $(document).ready(function () {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
               $("#txt_data_username").val(result['username']);
+              $("#sel_data_role").val(result['id_role']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -186,6 +191,7 @@ $(document).ready(function () {
       $('#txt_data_username').val('');
       $('#txt_data_password').val('');
       $('#txt_data_conf_password').val('');
+      $("#sel_data_role").val(0);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
@@ -201,12 +207,13 @@ $(document).ready(function () {
     }
   };
 
-  add_data = function (username, password, conf_password, active) {
+  add_data = function (username, id_role, password, conf_password, active) {
     $.ajax({
       url: base_url + 'admin/add_data',
       type: 'POST',
       data: {
         username: username,
+        id_role: id_role,
         password: password,
         conf_password: conf_password,
         active: active
@@ -228,12 +235,13 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, password, conf_password, active) {
+  edit_data = function (id, id_role, password, conf_password, active) {
     $.ajax({
       url: base_url + 'admin/edit_data',
       type: 'POST',
       data: {
         id: id,
+        id_role: id_role,
         password: password,
         conf_password: conf_password,
         active: active

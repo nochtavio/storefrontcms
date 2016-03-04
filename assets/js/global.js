@@ -55,4 +55,21 @@ $(document).ready(function(){
     $(document.body).overlayout();
   });
   //End AJAX Setting
+  
+  //Logout
+  $('#btn_logout').click(function(event){
+    event.preventDefault();
+    $.ajax({
+      url: base_url + 'login/logout',
+      type: 'POST',
+      data: {
+        
+      },
+      dataType: 'json',
+      success: function (result) {
+        window.location = base_url+"login/";
+      }
+    });
+  });
+  //End Logout
 });

@@ -49,7 +49,7 @@ class Model_color extends CI_Model {
       'name' => $name,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
-      'creby' => 'SYSTEM'
+      'creby' => $this->session->userdata('username')
     );
     $this->db->insert('color', $data);
     $insert_id = $this->db->insert_id();
@@ -68,7 +68,7 @@ class Model_color extends CI_Model {
       'name' => $name,
       'active' => $active,
       'modtime' => date('Y-m-d H:i:s'),
-      'modby' => 'SYSTEM'
+      'modby' => $this->session->userdata('username')
     );
     
     $this->db->where('id', $id);
@@ -83,7 +83,7 @@ class Model_color extends CI_Model {
     $data = array(
       'deleted' => 1,
       'modtime' => date('Y-m-d H:i:s'),
-      'modby' => 'SYSTEM'
+      'modby' => $this->session->userdata('username')
     );
     
     $this->db->where('id', $id);

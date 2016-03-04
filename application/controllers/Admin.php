@@ -7,6 +7,7 @@ class Admin extends CI_Controller {
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
+    check_login();
     $this->load->model('Model_admin');
   }
   
@@ -27,6 +28,7 @@ class Admin extends CI_Controller {
   public function get_data(){
     //param
     $param['username'] = ($this->input->post('username', TRUE)) ? $this->input->post('username', TRUE) : "";
+    $param['id_role'] = ($this->input->post('id_role', TRUE)) ? $this->input->post('id_role', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
@@ -45,6 +47,7 @@ class Admin extends CI_Controller {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
         $data['username'][$temp] = $row->username;
+        $data['role_name'][$temp] = $row->role_name;
         $data['active'][$temp] = $row->active;
         $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
         $data['creby'][$temp] = $row->creby;
@@ -72,6 +75,7 @@ class Admin extends CI_Controller {
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
+      $data['id_role'] = $result_data->row()->id_role;
       $data['username'] = $result_data->row()->username;
       $data['active'] = $result_data->row()->active;
     }else{
@@ -84,6 +88,7 @@ class Admin extends CI_Controller {
   
   public function validate_post($param, $state = "add", $edit_password = TRUE){
     //param
+    $id_role = (isset($param['id_role'])) ? $param['id_role'] : 0;
     $username = (isset($param['username'])) ? $param['username'] : "";
     $password = (isset($param['password'])) ? $param['password'] : "";
     $conf_password = (isset($param['conf_password'])) ? $param['conf_password'] : "";
@@ -96,6 +101,10 @@ class Admin extends CI_Controller {
       if($username == ""){
         $data['result'] = "r2";
         $data['result_message'] .= "<strong>Username</strong> must be filled !<br/>";
+      }
+      if($id_role == 0){
+        $data['result'] = "r2";
+        $data['result_message'] .= "<strong>Role</strong> must be choosen !<br/>";
       }
     }
     
@@ -114,6 +123,7 @@ class Admin extends CI_Controller {
   
   public function add_data(){
     //param
+    $param['id_role'] = ($this->input->post('id_role', TRUE)) ? $this->input->post('id_role', TRUE) : 0 ;
     $param['username'] = ($this->input->post('username', TRUE)) ? $this->input->post('username', TRUE) : "" ;
     $param['password'] = ($this->input->post('password', TRUE)) ? $this->input->post('password', TRUE) : "" ;
     $param['conf_password'] = ($this->input->post('conf_password', TRUE)) ? $this->input->post('conf_password', TRUE) : "" ;
@@ -131,6 +141,7 @@ class Admin extends CI_Controller {
   public function edit_data(){
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
+    $param['id_role'] = ($this->input->post('id_role', TRUE)) ? $this->input->post('id_role', TRUE) : 0 ;
     $param['password'] = ($this->input->post('password', TRUE)) ? $this->input->post('password', TRUE) : "" ;
     $param['conf_password'] = ($this->input->post('conf_password', TRUE)) ? $this->input->post('conf_password', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
@@ -167,6 +178,7 @@ class Admin extends CI_Controller {
     $result_data = $this->Model_admin->get_data($param);
     if($result_data->num_rows() > 0){
       $param_set['id'] = $result_data->row()->id;
+      $param_set['id_role'] = $result_data->row()->id_role;
       $param_set['active'] = ($result_data->row()->active == 0) ? 1 : 0;
       $this->Model_admin->edit_data($param_set);
     }else{

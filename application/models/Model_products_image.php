@@ -58,7 +58,7 @@ class Model_products_image extends CI_Model {
       'show_order' => $show_order,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
-      'creby' => 'SYSTEM'
+      'creby' => $this->session->userdata('username')
     );
     $this->db->insert('products_image', $data);
     $insert_id = $this->db->insert_id();
@@ -81,7 +81,7 @@ class Model_products_image extends CI_Model {
       'show_order' => $show_order,
       'active' => $active,
       'modtime' => date('Y-m-d H:i:s'),
-      'modby' => 'SYSTEM'
+      'modby' => $this->session->userdata('username')
     );
     
     $this->db->where('id', $id);
@@ -96,7 +96,7 @@ class Model_products_image extends CI_Model {
     $data = array(
       'deleted' => 1,
       'modtime' => date('Y-m-d H:i:s'),
-      'modby' => 'SYSTEM'
+      'modby' => $this->session->userdata('username')
     );
     
     $this->db->where('id', $id);

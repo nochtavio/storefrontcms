@@ -14,6 +14,7 @@ $(document).ready(function () {
 
     //Parameter
     var id = $('#txt_data_id').val();
+    var id_role = $('#sel_data_role').val();
     var username = $('#txt_data_username').val();
     var password = $('#txt_data_password').val();
     var conf_password = $('#txt_data_conf_password').val();
@@ -24,9 +25,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(username, password, conf_password, active);
+      add_data(username, id_role, password, conf_password, active);
     }else{
-      edit_data(id, password, conf_password, active);
+      edit_data(id, id_role, password, conf_password, active);
     }
   });
   

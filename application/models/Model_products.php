@@ -76,7 +76,7 @@ class Model_products extends CI_Model {
       'size_guideline' => $size_guideline,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
-      'creby' => 'SYSTEM'
+      'creby' => $this->session->userdata('username')
     );
     $this->db->insert('products', $data);
     $insert_id = $this->db->insert_id();
@@ -88,7 +88,7 @@ class Model_products extends CI_Model {
           'id_category' => $cat,
           'id_products' => $insert_id,
           'cretime' => date('Y-m-d H:i:s'),
-          'creby' => 'SYSTEM'
+          'creby' => $this->session->userdata('username')
         );
         $this->db->insert('category_detail', $data);
       }
@@ -100,7 +100,7 @@ class Model_products extends CI_Model {
           'id_category_child' => $cat_child,
           'id_products' => $insert_id,
           'cretime' => date('Y-m-d H:i:s'),
-          'creby' => 'SYSTEM'
+          'creby' => $this->session->userdata('username')
         );
         $this->db->insert('category_detail', $data);
       }
@@ -112,7 +112,7 @@ class Model_products extends CI_Model {
           'id_category_child_' => $cat_child_,
           'id_products' => $insert_id,
           'cretime' => date('Y-m-d H:i:s'),
-          'creby' => 'SYSTEM'
+          'creby' => $this->session->userdata('username')
         );
         $this->db->insert('category_detail', $data);
       }
@@ -156,7 +156,7 @@ class Model_products extends CI_Model {
       'size_guideline' => $size_guideline,
       'active' => $active,
       'modtime' => date('Y-m-d H:i:s'),
-      'modby' => 'SYSTEM'
+      'modby' => $this->session->userdata('username')
     );
     
     $this->db->where('id', $id);
@@ -173,7 +173,7 @@ class Model_products extends CI_Model {
           'id_category' => $cat,
           'id_products' => $id,
           'cretime' => date('Y-m-d H:i:s'),
-          'creby' => 'SYSTEM'
+          'creby' => $this->session->userdata('username')
         );
         $this->db->insert('category_detail', $data);
       }
@@ -185,7 +185,7 @@ class Model_products extends CI_Model {
           'id_category_child' => $cat_child,
           'id_products' => $id,
           'cretime' => date('Y-m-d H:i:s'),
-          'creby' => 'SYSTEM'
+          'creby' => $this->session->userdata('username')
         );
         $this->db->insert('category_detail', $data);
       }
@@ -197,7 +197,7 @@ class Model_products extends CI_Model {
           'id_category_child_' => $cat_child_,
           'id_products' => $id,
           'cretime' => date('Y-m-d H:i:s'),
-          'creby' => 'SYSTEM'
+          'creby' => $this->session->userdata('username')
         );
         $this->db->insert('category_detail', $data);
       }
@@ -212,7 +212,7 @@ class Model_products extends CI_Model {
     $data = array(
       'deleted' => 1,
       'modtime' => date('Y-m-d H:i:s'),
-      'modby' => 'SYSTEM'
+      'modby' => $this->session->userdata('username')
     );
     
     $this->db->where('id', $id);
