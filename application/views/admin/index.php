@@ -28,10 +28,17 @@
               <option value="2">Order by Latest Data</option>
               <option value="3">Order by Oldest Data</option>
             </select>
-            <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
-            <div class="input-group-btn">
-              <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm pull-right">Add Admin</a>
-            </div>
+            <button id="btn_filter" type="submit" class="btn btn-default btn-sm" style="margin-right: 7px;">Filter</button>
+            <a href="<?php echo base_url() ?>role/" type="submit" class="btn btn-info btn-sm">Roles</a>
+            <?php 
+              if(check_menu("", 1)){
+                ?>
+                  <div class="input-group-btn">
+                    <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm pull-right">Add Admin</a>
+                  </div>
+                <?php
+              }
+            ?>
           </div>
         </div>
         <table class="table table-hover">

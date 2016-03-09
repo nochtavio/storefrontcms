@@ -108,14 +108,26 @@ class Model_admin extends CI_Model {
     $this->db->update('admin', $data);
   }
   
-  function check_login($param){
+  function get_menu($param){
     //Set Param
-    $username = (isset($param['username'])) ? $param['username'] : "";
-    $password = (isset($param['password'])) ? $param['password'] : "";
+    $menu = (isset($param['menu'])) ? $param['menu'] : "";
+    $type = (isset($param['type'])) ? $param['type'] : 0;
     //End Set Param
     
-    $this->db->select('admin.password');
-    $this->db->from('admin');
-    $this->db->where('admin.username', $username);
+    if($type == 0){
+      $this->db->select('menu.index AS allowed_id');
+    }else if($type == 1){
+      $this->db->select('menu.add AS allowed_id');
+    }else if($type == 2){
+      $this->db->select('menu.edit AS allowed_id');
+    }else if($type == 3){
+      $this->db->select('menu.delete AS allowed_id');
+    }
+    
+    $this->db->from('menu');
+    $this->db->where('menu.name', $menu);
+    
+    $query = $this->db->get();
+    return $query;
   }
 }

@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Color extends CI_Controller {
+class Role extends CI_Controller {
   
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
@@ -11,20 +11,20 @@ class Color extends CI_Controller {
     if(!check_menu()){
       redirect(base_url().'dashboard/');
     }
-    $this->load->model('Model_color');
+    $this->load->model('Model_role');
   }
   
   public function index() {
-    $page = 'Color';
+    $page = 'Admin';
     $sidebar['page'] = $page;
     $content['js'] = array();
-    array_push($content['js'], 'color/function.js');
-    array_push($content['js'], 'color/init.js');
-    array_push($content['js'], 'color/action.js');
+    array_push($content['js'], 'role/function.js');
+    array_push($content['js'], 'role/init.js');
+    array_push($content['js'], 'role/action.js');
     
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
-    $data['content'] = $this->load->view('color/index', $content, TRUE);
+    $data['content'] = $this->load->view('role/index', $content, TRUE);
     $this->load->view('template_index', $data);
   }
   
@@ -36,14 +36,14 @@ class Color extends CI_Controller {
     //end param
     
     //paging
-    $get_data = $this->Model_color->get_data($param);
+    $get_data = $this->Model_role->get_data($param);
     $page = ($this->input->post('page', TRUE)) ? $this->input->post('page', TRUE) : 1 ;
     $size = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : 10 ;
     $limit = ($page - 1) * $size;
     //End Set totalpaging
 
     if ($get_data->num_rows() > 0) {
-      $get_data_paging = $this->Model_color->get_data($param, $limit, $size);
+      $get_data_paging = $this->Model_role->get_data($param, $limit, $size);
       $temp = 0;
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
@@ -63,7 +63,7 @@ class Color extends CI_Controller {
       $data['totalpage'] = ceil($get_data->num_rows() / $size);
     } else {
       $data['result'] = "r2";
-      $data['message'] = "No Color";
+      $data['message'] = "No Roles";
     }
     
     echo json_encode($data);
@@ -74,7 +74,7 @@ class Color extends CI_Controller {
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
     //end param
     
-    $result_data = $this->Model_color->get_data($param);
+    $result_data = $this->Model_role->get_data($param);
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
@@ -112,7 +112,7 @@ class Color extends CI_Controller {
     
     $validate_post = $this->validate_post($param);
     if($validate_post['result'] == "r1"){
-      $this->Model_color->add_data($param);
+      $this->Model_role->add_data($param);
     }
     
     echo json_encode($validate_post);
@@ -128,7 +128,7 @@ class Color extends CI_Controller {
     if($param['id'] != ""){
       $validate_post = $this->validate_post($param);
       if($validate_post['result'] == "r1"){
-        $this->Model_color->edit_data($param);
+        $this->Model_role->edit_data($param);
       }
     }else{
       $validate_post['result'] = "r2";
@@ -146,12 +146,12 @@ class Color extends CI_Controller {
     $data['result'] = "r1";
     $data['result_message'] = '';
     
-    $result_data = $this->Model_color->get_data($param);
+    $result_data = $this->Model_role->get_data($param);
     if($result_data->num_rows() > 0){
       $param_set['id'] = $result_data->row()->id;
       $param_set['name'] = $result_data->row()->name;
       $param_set['active'] = ($result_data->row()->active == 0) ? 1 : 0;
-      $this->Model_color->edit_data($param_set);
+      $this->Model_role->edit_data($param_set);
     }else{
       $data['result'] = "r2";
       $data['result_message'] = '<strong>Data ID</strong> is not found, please refresh your browser!<br/>';
@@ -167,7 +167,7 @@ class Color extends CI_Controller {
     
     if($param['id'] != ""){
       $data['result'] = "r1";
-      $this->Model_color->remove_data($param);
+      $this->Model_role->remove_data($param);
     }else{
       $data['result'] = "r2";
       $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";

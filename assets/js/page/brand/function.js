@@ -45,9 +45,17 @@ $(document).ready(function () {
 
           for (var x = 0; x < result['total']; x++) {
             //Status
-            var status = "<a href='#' id='btn_active" + result['id'][x] + "' class='label label-success'>Active</a>";
-            if (result['active'][x] != 1) {
-              status = "<a href='#' id='btn_active" + result['id'][x] + "' class='label label-danger'>Not Active</a>";
+            var status = "";
+            if(result['allowed_edit']){
+              status = "<a href='#' id='btn_active" + result['id'][x] + "' class='label label-success'>Active</a>";
+              if (result['active'][x] != 1) {
+                status = "<a href='#' id='btn_active" + result['id'][x] + "' class='label label-danger'>Not Active</a>";
+              }
+            }else{
+              status = "<span class='label label-success'>Active</span>";
+              if (result['active'][x] != 1) {
+                status = "<span class='label label-danger'>Not Active</span>";
+              }
             }
             //End Status
 
@@ -57,6 +65,16 @@ $(document).ready(function () {
               date += "<br/><br/> Modified by <strong>" + result['modby'][x] + "</strong> <br/> on <strong>" + result['modtime'][x] + "</strong>";
             }
             //End Date
+            
+            //Action
+            var action = "";
+            if(result['allowed_edit']){
+              action += "<a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;";
+            }
+            if(result['allowed_delete']){
+              action += "<a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;";
+            }
+            //End Action
 
             $('#table_content').append("\
               <tr>\
@@ -64,10 +82,7 @@ $(document).ready(function () {
                 <td>" + result['name'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
-                <td>\
-                  <a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;\
-                  <a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;\
-                </td>\
+                <td>" + action + "</td>\
               </tr>");
 
             //Set Object ID
@@ -182,7 +197,7 @@ $(document).ready(function () {
   set_state = function (x) {
     state = x;
     if (x == "add") {
-      $('#modal_data_title').html("Add Category");
+      $('#modal_data_title').html("Add Brand");
       
       $('.form_data').val('');
       $('option', $('#sel_data_category')).each(function(element) {
@@ -193,7 +208,7 @@ $(document).ready(function () {
       $('#error_container').hide();
       $('#error_container_message').empty();
     } else {
-      $('#modal_data_title').html("Edit Category");
+      $('#modal_data_title').html("Edit Brand");
 
       $('.form_data').val('');
       $('option', $('#sel_data_category')).each(function(element) {

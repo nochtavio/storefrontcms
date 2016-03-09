@@ -1,24 +1,21 @@
-<input type="hidden" id="txt_id_category" name="txt_id_category" value="<?php echo $id_category ?>" />
-<input type="hidden" id="txt_parent" name="txt_parent" value="<?php echo $parent ?>" />
-
 <div class="row" style="margin-bottom:5px;">
   <div class="col-xs-12">
     <div id="main_panel" class="panel">
       <header class="panel-heading">
-        <?php echo $parent_name ?> Child Menu
+        Role
       </header>
       <div class="panel-body table-responsive">
         <div class="box-tools m-b-15">
           <div class="input-group">
-            <input id="txt_name" name="txt_name" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Name">
+            <input id="txt_name" name="txt_name" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Role Name">
             <select id="sel_active" name="sel_active" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status</option>
               <option value="1">Active</option>
               <option value="0">Not Active</option>
             </select>
             <select id="sel_order" name="sel_order" class="form-control input-sm" style="margin-right: 7px;width: 200px;">
-              <option value="-1">Order by Name A-Z</option>
-              <option value="1">Order by Name Z-A</option>
+              <option value="-1">Order by Role Name A-Z</option>
+              <option value="1">Order by Role Name Z-A</option>
               <option value="2">Order by Latest Data</option> 
               <option value="3">Order by Oldest Data</option>
             </select>
@@ -27,13 +24,13 @@
               if(check_menu("", 1)){
                 ?>
                   <div class="input-group-btn">
-                    <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm">Add Child</a>
+                    <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm pull-right">Add Role</a>
                   </div>
                 <?php
               }
             ?>
             <div class="input-group-btn">
-              <a href="<?php echo base_url() ?>category_child/?id_category=<?php echo $id_category ?>" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
+              <a href="<?php echo base_url() ?>admin/" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
             </div>
           </div>
         </div>
@@ -67,7 +64,7 @@
           <div class="form-group">
             <label for="txt_data_name" class="col-lg-3 col-sm-3 control-label">Name</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_name" placeholder="Enter child name">
+              <input type="text" class="form-control form_data" id="txt_data_name" placeholder="Enter role name">
             </div>
           </div>
           <div class="form-group">

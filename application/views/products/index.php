@@ -21,9 +21,15 @@
               <option value="3">Order by Oldest Data</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
-            <div class="input-group-btn">
-              <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm pull-right">Add Product</a>
-            </div>
+            <?php 
+              if(check_menu("", 1)){
+                ?>
+                  <div class="input-group-btn">
+                    <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm pull-right">Add Product</a>
+                  </div>
+                <?php
+              }
+            ?>
           </div>
         </div>
         <table class="table table-hover">

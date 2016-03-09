@@ -7,7 +7,7 @@ $(document).ready(function () {
     //End Filter
 
     $.ajax({
-      url: base_url + 'color/get_data',
+      url: base_url + 'role/get_data',
       type: 'POST',
       data: {
         page: page,
@@ -117,7 +117,7 @@ $(document).ready(function () {
       $(document).on('click', '#btn_active' + val, function (event) {
         event.preventDefault();
         $.ajax({
-          url: base_url + 'color/set_active',
+          url: base_url + 'role/set_active',
           type: 'POST',
           data:{
             id: val
@@ -149,7 +149,7 @@ $(document).ready(function () {
         event.preventDefault();
         set_state("edit");
         $.ajax({
-          url: base_url + 'color/get_specific_data',
+          url: base_url + 'role/get_specific_data',
           type: 'POST',
           data:{
             id: val
@@ -186,7 +186,7 @@ $(document).ready(function () {
       $(document).off('click', '#btn_remove' + val);
       $(document).on('click', '#btn_remove' + val, function (event) {
         event.preventDefault();
-        $('#remove_message').html("Are you sure you want to remove this color?");
+        $('#remove_message').html("Are you sure you want to remove this role?");
         $('#txt_remove_id').val(val);
         $('#modal_remove').modal("show");
       });
@@ -196,14 +196,14 @@ $(document).ready(function () {
   set_state = function (x) {
     state = x;
     if (x == "add") {
-      $('#modal_data_title').html("Add Color");
+      $('#modal_data_title').html("Add Role");
       
       $('.form_data').val('');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     } else {
-      $('#modal_data_title').html("Edit Color");
+      $('#modal_data_title').html("Edit Role");
 
       $('.form_data').val('');
 
@@ -214,7 +214,7 @@ $(document).ready(function () {
 
   add_data = function (name, active) {
     $.ajax({
-      url: base_url + 'color/add_data',
+      url: base_url + 'role/add_data',
       type: 'POST',
       data: {
         name: name,
@@ -239,7 +239,7 @@ $(document).ready(function () {
 
   edit_data = function (id, name, active) {
     $.ajax({
-      url: base_url + 'color/edit_data',
+      url: base_url + 'role/edit_data',
       type: 'POST',
       data: {
         id: id,
@@ -269,7 +269,7 @@ $(document).ready(function () {
     //end param
     
     $.ajax({
-      url: base_url + 'color/remove_data',
+      url: base_url + 'role/remove_data',
       type: 'POST',
       data: {
         id: id

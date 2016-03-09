@@ -8,6 +8,9 @@ class Products_variant extends CI_Controller {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
     check_login();
+    if(!check_menu()){
+      redirect(base_url().'dashboard/');
+    }
     $this->load->model('Model_color');
     $this->load->model('Model_products');
     $this->load->model('Model_products_variant');
@@ -104,6 +107,8 @@ class Products_variant extends CI_Controller {
         $data['total_images'][$temp] = $row->total_images;
         $temp++;
       }
+      $data['allowed_edit'] = check_menu("", 2);
+      $data['allowed_delete'] = check_menu("", 3);
       $data['total'] = $temp;
       $data['size'] = $size;
       $data['totalpage'] = ceil($get_data->num_rows() / $size);
