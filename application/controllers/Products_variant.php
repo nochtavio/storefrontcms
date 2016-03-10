@@ -195,5 +195,22 @@ class Products_variant extends CI_Controller {
 
     echo json_encode($validate_post);
   }
-
+  
+  public function set_active(){
+    //param
+    $param['id_color'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : 0 ;
+    $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0 ;
+    $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : 0 ;
+    //end param
+    
+    $data['result'] = "r1";
+    $data['result_message'] = 'All variants has been set active.';
+    
+    if($param['active'] == 0){
+      $data['result_message'] = 'All variants has been set not active.';
+    }
+    $this->Model_products_variant_detail->set_active($param);
+    
+    echo json_encode($data);
+  }
 }

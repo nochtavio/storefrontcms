@@ -25,6 +25,7 @@ $(document).ready(function () {
             <th>Total Size</th>\
             <th>Total Quantity</th>\
             <th>Total Images</th>\
+            <th>Status</th>\
             <th>Action</th>\
           </tr>\
         ");
@@ -44,6 +45,15 @@ $(document).ready(function () {
           //End Set Paging
 
           for (var x = 0; x < result['total']; x++) {
+            //Status
+            var status = "";
+            if(result['allowed_edit']){
+              status = "<a href='#' id='btn_set_active" + result['id_color'][x] + "' class='label label-success'>Set Active</a> &nbsp; <a href='#' id='btn_set_non_active" + result['id_color'][x] + "' class='label label-danger'>Set Not Active</a>";
+            }else{
+              status = "<span class='label label-success'>Set Active</span> &nbsp; <span class='label label-danger'>Set Not Active</span>";
+            }
+            //End Status
+            
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
@@ -51,6 +61,7 @@ $(document).ready(function () {
                 <td>" + result['total_size'][x] + "</td>\
                 <td>" + result['total_quantity'][x] + "</td>\
                 <td>" + result['total_images'][x] + "</td>\
+                <td>" + status + "</td>\
                 <td>\
                   <a href='"+base_url+"products_variant_detail/?id_products=" + id_products + "&id_color=" + result['id_color'][x] + "' class='fa fa-folder-open'></a> &nbsp;\
                   <a href='"+base_url+"products_image/?id_products=" + id_products + "&id_color=" + result['id_color'][x] + "' class='fa fa-picture-o'></a> &nbsp;\
@@ -58,16 +69,76 @@ $(document).ready(function () {
               </tr>");
 
             //Set Object ID
+            $('#div_hidden').append("\
+              <input type='hidden' id='object" + x + "' value='" + result['id_color'][x] + "' />\
+            ");
             total_data++;
             //End Set Object ID
           }
+          
+          set_active();
+          set_non_active();
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='5'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='7'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
+    });
+  };
+  
+  set_active = function () {
+    var id = [];
+    for (var x = 0; x < total_data; x++) {
+      id[x] = $('#object' + x).val();
+    }
+
+    $.each(id, function (x, val) {
+      $(document).off('click', '#btn_set_active' + val);
+      $(document).on('click', '#btn_set_active' + val, function (event) {
+        event.preventDefault();
+        $.ajax({
+          url: base_url + 'products_variant/set_active',
+          type: 'POST',
+          data:{
+            id: val,
+            id_products: id_products,
+            active: 1
+          },
+          dataType: 'json',
+          success: function (result) {
+            alert(result['result_message']);
+          }
+        });
+      });
+    });
+  };
+  
+  set_non_active = function () {
+    var id = [];
+    for (var x = 0; x < total_data; x++) {
+      id[x] = $('#object' + x).val();
+    }
+
+    $.each(id, function (x, val) {
+      $(document).off('click', '#btn_set_non_active' + val);
+      $(document).on('click', '#btn_set_non_active' + val, function (event) {
+        event.preventDefault();
+        $.ajax({
+          url: base_url + 'products_variant/set_active',
+          type: 'POST',
+          data:{
+            id: val,
+            id_products: id_products,
+            active: 0
+          },
+          dataType: 'json',
+          success: function (result) {
+            alert(result['result_message']);
+          }
+        });
+      });
     });
   };
   

@@ -154,7 +154,7 @@ class Products_variant_detail extends CI_Controller {
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['id_color'] = $result_data->row()->id_color;
-      $data['size'] = ($result_data->row()->size == NULL) ? '-' : $result_data->row()->size;
+      $data['size'] = ($result_data->row()->size == NULL) ? '' : $result_data->row()->size;
       $data['quantity'] = $result_data->row()->quantity;
       $data['show_order'] = $result_data->row()->show_order;
       $data['active'] = $result_data->row()->active;
@@ -216,6 +216,7 @@ class Products_variant_detail extends CI_Controller {
     //param
     $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
     $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
+    $param['color_name'] = $this->get_color_name($param['id_color']);
     $param['size'] = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : NULL;
     $param['quantity'] = ($this->input->post('quantity', TRUE)) ? $this->input->post('quantity', TRUE) : 0;
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;

@@ -21,9 +21,7 @@ class Model_products_variant extends CI_Model {
     if($id_color > 0){$this->db->where('pv.id_color', $id_color);}
     //End Validation
     
-    $this->db->where('pv.active', 1);
     $this->db->where('pv.deleted', 0);
-    
     $this->db->group_by('pv.id_products, pv.id_color'); 
     
     if($order == 1){
