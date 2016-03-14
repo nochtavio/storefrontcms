@@ -13,17 +13,17 @@ function check_login() {
 
 function check_menu($menu = "", $type = 0){
   $CI =& get_instance();
-  $CI->load->model('Model_admin');
+  $CI->load->model('Model_menu');
   
-  //Set Param
-  $param['menu'] = ($menu != "") ? $menu : $CI->uri->segment(1);
-  $param['type'] = $type; //0: Index | 1: Add | 2: Edit | 3: Delete
-  //End Set Param
-  
-  $get_data = $CI->Model_admin->get_menu($param);
-  if ($get_data->num_rows() > 0) {
-    $allowed_id = array_filter(explode(';', $get_data->row()->allowed_id));
-    if(in_array($CI->session->userdata('id_role'), $allowed_id)){
+  $param_get['name'] = ($menu != "") ? $menu : $CI->uri->segment(1);
+  $param_get['type'] = $type;
+  $get_id_menu = $CI->Model_menu->get_data($param_get);
+  if ($get_id_menu->num_rows() > 0) {
+    $id_menu = $get_id_menu->row()->id;
+    $param_role['id_menu'] = $id_menu;
+    $param_role['id_role'] = $CI->session->userdata('id_role');
+    $get_role_menu = $CI->Model_menu->get_role_menu($param_role);
+    if ($get_role_menu->num_rows() > 0) {
       return true;
     }else{
       return false;

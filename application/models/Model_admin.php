@@ -26,6 +26,7 @@ class Model_admin extends CI_Model {
     //End Validation
     
     $this->db->where('admin.deleted', 0);
+    $this->db->where('admin.id_role !=', 1);
     if($order == 1){
       $this->db->order_by("admin.username", "desc");
     }else if($order == 2){

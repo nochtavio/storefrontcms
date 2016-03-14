@@ -43,6 +43,7 @@ class Model_role extends CI_Model {
   function add_data($param){
     //Set Param
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $menu = (isset($param['menu'])) ? $param['menu'] : array();
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
@@ -55,6 +56,17 @@ class Model_role extends CI_Model {
     $this->db->insert('role', $data);
     $insert_id = $this->db->insert_id();
     
+    //add new menu
+    if(!empty($menu)){
+      foreach ($menu as $m) {
+        $data = array(
+          'id_menu' => $m,
+          'id_role' => $insert_id
+        );
+        $this->db->insert('role_menu', $data);
+      }
+    }
+    
     return $insert_id;
   }
 
@@ -62,6 +74,7 @@ class Model_role extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $menu = (isset($param['menu'])) ? $param['menu'] : array();
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
@@ -74,6 +87,21 @@ class Model_role extends CI_Model {
     
     $this->db->where('id', $id);
     $this->db->update('role', $data);
+    
+    //remove menu
+    $this->db->where('id_role', $id);
+    $this->db->delete('role_menu');
+    
+    //add new menu
+    if(!empty($menu)){
+      foreach ($menu as $m) {
+        $data = array(
+          'id_menu' => $m,
+          'id_role' => $id
+        );
+        $this->db->insert('role_menu', $data);
+      }
+    }
   }
   
   function remove_data($param){

@@ -15,6 +15,7 @@ $(document).ready(function () {
     //Parameter
     var id = $('#txt_data_id').val();
     var name = $('#txt_data_name').val();
+    var menu = $('#sel_data_menu').val();
     var active = 0;
     if ($('#txt_data_active').prop('checked')) {
       active = 1;
@@ -22,9 +23,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(name, active);
+      add_data(name, menu, active);
     }else{
-      edit_data(id, name, active);
+      edit_data(id, name, menu, active);
     }
   });
   

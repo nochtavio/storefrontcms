@@ -12,6 +12,7 @@ class Role extends CI_Controller {
       redirect(base_url().'dashboard/');
     }
     $this->load->model('Model_role');
+    $this->load->model('Model_menu');
   }
   
   public function index() {
@@ -21,6 +22,11 @@ class Role extends CI_Controller {
     array_push($content['js'], 'role/function.js');
     array_push($content['js'], 'role/init.js');
     array_push($content['js'], 'role/action.js');
+    
+    //Get List Menu
+    $param['id'] = 0;
+    $content['menu'] = $this->Model_menu->get_data($param, 0, 100)->result();
+    //End Get List Menu
     
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
@@ -79,6 +85,13 @@ class Role extends CI_Controller {
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['name'] = $result_data->row()->name;
+      $menu = array();
+      $param_menu['id_role'] = $param['id'];
+      $result_menu = $this->Model_menu->get_role_menu($param_menu);
+      foreach ($result_menu->result() as $row) {
+        array_push($menu, $row->id_menu);
+      }
+      $data['menu'] = $menu;
       $data['active'] = $result_data->row()->active;
     }else{
       $data['result'] = "r2";
@@ -107,6 +120,7 @@ class Role extends CI_Controller {
   public function add_data(){
     //param
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "" ;
+    $param['menu'] = ($this->input->post('menu', TRUE)) ? $this->input->post('menu', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     
@@ -122,6 +136,7 @@ class Role extends CI_Controller {
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "" ;
+    $param['menu'] = ($this->input->post('menu', TRUE)) ? $this->input->post('menu', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
     //end param
     

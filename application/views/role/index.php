@@ -68,6 +68,28 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="col-lg-3 col-sm-3 control-label">Menu Access</label>
+            <div class="col-lg-9 col-sm-9">
+              <select id="sel_data_menu" class="form-control" multiple="multiple">
+                <?php 
+                  foreach($menu as $m){
+                    $type = "Index";
+                    if($m->type == 1){
+                      $type = "Add";
+                    }else if($m->type == 2){
+                      $type = "Edit";
+                    }else if($m->type == 3){
+                      $type = "Delete";
+                    }
+                    ?>
+                      <option value="<?php echo $m->id; ?>">[<?php echo $m->name; ?>] <?php echo $type; ?></option>
+                    <?php
+                  }
+                ?>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="txt_data_active" class="col-lg-3 col-sm-3 control-label">Status</label>
             <div class="col-lg-9 col-sm-9">
               <div class="checkbox">

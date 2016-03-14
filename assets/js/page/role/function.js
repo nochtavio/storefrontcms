@@ -159,6 +159,7 @@ $(document).ready(function () {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
               $("#txt_data_name").val(result['name']);
+              $('#sel_data_menu').multiselect('select', result['menu']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -199,6 +200,10 @@ $(document).ready(function () {
       $('#modal_data_title').html("Add Role");
       
       $('.form_data').val('');
+      $('option', $('#sel_data_menu')).each(function(element) {
+          $(this).removeAttr('selected').prop('selected', false);
+      });
+      $('#sel_data_menu').multiselect('refresh');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
@@ -206,18 +211,23 @@ $(document).ready(function () {
       $('#modal_data_title').html("Edit Role");
 
       $('.form_data').val('');
+      $('option', $('#sel_data_menu')).each(function(element) {
+          $(this).removeAttr('selected').prop('selected', false);
+      });
+      $('#sel_data_menu').multiselect('refresh');
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
   };
 
-  add_data = function (name, active) {
+  add_data = function (name, menu, active) {
     $.ajax({
       url: base_url + 'role/add_data',
       type: 'POST',
       data: {
         name: name,
+        menu: menu,
         active: active
       },
       dataType: 'json',
@@ -237,13 +247,14 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, name, active) {
+  edit_data = function (id, name, menu, active) {
     $.ajax({
       url: base_url + 'role/edit_data',
       type: 'POST',
       data: {
         id: id,
         name: name,
+        menu: menu,
         active: active
       },
       dataType: 'json',

@@ -10,12 +10,13 @@
             <input id="txt_username" name="txt_username" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Username">
             <select id="sel_role" name="sel_role" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Roles</option>
-              <option value="1">Superadmin</option>
-              <option value="2">Admin</option>
-              <option value="3">CS</option>
-              <option value="4">Pembukuan</option>
-              <option value="5">Checker</option>
-              <option value="6">Gudang</option>
+              <?php 
+                foreach($role as $ro){
+                  ?>
+                    <option value="<?php echo $ro->id; ?>"><?php echo $ro->name; ?></option>
+                  <?php
+                }
+              ?>
             </select>
             <select id="sel_active" name="sel_active" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status</option>
@@ -79,12 +80,13 @@
             <div class="col-lg-8 col-sm-8">
               <select id="sel_data_role" class="form-control">
                 <option value="0">Select Role</option>
-                <option value="1">Superadmin</option>
-                <option value="2">Admin</option>
-                <option value="3">CS</option>
-                <option value="4">Pembukuan</option>
-                <option value="5">Checker</option>
-                <option value="6">Gudang</option>
+                <?php 
+                  foreach($role as $ro){
+                    ?>
+                      <option value="<?php echo $ro->id; ?>"><?php echo $ro->name; ?></option>
+                    <?php
+                  }
+                ?>
               </select>
             </div>
           </div>

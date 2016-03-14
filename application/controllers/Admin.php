@@ -12,6 +12,7 @@ class Admin extends CI_Controller {
       redirect(base_url().'dashboard/');
     }
     $this->load->model('Model_admin');
+    $this->load->model('Model_role');
   }
   
   public function index() {
@@ -21,6 +22,11 @@ class Admin extends CI_Controller {
     array_push($content['js'], 'admin/function.js');
     array_push($content['js'], 'admin/init.js');
     array_push($content['js'], 'admin/action.js');
+    
+    //get role
+    $param['id'] = 0;
+    $content['role'] = $this->Model_role->get_data($param, 0, 100)->result();
+    //end get role
     
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
