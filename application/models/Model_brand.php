@@ -42,12 +42,18 @@ class Model_brand extends CI_Model {
   function add_data($param){
     //Set Param
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $img = (isset($param['img'])) ? $param['img'] : "";
     $category = (isset($param['category'])) ? $param['category'] : array();
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
+    if(!is_array($category)){
+      $category = explode(",", $param['category']);
+    }
+    
     $data = array(
       'name' => $name,
+      'img' => $img,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
       'creby' => $this->session->userdata('username')
@@ -75,12 +81,18 @@ class Model_brand extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $img = (isset($param['img'])) ? $param['img'] : "";
     $category = (isset($param['category'])) ? $param['category'] : array();
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
+    if(!is_array($category)){
+      $category = explode(",", $param['category']);
+    }
+    
     $data = array(
       'name' => $name,
+      'img' => $img,
       'active' => $active,
       'modtime' => date('Y-m-d H:i:s'),
       'modby' => $this->session->userdata('username')

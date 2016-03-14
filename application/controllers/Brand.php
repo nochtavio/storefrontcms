@@ -13,6 +13,19 @@ class Brand extends CI_Controller {
     }
     $this->load->model('Model_brand');
     $this->load->model('Model_category');
+    $this->load->library('image_lib');
+  }
+  
+  public function resize_image($source){
+    $config_resize['image_library'] = 'gd2';
+    $config_resize['source_image'] = $source;
+    $config_resize['create_thumb'] = FALSE;
+    $config_resize['maintain_ratio'] = FALSE;
+    $config_resize['width']         = 256;
+    $config_resize['height']       = 256;
+
+    $this->image_lib->initialize($config_resize);
+    $this->image_lib->resize();
   }
   
   public function index() {
@@ -55,6 +68,7 @@ class Brand extends CI_Controller {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
         $data['name'][$temp] = $row->name;
+        $data['img'][$temp] = $row->img;
         $data['active'][$temp] = $row->active;
         $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
         $data['creby'][$temp] = $row->creby;
@@ -85,6 +99,7 @@ class Brand extends CI_Controller {
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['name'] = $result_data->row()->name;
+      $data['img'] = $result_data->row()->img;
       $category = array();
       $result_category = $this->Model_brand->get_category($param);
       foreach ($result_category->result() as $row) {
@@ -123,9 +138,41 @@ class Brand extends CI_Controller {
     $param['category'] = ($this->input->post('category', TRUE)) ? $this->input->post('category', TRUE) : "" ;
     //end param
     
+    //Check Directory
+    if (!is_dir('images/brand/')){
+      mkdir('./images/brand/', 0777, true);
+    }
+    //End Check Directory
+    
     $validate_post = $this->validate_post($param);
     if($validate_post['result'] == "r1"){
-      $this->Model_brand->add_data($param);
+      //Upload Image
+      $config['upload_path'] = './images/brand/';
+      $config['allowed_types'] = 'jpg';
+      $config['max_size'] = 1000;
+      $config['overwrite'] = TRUE;
+      
+      foreach ($_FILES['txt_data_add_file']['name'] as $key => $image) {
+        $_FILES['txt_data_add_file[]']['name']= $_FILES['txt_data_add_file']['name'][$key];
+        $_FILES['txt_data_add_file[]']['type']= $_FILES['txt_data_add_file']['type'][$key];
+        $_FILES['txt_data_add_file[]']['tmp_name']= $_FILES['txt_data_add_file']['tmp_name'][$key];
+        $_FILES['txt_data_add_file[]']['error']= $_FILES['txt_data_add_file']['error'][$key];
+        $_FILES['txt_data_add_file[]']['size']= $_FILES['txt_data_add_file']['size'][$key];
+        
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload('txt_data_add_file[]')) {
+          $validate_post['result'] = "r2";
+          $validate_post['result_message'] = $this->upload->display_errors('', '');
+        } else {
+          $this->upload->data();
+          $file_name = $this->upload->data('file_name');
+          $param['img'] = '/images/brand/'.$file_name;
+          $this->resize_image('./images/brand/'.$file_name);
+          $this->Model_brand->add_data($param);
+        }
+        @unlink($_FILES['txt_data_add_file[]']);
+      }
+      //End Upload Image
     }
     
     echo json_encode($validate_post);
@@ -142,7 +189,31 @@ class Brand extends CI_Controller {
     if($param['id'] != ""){
       $validate_post = $this->validate_post($param);
       if($validate_post['result'] == "r1"){
-        $this->Model_brand->edit_data($param);
+        //Upload Image
+        $file_element_name = 'txt_data_edit_file';
+        $config['upload_path'] = './images/brand/';
+        $config['allowed_types'] = 'jpg';
+        $config['max_size'] = 1000;
+        $config['overwrite'] = TRUE;
+
+        $this->upload->initialize($config);
+        if (!$this->upload->do_upload($file_element_name)) {
+          if($this->upload->display_errors('', '') !== "You did not select a file to upload."){
+            $validate_post['result'] = "r2";
+            $validate_post['result_message'] = $this->upload->display_errors('', '');
+          }else{
+            $this->Model_brand->edit_data($param);
+          }
+        } else {
+          $this->upload->data();
+          $file_name = $this->upload->data('file_name');
+          $param['img'] = '/images/brand/'.$file_name;
+          $this->resize_image('./images/brand/'.$file_name);
+          $this->Model_brand->edit_data($param);
+        }
+        @unlink($_FILES[$file_element_name]);
+        //End Upload Image
+        
       }
     }else{
       $validate_post['result'] = "r2";
@@ -164,6 +235,7 @@ class Brand extends CI_Controller {
     if($result_data->num_rows() > 0){
       $param_set['id'] = $result_data->row()->id;
       $param_set['name'] = $result_data->row()->name;
+      $param_set['img'] = $result_data->row()->img;
       $category = array();
       $result_category = $this->Model_brand->get_category($param);
       foreach ($result_category->result() as $row) {

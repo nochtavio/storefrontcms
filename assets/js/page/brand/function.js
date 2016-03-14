@@ -157,8 +157,12 @@ $(document).ready(function () {
           dataType: 'json',
           success: function (result) {
             if (result['result'] === 'r1') {
+              var d = new Date();
+              var time = d.getTime(); 
+              
               $("#txt_data_id").val(val);
               $("#txt_data_name").val(result['name']);
+              $("#txt_data_img").attr("src", base_url + result['img'] + "?" + time);
               $('#sel_data_category').multiselect('select', result['category']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
@@ -200,6 +204,9 @@ $(document).ready(function () {
       $('#modal_data_title').html("Add Brand");
       
       $('.form_data').val('');
+      $("#txt_data_img").hide();
+      $('#txt_data_add_file').show();
+      $('#txt_data_edit_file').hide();
       $('option', $('#sel_data_category')).each(function(element) {
           $(this).removeAttr('selected').prop('selected', false);
       });
@@ -211,6 +218,9 @@ $(document).ready(function () {
       $('#modal_data_title').html("Edit Brand");
 
       $('.form_data').val('');
+      $("#txt_data_img").show();
+      $('#txt_data_add_file').hide();
+      $('#txt_data_edit_file').show();
       $('option', $('#sel_data_category')).each(function(element) {
           $(this).removeAttr('selected').prop('selected', false);
       });
@@ -222,47 +232,46 @@ $(document).ready(function () {
   };
 
   add_data = function (name, category, active) {
-    $.ajax({
+    $.ajaxFileUpload({
       url: base_url + 'brand/add_data',
-      type: 'POST',
-      data: {
+      secureuri: false,
+      fileElementId: 'txt_data_add_file',
+      dataType: 'json',
+      data:{
         name: name,
         category:category,
         active: active
       },
-      dataType: 'json',
-      beforeSend: function () {
+      success: function (result){
         $('#error_container').hide();
         $('#error_container_message').empty();
-      },
-      success: function (result) {
         if (result['result'] === 'r1') {
           $('#modal_data').modal('hide');
           get_data(page);
         } else {
           $('#error_container').show();
           $('#error_container_message').append(result['result_message']);
+          get_data(page);
         }
       }
     });
   };
 
   edit_data = function (id, name, category, active) {
-    $.ajax({
+    $.ajaxFileUpload({
       url: base_url + 'brand/edit_data',
-      type: 'POST',
-      data: {
+      secureuri: false,
+      fileElementId: 'txt_data_edit_file',
+      dataType: 'json',
+      data:{
         id: id,
         name: name,
         category:category,
         active: active
       },
-      dataType: 'json',
-      beforeSend: function () {
+      success: function (result){
         $('#error_container').hide();
         $('#error_container_message').empty();
-      },
-      success: function (result) {
         if (result['result'] === 'r1') {
           $('#modal_data').modal('hide');
           get_data(page);
