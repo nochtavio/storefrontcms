@@ -23,6 +23,7 @@ $(document).ready(function () {
           <tr>\
             <th>No</th>\
             <th>Name</th>\
+            <th>Image</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -75,11 +76,15 @@ $(document).ready(function () {
               action += "<a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;";
             }
             //End Action
+            
+            var d = new Date();
+            var time = d.getTime(); 
 
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
                 <td>" + result['name'][x] + "</td>\
+                <td><img src='" + base_url + result['img'][x] + "?"+time+"' width='225px' height='100px' /> <br/> <strong>URL : </strong> " + result['img'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>" + action + "</td>\

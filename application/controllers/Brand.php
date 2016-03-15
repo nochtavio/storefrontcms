@@ -21,8 +21,8 @@ class Brand extends CI_Controller {
     $config_resize['source_image'] = $source;
     $config_resize['create_thumb'] = FALSE;
     $config_resize['maintain_ratio'] = FALSE;
-    $config_resize['width']         = 256;
-    $config_resize['height']       = 256;
+    $config_resize['width']         = 225;
+    $config_resize['height']       = 100;
 
     $this->image_lib->initialize($config_resize);
     $this->image_lib->resize();
