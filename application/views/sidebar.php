@@ -8,6 +8,13 @@
     }
   ?>
   <?php 
+    if(check_menu("Static_content", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Static_content") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>static_content/"><i class="fa fa-bookmark"></i> <span>Static Content</span></a></li>  
+      <?php
+    }
+  ?>
+  <?php 
     if(check_menu("Slider", $type = 0)){
       ?>
         <li class="<?php echo ($page == "Slider") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>slider/"><i class="fa fa-object-group"></i> <span>Slider</span></a></li>
