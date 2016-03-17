@@ -70,7 +70,7 @@
               <img id="txt_data_img" width="225px" height="100px" alt="No Image" />
               <input type="file" multiple="multiple" class="form-control form_data" name="txt_data_add_file[]" id="txt_data_add_file" size="20" />
               <input type="file" class="form-control form_data" name="txt_data_edit_file" id="txt_data_edit_file" size="20" />
-              <p class="help-block" style="margin-bottom: 0;">Allowed file is JPG | Maximum size is 500 KB | Recommended resolution is 225 x 100 px</p>
+              <p class="help-block" style="margin-bottom: 0;">Allowed file is JPG, PNG | Maximum size is 500 KB | Recommended resolution is 225 x 100 px</p>
             </div>
           </div>
           <div class="form-group">
