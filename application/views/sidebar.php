@@ -49,4 +49,11 @@
       <?php
     }
   ?>
+  <?php 
+    if(check_menu("Voucher", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Voucher") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>voucher/"><i class="fa fa-money"></i> <span>Voucher</span></a></li> 
+      <?php
+    }
+  ?>
 </ul>
