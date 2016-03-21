@@ -13,6 +13,7 @@ class Voucher extends CI_Controller {
     }
     $this->load->model('Model_voucher');
     $this->load->model('Model_category');
+    $this->load->model('Model_brand');
   }
   
   public function index() {
@@ -26,6 +27,7 @@ class Voucher extends CI_Controller {
     //Get List Category
     $param['active'] = 1;
     $content['category'] = $this->Model_category->get_data($param, 0, 100)->result();
+    $content['brand'] = $this->Model_brand->get_data($param, 0, 100)->result();
     //End Get List Category
     
     $data['header'] = $this->load->view('header', '', TRUE);
@@ -101,6 +103,7 @@ class Voucher extends CI_Controller {
       $data['transaction_type'] = $result_data->row()->transaction_type;
       $data['value'] = $result_data->row()->value;
       $data['category'] = ($result_data->row()->category != "") ? array_filter(explode(",", $result_data->row()->category)) : "";
+      $data['brand'] = ($result_data->row()->brand != "") ? array_filter(explode(",", $result_data->row()->brand)) : "";
       $data['min_price'] = (is_null($result_data->row()->min_price)) ? "" : $result_data->row()->min_price ;
       $data['start_date'] = (is_null($result_data->row()->start_date)) ? "" : $result_data->row()->start_date ;
       $data['end_date'] = (is_null($result_data->row()->end_date)) ? "" : $result_data->row()->end_date ;
@@ -173,6 +176,7 @@ class Voucher extends CI_Controller {
     $param['transaction_type'] = ($this->input->post('transaction_type', TRUE)) ? $this->input->post('transaction_type', TRUE) : 1 ;
     $param['value'] = ($this->input->post('value', TRUE)) ? $this->input->post('value', TRUE) : 0 ;
     $param['category'] = ($this->input->post('category', TRUE)) ? $this->input->post('category', TRUE) : NULL ;
+    $param['brand'] = ($this->input->post('brand', TRUE)) ? $this->input->post('brand', TRUE) : NULL ;
     $param['min_price'] = ($this->input->post('min_price', TRUE)) ? $this->input->post('min_price', TRUE) : "" ;
     $param['start_date'] = ($this->input->post('start_date', TRUE)) ? $this->input->post('start_date', TRUE) : "" ;
     $param['end_date'] = ($this->input->post('end_date', TRUE)) ? $this->input->post('end_date', TRUE) : "" ;
@@ -197,6 +201,7 @@ class Voucher extends CI_Controller {
     $param['transaction_type'] = ($this->input->post('transaction_type', TRUE)) ? $this->input->post('transaction_type', TRUE) : 1 ;
     $param['value'] = ($this->input->post('value', TRUE)) ? $this->input->post('value', TRUE) : 0 ;
     $param['category'] = ($this->input->post('category', TRUE)) ? $this->input->post('category', TRUE) : NULL ;
+    $param['brand'] = ($this->input->post('brand', TRUE)) ? $this->input->post('brand', TRUE) : NULL ;
     $param['min_price'] = ($this->input->post('min_price', TRUE)) ? $this->input->post('min_price', TRUE) : "" ;
     $param['start_date'] = ($this->input->post('start_date', TRUE)) ? $this->input->post('start_date', TRUE) : "" ;
     $param['end_date'] = ($this->input->post('end_date', TRUE)) ? $this->input->post('end_date', TRUE) : "" ;
@@ -234,6 +239,7 @@ class Voucher extends CI_Controller {
       $param_set['transaction_type'] = $result_data->row()->transaction_type;
       $param_set['value'] = $result_data->row()->value;
       $param_set['category'] = ($result_data->row()->category != "") ? array_filter(explode(",", $result_data->row()->category)) : "";
+      $param_set['brand'] = ($result_data->row()->brand != "") ? array_filter(explode(",", $result_data->row()->brand)) : "";
       $param_set['min_price'] = (is_null($result_data->row()->min_price)) ? "" : $result_data->row()->min_price ;
       $param_set['start_date'] = (is_null($result_data->row()->start_date)) ? "" : $result_data->row()->start_date ;
       $param_set['end_date'] = (is_null($result_data->row()->end_date)) ? "" : $result_data->row()->end_date ;

@@ -127,6 +127,21 @@
             </div>
           </div>
           <div class="form-group">
+            <label class="col-lg-3 col-sm-3 control-label">Brand</label>
+            <div class="col-lg-9 col-sm-9">
+              <select id="sel_data_brand" class="form-control" multiple="multiple">
+                <?php 
+                foreach($brand as $bra){
+                  ?>
+                    <option value="<?php echo $bra->id; ?>"><?php echo $bra->name; ?></option>
+                  <?php
+                }
+              ?>
+              </select>
+              <p class="help-block" style="margin-bottom: 0;">Choose which brand for this voucher. Leave it empty if voucher is applied to all brands.</p>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="txt_data_min_price" class="col-lg-3 col-sm-3 control-label">Minimum Purchase</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_min_price" placeholder="Enter voucher minimum purchase">

@@ -2,22 +2,18 @@ $(document).ready(function () {
   get_data = function (page) {
     //Filter
     var name = $('#txt_name').val();
-    var code = $('#txt_code').val();
-    var discount_type = $('#sel_discount_type').val();
-    var transaction_type = $('#sel_transaction_type').val();
+    var type = $('#sel_type').val();
     var active = $('#sel_active').val();
     var order = $('#sel_order').val();
     //End Filter
 
     $.ajax({
-      url: base_url + 'voucher/get_data',
+      url: base_url + 'payment/get_data',
       type: 'POST',
       data: {
         page: page,
         name: name,
-        code: code,
-        discount_type: discount_type,
-        transaction_type: transaction_type,
+        type: type,
         active: active,
         order: order
       },
@@ -29,11 +25,9 @@ $(document).ready(function () {
           <tr>\
             <th>No</th>\
             <th>Name</th>\
-            <th>Code</th>\
-            <th>Discount Type</th>\
-            <th>Transaction Type</th>\
-            <th>Value</th>\
-            <th>Usage</th>\
+            <th>Logo</th>\
+            <th>Type</th>\
+            <th>Show Order</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -55,20 +49,6 @@ $(document).ready(function () {
           //End Set Paging
 
           for (var x = 0; x < result['total']; x++) {
-            //Discount Type
-            var discount_type = "Flat Discount";
-            if(result['discount_type'] == 2){
-              discount_type = "Percentage Discount";
-            }
-            //End Discount Type
-            
-            //Transaction Type
-            var transaction_type = "One Time Transaction";
-            if(result['transaction_type'] == 2){
-              transaction_type = "Multiple Transaction";
-            }
-            //End Transaction Type
-            
             //Status
             var status = "";
             if(result['allowed_edit']){
@@ -83,6 +63,13 @@ $(document).ready(function () {
               }
             }
             //End Status
+            
+            //Type
+            var type = "Transfer";
+            if(result['type'][x] == 2){
+              type = "Non-Transfer";
+            }
+            //End Type
 
             //Date
             var date = "Created by <strong>" + result['creby'][x] + "</strong> <br/> on <strong>" + result['cretime'][x] + "</strong>";
@@ -100,16 +87,17 @@ $(document).ready(function () {
               action += "<a href='#' id='btn_remove" + result['id'][x] + "' class='fa fa-times'></a> &nbsp;";
             }
             //End Action
+            
+            var d = new Date();
+            var time = d.getTime(); 
 
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
                 <td>" + result['name'][x] + "</td>\
-                <td>" + result['code'][x] + "</td>\
-                <td>" + discount_type + "</td>\
-                <td>" + transaction_type + "</td>\
-                <td>" + result['value'][x] + "</td>\
-                <td>" + result['usage'][x] + "</td>\
+                <td><img src='" + base_url + result['logo'][x] + "?"+time+"' width='100px' height='100px' /> <br/> <strong>URL : </strong> " + result['logo'][x] + "</td>\
+                <td>" + type + "</td>\
+                <td>" + result['show_order'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>" + action + "</td>\
@@ -129,7 +117,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='10'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -147,7 +135,7 @@ $(document).ready(function () {
       $(document).on('click', '#btn_active' + val, function (event) {
         event.preventDefault();
         $.ajax({
-          url: base_url + 'voucher/set_active',
+          url: base_url + 'payment/set_active',
           type: 'POST',
           data:{
             id: val
@@ -179,7 +167,7 @@ $(document).ready(function () {
         event.preventDefault();
         set_state("edit");
         $.ajax({
-          url: base_url + 'voucher/get_specific_data',
+          url: base_url + 'payment/get_specific_data',
           type: 'POST',
           data:{
             id: val
@@ -187,18 +175,16 @@ $(document).ready(function () {
           dataType: 'json',
           success: function (result) {
             if (result['result'] === 'r1') {
+              var d = new Date();
+              var time = d.getTime(); 
+              
               $("#txt_data_id").val(val);
               $("#txt_data_name").val(result['name']);
-              $("#txt_data_code").val(result['code']);
-              $("#txt_data_description").val(result['description']);
-              $("#sel_data_discount_type").val(result['discount_type']);
-              $("#sel_data_transaction_type").val(result['transaction_type']);
-              $("#txt_data_value").val(result['value']);
-              $('#sel_data_category').multiselect('select', result['category']);
-              $('#sel_data_brand').multiselect('select', result['brand']);
-              $("#txt_data_min_price").val(result['min_price']);
-              $("#txt_data_start_date").val(result['start_date']);
-              $("#txt_data_end_date").val(result['end_date']);
+              $("#txt_data_description").code(result['description']);
+              $("#txt_data_img").attr("src", base_url + result['logo'] + "?" + time);
+              $('#sel_data_type').val(result['type']);
+              $('#txt_data_minimum_grand_total').val(result['minimum_grand_total']);
+              $('#txt_data_show_order').val(result['show_order']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -226,7 +212,7 @@ $(document).ready(function () {
       $(document).off('click', '#btn_remove' + val);
       $(document).on('click', '#btn_remove' + val, function (event) {
         event.preventDefault();
-        $('#remove_message').html("Are you sure you want to remove this voucher?");
+        $('#remove_message').html("Are you sure you want to remove this payment?");
         $('#txt_remove_id').val(val);
         $('#modal_remove').modal("show");
       });
@@ -236,98 +222,77 @@ $(document).ready(function () {
   set_state = function (x) {
     state = x;
     if (x == "add") {
-      $('#modal_data_title').html("Add Voucher");
+      $('#modal_data_title').html("Add Payment");
       
       $('.form_data').val('');
-      $('option', $('#sel_data_category')).each(function(element) {
-          $(this).removeAttr('selected').prop('selected', false);
-      });
-      $('#sel_data_category').multiselect('refresh');
-      $('option', $('#sel_data_brand')).each(function(element) {
-          $(this).removeAttr('selected').prop('selected', false);
-      });
-      $('#sel_data_brand').multiselect('refresh');
+      $('#txt_data_description').code('');
+      $("#txt_data_img").hide();
+      $('#txt_data_add_file').show();
+      $('#txt_data_edit_file').hide();
+      $('#sel_data_type').val(1);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     } else {
-      $('#modal_data_title').html("Edit Voucher");
+      $('#modal_data_title').html("Edit Payment");
 
       $('.form_data').val('');
-      $('option', $('#sel_data_category')).each(function(element) {
-          $(this).removeAttr('selected').prop('selected', false);
-      });
-      $('#sel_data_category').multiselect('refresh');
-      $('option', $('#sel_data_brand')).each(function(element) {
-          $(this).removeAttr('selected').prop('selected', false);
-      });
-      $('#sel_data_brand').multiselect('refresh');
+      $("#txt_data_img").show();
+      $('#txt_data_add_file').hide();
+      $('#txt_data_edit_file').show();
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
   };
 
-  add_data = function (name, code, description, discount_type, transaction_type, value, category, brand, min_price, start_date, end_date, active) {
-    $.ajax({
-      url: base_url + 'voucher/add_data',
-      type: 'POST',
-      data: {
+  add_data = function (name, description, type, minimum_grand_total, show_order, active) {
+    $.ajaxFileUpload({
+      url: base_url + 'payment/add_data',
+      secureuri: false,
+      fileElementId: 'txt_data_add_file',
+      dataType: 'json',
+      data:{
         name: name,
-        code: code,
         description: description,
-        discount_type: discount_type,
-        transaction_type: transaction_type,
-        value: value,
-        category: category,
-        brand: brand,
-        min_price: min_price,
-        start_date: start_date,
-        end_date: end_date,
+        type: type,
+        minimum_grand_total: minimum_grand_total,
+        show_order: show_order,
         active: active
       },
-      dataType: 'json',
-      beforeSend: function () {
+      success: function (result){
         $('#error_container').hide();
         $('#error_container_message').empty();
-      },
-      success: function (result) {
         if (result['result'] === 'r1') {
           $('#modal_data').modal('hide');
           get_data(page);
         } else {
           $('#error_container').show();
           $('#error_container_message').append(result['result_message']);
+          get_data(page);
         }
       }
     });
   };
 
-  edit_data = function (id, name, code, description, discount_type, transaction_type, value, category, brand, min_price, start_date, end_date, active) {
-    $.ajax({
-      url: base_url + 'voucher/edit_data',
-      type: 'POST',
-      data: {
+  edit_data = function (id, name, description, type, minimum_grand_total, show_order, active) {
+    $.ajaxFileUpload({
+      url: base_url + 'payment/edit_data',
+      secureuri: false,
+      fileElementId: 'txt_data_edit_file',
+      dataType: 'json',
+      data:{
         id: id,
         name: name,
-        code: code,
         description: description,
-        discount_type: discount_type,
-        transaction_type: transaction_type,
-        value: value,
-        category: category,
-        brand: brand,
-        min_price: min_price,
-        start_date: start_date,
-        end_date: end_date,
+        type: type,
+        minimum_grand_total: minimum_grand_total,
+        show_order: show_order,
         active: active
       },
-      dataType: 'json',
-      beforeSend: function () {
+      success: function (result){
         $('#error_container').hide();
         $('#error_container_message').empty();
-      },
-      success: function (result) {
         if (result['result'] === 'r1') {
           $('#modal_data').modal('hide');
           get_data(page);
@@ -345,7 +310,7 @@ $(document).ready(function () {
     //end param
     
     $.ajax({
-      url: base_url + 'voucher/remove_data',
+      url: base_url + 'payment/remove_data',
       type: 'POST',
       data: {
         id: id

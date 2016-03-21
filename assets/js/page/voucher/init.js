@@ -10,6 +10,12 @@ $(document).ready(function () {
     maxHeight: 400
   });
   
+  $('#sel_data_brand').multiselect({
+    enableFiltering: true,
+    buttonClass: 'btn btn-default',
+    maxHeight: 400
+  });
+  
   $('#txt_data_start_date').datepicker({
     todayHighlight: true,
     zIndexOffset: '9999',

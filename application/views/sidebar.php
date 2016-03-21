@@ -43,6 +43,13 @@
     }
   ?>
   <?php 
+    if(check_menu("Payment", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Payment") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>payment/"><i class="fa fa-credit-card"></i> <span>Payment</span></a></li>
+      <?php
+    }
+  ?>
+  <?php 
     if(check_menu("Products", $type = 0)){
       ?>
         <li class="<?php echo ($page == "Products") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>products/"><i class="fa fa-gavel"></i> <span>Products</span></a></li> 

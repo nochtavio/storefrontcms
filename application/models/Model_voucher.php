@@ -54,6 +54,7 @@ class Model_voucher extends CI_Model {
     $transaction_type = (isset($param['transaction_type'])) ? $param['transaction_type'] : 1;
     $value = (isset($param['value'])) ? $param['value'] : 0;
     $category = (isset($param['category'])) ? implode(",", $param['category']) : NULL;
+    $brand = (isset($param['brand'])) ? implode(",", $param['brand']) : NULL;
     $min_price = (isset($param['min_price']) && $param['min_price'] != "") ? $param['min_price'] : NULL;
     $start_date = (isset($param['start_date']) && $param['start_date'] != "") ? $param['start_date'] : NULL;
     $end_date = (isset($param['end_date']) && $param['end_date'] != "") ? $param['end_date'] : NULL;
@@ -68,6 +69,7 @@ class Model_voucher extends CI_Model {
       'transaction_type' => $transaction_type,
       'value' => $value,
       'category' => $category,
+      'brand' => $brand,
       'min_price' => $min_price,
       'start_date' => $start_date,
       'end_date' => date_format(date_create($end_date), 'Y-m-d 23:59:59'),
@@ -91,6 +93,7 @@ class Model_voucher extends CI_Model {
     $transaction_type = (isset($param['transaction_type'])) ? $param['transaction_type'] : 1;
     $value = (isset($param['value'])) ? $param['value'] : 0;
     $category = (isset($param['category'])) ? implode(",", $param['category']) : NULL;
+    $brand = (isset($param['brand'])) ? implode(",", $param['brand']) : NULL;
     $min_price = (isset($param['min_price']) && $param['min_price'] != "") ? $param['min_price'] : NULL;
     $start_date = (isset($param['start_date']) && $param['start_date'] != "") ? $param['start_date'] : NULL;
     $end_date = (isset($param['end_date']) && $param['end_date'] != "") ? $param['end_date'] : NULL;
@@ -105,6 +108,7 @@ class Model_voucher extends CI_Model {
       'transaction_type' => $transaction_type,
       'value' => $value,
       'category' => $category,
+      'brand' => $brand,
       'min_price' => $min_price,
       'start_date' => $start_date,
       'end_date' => date_format(date_create($end_date), 'Y-m-d 23:59:59'),

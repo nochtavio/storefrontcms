@@ -21,6 +21,7 @@ $(document).ready(function () {
     var transaction_type = $('#sel_data_transaction_type').val();
     var value = $('#txt_data_value').val();
     var category = $('#sel_data_category').val();
+    var brand = $('#sel_data_brand').val();
     var min_price = $('#txt_data_min_price').val();
     var start_date = $('#txt_data_start_date').val();
     var end_date = $('#txt_data_end_date').val();
@@ -31,9 +32,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(name, code, description, discount_type, transaction_type, value, category, min_price, start_date, end_date, active);
+      add_data(name, code, description, discount_type, transaction_type, value, category, brand, min_price, start_date, end_date, active);
     }else{
-      edit_data(id, name, code, description, discount_type, transaction_type, value, category, min_price, start_date, end_date, active);
+      edit_data(id, name, code, description, discount_type, transaction_type, value, category, brand, min_price, start_date, end_date, active);
     }
   });
   
