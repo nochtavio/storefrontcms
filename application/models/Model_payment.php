@@ -85,17 +85,31 @@ class Model_payment extends CI_Model {
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
-    $data = array(
-      'name' => $name,
-      'description' => $description,
-      'logo' => $logo,
-      'type' => $type,
-      'minimum_grand_total' => $minimum_grand_total,
-      'show_order' => $show_order,
-      'active' => $active,
-      'modtime' => date('Y-m-d H:i:s'),
-      'modby' => $this->session->userdata('username')
-    );
+    if($logo != ""){
+      $data = array(
+        'name' => $name,
+        'description' => $description,
+        'logo' => $logo,
+        'type' => $type,
+        'minimum_grand_total' => $minimum_grand_total,
+        'show_order' => $show_order,
+        'active' => $active,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => $this->session->userdata('username')
+      );
+    }else{
+      $data = array(
+        'name' => $name,
+        'description' => $description,
+        'type' => $type,
+        'minimum_grand_total' => $minimum_grand_total,
+        'show_order' => $show_order,
+        'active' => $active,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => $this->session->userdata('username')
+      );
+    }
+    
     
     $this->db->where('id', $id);
     $this->db->update('payment', $data);

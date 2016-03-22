@@ -81,17 +81,30 @@ class Model_slider extends CI_Model {
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
-    $data = array(
-      'show_order' => $show_order,
-      'url' => $url,
-      'link' => $link,
-      'target' => $target,
-      'title' => $title,
-      'description' => $description,
-      'active' => $active,
-      'modtime' => date('Y-m-d H:i:s'),
-      'modby' => $this->session->userdata('username')
-    );
+    if($url != ""){
+      $data = array(
+        'show_order' => $show_order,
+        'url' => $url,
+        'link' => $link,
+        'target' => $target,
+        'title' => $title,
+        'description' => $description,
+        'active' => $active,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => $this->session->userdata('username')
+      );
+    }else{
+      $data = array(
+        'show_order' => $show_order,
+        'link' => $link,
+        'target' => $target,
+        'title' => $title,
+        'description' => $description,
+        'active' => $active,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => $this->session->userdata('username')
+      );
+    }
     
     $this->db->where('id', $id);
     $this->db->update('slider', $data);

@@ -75,14 +75,24 @@ class Model_products_image extends CI_Model {
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
-    $data = array(
-      'url' => $url,
-      'default' => $default,
-      'show_order' => $show_order,
-      'active' => $active,
-      'modtime' => date('Y-m-d H:i:s'),
-      'modby' => $this->session->userdata('username')
-    );
+    if($img != ""){
+      $data = array(
+        'url' => $url,
+        'default' => $default,
+        'show_order' => $show_order,
+        'active' => $active,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => $this->session->userdata('username')
+      );
+    }else{
+      $data = array(
+        'default' => $default,
+        'show_order' => $show_order,
+        'active' => $active,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => $this->session->userdata('username')
+      );
+    }
     
     $this->db->where('id', $id);
     $this->db->update('products_image', $data);

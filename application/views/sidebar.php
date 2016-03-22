@@ -50,6 +50,13 @@
     }
   ?>
   <?php 
+    if(check_menu("Shipping", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Shipping") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>shipping/"><i class="fa fa-paper-plane"></i> <span>Shipping</span></a></li>
+      <?php
+    }
+  ?>
+  <?php 
     if(check_menu("Products", $type = 0)){
       ?>
         <li class="<?php echo ($page == "Products") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>products/"><i class="fa fa-gavel"></i> <span>Products</span></a></li> 

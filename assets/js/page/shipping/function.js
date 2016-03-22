@@ -1,0 +1,230 @@
+$(document).ready(function () {
+  get_data = function (page) {
+    //Filter
+    var name = $('#txt_name').val();
+    var active = $('#sel_active').val();
+    var order = $('#sel_order').val();
+    //End Filter
+
+    $.ajax({
+      url: base_url + 'shipping/get_data',
+      type: 'POST',
+      data: {
+        page: page,
+        name: name,
+        active: active,
+        order: order
+      },
+      dataType: 'json',
+      success: function (result) {
+        $('#div_hidden').empty();
+        $('#table_content').empty();
+        $('#table_content').append("\
+          <tr>\
+            <th>No</th>\
+            <th>Kabupaten</th>\
+            <th>Reguler</th>\
+            <th>OKE</th>\
+            <th>YES</th>\
+            <th>Status</th>\
+            <th>Date</th>\
+            <th>Action</th>\
+          </tr>\
+        ");
+
+        if (result['result'] === 'r1') {
+          //Set Paging
+          var no = 1;
+          var size = result['size'];
+          var total_page = result['totalpage'];
+          var class_page = ".page";
+          if (page > 1) {
+            no = parseInt(1) + (parseInt(size) * (parseInt(page) - parseInt(1)));
+          }
+
+          writePaging(total_page, page, class_page);
+          last_page = total_page;
+          //End Set Paging
+
+          for (var x = 0; x < result['total']; x++) {
+            //Status
+            var status = "";
+            if(result['allowed_edit']){
+              status = "<a href='#' id='btn_active" + result['id'][x] + "' class='label label-success'>Active</a>";
+              if (result['active'][x] != 1) {
+                status = "<a href='#' id='btn_active" + result['id'][x] + "' class='label label-danger'>Not Active</a>";
+              }
+            }else{
+              status = "<span class='label label-success'>Active</span>";
+              if (result['active'][x] != 1) {
+                status = "<span class='label label-danger'>Not Active</span>";
+              }
+            }
+            //End Status
+
+            //Date
+            var date = "";
+            if (result['modby'][x] != null) {
+              date += "Modified by <strong>" + result['modby'][x] + "</strong> <br/> on <strong>" + result['modtime'][x] + "</strong>";
+            }
+            //End Date
+            
+            //Action
+            var action = "";
+            if(result['allowed_edit']){
+              action += "<a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;";
+            }
+            //End Action
+
+            $('#table_content').append("\
+              <tr>\
+                <td>" + (parseInt(no) + parseInt(x)) + "</td>\
+                <td>" + result['name'][x] + "</td>\
+                <td>" + result['reguler'][x] + "</td>\
+                <td>" + result['oke'][x] + "</td>\
+                <td>" + result['yes'][x] + "</td>\
+                <td>" + status + "</td>\
+                <td>" + date + "</td>\
+                <td>" + action + "</td>\
+              </tr>");
+
+            //Set Object ID
+            $('#div_hidden').append("\
+              <input type='hidden' id='object" + x + "' value='" + result['id'][x] + "' />\
+            ");
+            total_data++;
+            //End Set Object ID
+          }
+          
+          set_active();
+          set_edit();
+        } else {
+          $('#table_content').append("\
+          <tr>\
+            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+          </tr>");
+        }
+      }
+    });
+  };
+  
+  set_active = function () {
+    var id = [];
+    for (var x = 0; x < total_data; x++) {
+      id[x] = $('#object' + x).val();
+    }
+
+    $.each(id, function (x, val) {
+      $(document).off('click', '#btn_active' + val);
+      $(document).on('click', '#btn_active' + val, function (event) {
+        event.preventDefault();
+        $.ajax({
+          url: base_url + 'shipping/set_active',
+          type: 'POST',
+          data:{
+            id: val
+          },
+          dataType: 'json',
+          success: function (result) {
+            if (result['result'] === 'r1') {
+              get_data(page);
+            }
+            else {
+              alert("Error in connection");
+              get_data(page);
+            }
+          }
+        });
+      });
+    });
+  };
+
+  set_edit = function () {
+    var id = [];
+    for (var x = 0; x < total_data; x++) {
+      id[x] = $('#object' + x).val();
+    }
+
+    $.each(id, function (x, val) {
+      $(document).off('click', '#btn_edit' + val);
+      $(document).on('click', '#btn_edit' + val, function (event) {
+        event.preventDefault();
+        set_state("edit");
+        $.ajax({
+          url: base_url + 'shipping/get_specific_data',
+          type: 'POST',
+          data:{
+            id: val
+          },
+          dataType: 'json',
+          success: function (result) {
+            if (result['result'] === 'r1') {
+              $("#txt_data_id").val(val);
+              $("#txt_data_name").val(result['name']);
+              $("#txt_data_reguler").val(result['reguler']);
+              $("#txt_data_oke").val(result['oke']);
+              $("#txt_data_yes").val(result['yes']);
+              if (result['active'] == "1") {
+                $('#txt_data_active').prop('checked', true);
+              } else {
+                $('#txt_data_active').prop('checked', false);
+              }
+              $('#modal_data').modal('show');
+            }
+            else {
+              alert("Error in connection");
+              $('#modal_data').modal('hide');
+            }
+          }
+        });
+      });
+    });
+  };
+
+  set_state = function (x) {
+    state = x;
+    if (x == "add") {
+      $('#modal_data_title').html("Add Shipping");
+      
+      $('.form_data').val('');
+
+      $('#error_container').hide();
+      $('#error_container_message').empty();
+    } else {
+      $('#modal_data_title').html("Edit Shipping");
+
+      $('.form_data').val('');
+
+      $('#error_container').hide();
+      $('#error_container_message').empty();
+    }
+  };
+
+  edit_data = function (id, reguler, oke, yes, active) {
+    $.ajax({
+      url: base_url + 'shipping/edit_data',
+      type: 'POST',
+      data: {
+        id: id,
+        reguler: reguler,
+        oke: oke,
+        yes: yes,
+        active: active
+      },
+      dataType: 'json',
+      beforeSend: function () {
+        $('#error_container').hide();
+        $('#error_container_message').empty();
+      },
+      success: function (result) {
+        if (result['result'] === 'r1') {
+          $('#modal_data').modal('hide');
+          get_data(page);
+        } else {
+          $('#error_container').show();
+          $('#error_container_message').append(result['result_message']);
+        }
+      }
+    });
+  };
+});

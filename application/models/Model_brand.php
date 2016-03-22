@@ -90,13 +90,22 @@ class Model_brand extends CI_Model {
       $category = explode(",", $param['category']);
     }
     
-    $data = array(
-      'name' => $name,
-      'img' => $img,
-      'active' => $active,
-      'modtime' => date('Y-m-d H:i:s'),
-      'modby' => $this->session->userdata('username')
-    );
+    if($img != ""){
+      $data = array(
+        'name' => $name,
+        'img' => $img,
+        'active' => $active,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => $this->session->userdata('username')
+      );
+    }else{
+      $data = array(
+        'name' => $name,
+        'active' => $active,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => $this->session->userdata('username')
+      );
+    }
     
     $this->db->where('id', $id);
     $this->db->update('brand', $data);
