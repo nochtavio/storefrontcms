@@ -75,7 +75,7 @@ class Model_products_image extends CI_Model {
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
-    if($img != ""){
+    if($url != ""){
       $data = array(
         'url' => $url,
         'default' => $default,
