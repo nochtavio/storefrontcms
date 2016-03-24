@@ -70,4 +70,11 @@
       <?php
     }
   ?>
+  <?php 
+    if(check_menu("Order", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Order") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>order/"><i class="fa fa-shopping-bag"></i> <span>Order</span></a></li> 
+      <?php
+    }
+  ?>
 </ul>
