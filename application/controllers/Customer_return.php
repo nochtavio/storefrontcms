@@ -99,9 +99,10 @@ class Customer_return extends CI_Controller {
     echo json_encode($data);
   }
   
-  public function validate_post($param){
+  public function validate_post($param, $pc_edited = TRUE){
     //param
     $purchase_code = (isset($param['purchase_code'])) ? $param['purchase_code'] : "";
+    $SKU = (isset($param['SKU'])) ? $param['SKU'] : "";
     $order_item_id = (isset($param['order_item_id'])) ? $param['order_item_id'] : "";
     $qty = (isset($param['qty'])) ? $param['qty'] : "";
     $reason = (isset($param['reason'])) ? $param['reason'] : "";
@@ -113,6 +114,16 @@ class Customer_return extends CI_Controller {
     if($purchase_code == ""){
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Purchase Code</strong> must be filled !<br/>";
+    }else{
+      if($pc_edited){
+        $param_check_pc['purchase_code'] = $purchase_code;
+        $param_check_pc['SKU'] = $SKU;
+        $result_data = $this->Model_customer_return->get_data($param_check_pc);
+        if($result_data->num_rows() > 0){
+          $data['result'] = "r2";
+          $data['result_message'] .= "<strong>Purchase Code</strong> with this SKU is already returned !<br/>";
+        }
+      }
     }
     
     if($order_item_id == ""){
@@ -126,6 +137,19 @@ class Customer_return extends CI_Controller {
     }else if(!is_numeric($qty)){
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Quantity</strong> must be a number !<br/>";
+    }else{
+      $param_check_oi['purchase_code'] = $purchase_code;
+      $param_check_oi['SKU'] = $SKU;
+      $result_data = $this->Model_customer_return->get_order_item($param_check_oi);
+      if($result_data->num_rows() > 0){
+        if($qty > $result_data->row()->quantity){
+          $data['result'] = "r2";
+          $data['result_message'] .= "<strong>Quantity</strong> is larger than ordered !<br/>";
+        }
+      }else{
+        $data['result'] = "r2";
+        $data['result_message'] .= "<strong>Purchase Code</strong> is not found<br/>";
+      }
     }
     
     if($reason == ""){
@@ -147,7 +171,7 @@ class Customer_return extends CI_Controller {
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : "" ;
     //end param
     
-    $validate_post = $this->validate_post($param);
+    $validate_post = $this->validate_post($param, TRUE);
     if($validate_post['result'] == "r1"){
       $this->Model_customer_return->add_data($param);
     }
@@ -168,7 +192,17 @@ class Customer_return extends CI_Controller {
     //end param
     
     if($param['id'] != ""){
-      $validate_post = $this->validate_post($param);
+      //check if purchase order edited or not
+      $pc_edited = TRUE;
+      $param_check['id'] =  $param['id'];
+      $param_check['SKU'] =  $param['SKU'];
+      $result_data = $this->Model_customer_return->get_data($param_check);
+      if($result_data->num_rows() > 0){
+        $pc_edited = FALSE;
+      }
+      //var_dump($param_check);die();
+      //end check
+      $validate_post = $this->validate_post($param, $pc_edited);
       if($validate_post['result'] == "r1"){
         $this->Model_customer_return->edit_data($param);
       }

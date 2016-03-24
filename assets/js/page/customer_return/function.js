@@ -308,6 +308,7 @@ $(document).ready(function () {
           $("#txt_data_customer_id").val(result['customer_id']);
           $("#txt_data_customer_email").val(result['customer_email']);
         } else {
+          $('.hidden-div').hide();
           alert(result['result_message']);
           $('.form_data').val('');
         }

@@ -10,6 +10,7 @@ class Model_customer_return extends CI_Model {
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $purchase_code = (isset($param['purchase_code'])) ? $param['purchase_code'] : "";
     $customer_email = (isset($param['customer_email'])) ? $param['customer_email'] : "";
+    $SKU = (isset($param['SKU'])) ? $param['SKU'] : "";
     $status = (isset($param['status'])) ? $param['status'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
@@ -24,6 +25,7 @@ class Model_customer_return extends CI_Model {
     if($id > 0){$this->db->where('customer_return.id', $id);}
     if($purchase_code != ""){$this->db->like('customer_return.purchase_code', $purchase_code);}
     if($customer_email != ""){$this->db->like('customer.customer_email', $customer_email);}
+    if($SKU != ""){$this->db->where('customer_return.SKU', $SKU);}
     if($status > -1){$this->db->where('customer_return.status', $status);}
     //End Validation
     

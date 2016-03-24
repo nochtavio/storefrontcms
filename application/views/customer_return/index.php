@@ -70,7 +70,7 @@
               <input type="text" class="form-control" id="txt_data_purchase_code" placeholder="Enter valid purchase code">
             </div>
             <div class="col-lg-2 col-sm-2">
-              <button id="btn_purchase_code" type="button" class="btn btn-default pull-right">Apply</button>
+              <button id="btn_purchase_code" type="button" class="btn btn-default pull-right" style="width: 70px;">Apply</button>
             </div>
           </div>
           
