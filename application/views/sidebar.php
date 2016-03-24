@@ -77,4 +77,11 @@
       <?php
     }
   ?>
+  <?php 
+    if(check_menu("Customer_return", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Customer_return") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>customer_return/"><i class="fa fa-history"></i> <span>Customer Return</span></a></li> 
+      <?php
+    }
+  ?>
 </ul>
