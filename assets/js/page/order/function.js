@@ -78,9 +78,9 @@ $(document).ready(function () {
             //End Status
             
             //Date
-            var date = "";
-            if (result['updated_by'][x] != null) {
-              date += "Modified by <strong>" + result['updated_by'][x] + "</strong>";
+            var date = "Purchased on <strong> <br/> " + result['purchase_date'][x] + "</strong>";
+            if (result['updated_by'][x] != "") {
+              date += "<br/> <br/> Modified by <strong>" + result['updated_by'][x] + "</strong>";
             }
             //End Date
             

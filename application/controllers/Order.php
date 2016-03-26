@@ -56,6 +56,7 @@ class Order extends CI_Controller {
         $data['confirm_transfer_bank'][$temp] = ($row->confirm_transfer_bank == NULL) ? "" : $row->confirm_transfer_bank;
         $data['confirm_transfer_amount'][$temp] = ($row->confirm_transfer_amount == NULL) ? "" : number_format($row->confirm_transfer_amount);
         $data['status'][$temp] = $row->status ;
+        $data['purchase_date'][$temp] = date_format(date_create($row->purchase_date), 'd F Y H:i:s');
         $data['updated_by'][$temp] = ($row->updated_by == NULL) ? "" : $row->updated_by;
         $temp++;
       }
@@ -103,7 +104,7 @@ class Order extends CI_Controller {
         $temp++;
       }
       $data['subtotal'] = number_format($subtotal);
-      $data['grandtotal'] = number_format($subtotal+$data['paycode_before_format']-$data['shipping_cost_before_format']-$data['discount_before_format']-$data['credit_use_before_format']);
+      $data['grandtotal'] = number_format($subtotal+$data['paycode_before_format']+$data['shipping_cost_before_format']-$data['discount_before_format']-$data['credit_use_before_format']);
       $data['total'] = $temp;
     } else {
       $data['result'] = "r2";

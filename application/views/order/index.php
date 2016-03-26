@@ -132,7 +132,7 @@
             <td style="padding: 5px"><strong><span>Shipping Cost</span></strong></td>
             <td><strong><span style="margin: 0 7px 0 7px;">:</span></strong></td>
             <td><span id="txt_detail_shipping_cost"></span> </td>
-            <td><i class="fa fa-minus-square-o" style="margin: 0 0 0 7px;"></i></td>
+            <td><i class="fa fa-plus-square-o" style="margin: 0 0 0 7px;"></i></td>
           </tr>
           <tr>
             <td style="padding: 5px"><strong><span>Discount</span></strong></td>
