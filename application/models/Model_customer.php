@@ -27,74 +27,26 @@ class Model_customer extends CI_Model {
     if($customer_gender > -1){$this->db->where('customer.customer_gender', $customer_gender);}
     if($customer_province != ""){$this->db->like('customer.customer_email', $customer_email);}
     if($customer_city != ""){$this->db->like('customer.customer_email', $customer_email);}
-    if($active > -1){$this->db->where('customer.active', $active);}
+    if($customer_status > -1){$this->db->where('customer.customer_status', $customer_status);}
     //End Validation
     
-    $this->db->where('customer.deleted', 0);
     if($order == 1){
-      $this->db->order_by("customer.name", "desc");
+      $this->db->order_by("customer.customer_registration_date", "asc");
     }else if($order == 2){
-      $this->db->order_by("customer.cretime", "desc");
+      $this->db->order_by("customer.customer_email", "asc");
     }else if($order == 3){
-      $this->db->order_by("customer.cretime", "asc");
+      $this->db->order_by("customer.customer_email", "desc");
+    }else if($order == 4){
+      $this->db->order_by("customer.customer_fname", "asc");
+    }else if($order == 5){
+      $this->db->order_by("customer.customer_fname", "desc");
     }else{
-      $this->db->order_by("customer.name", "asc");
+      $this->db->order_by("customer.customer_registration_date", "desc");
     }
     
     if($size >= 0){$this->db->limit($size, $limit);}
     $query = $this->db->get();
     
     return $query;
-  }
-  
-  function add_data($param){
-    //Set Param
-    $name = (isset($param['name'])) ? $param['name'] : "";
-    $active = (isset($param['active'])) ? $param['active'] : 0;
-    //End Set Param
-    
-    $data = array(
-      'name' => $name,
-      'active' => $active,
-      'cretime' => date('Y-m-d H:i:s'),
-      'creby' => $this->session->userdata('username')
-    );
-    $this->db->insert('customer', $data);
-    $insert_id = $this->db->insert_id();
-    
-    return $insert_id;
-  }
-
-  function edit_data($param){
-    //Set Param
-    $id = (isset($param['id'])) ? $param['id'] : 0;
-    $name = (isset($param['name'])) ? $param['name'] : "";
-    $active = (isset($param['active'])) ? $param['active'] : 0;
-    //End Set Param
-    
-    $data = array(
-      'name' => $name,
-      'active' => $active,
-      'modtime' => date('Y-m-d H:i:s'),
-      'modby' => $this->session->userdata('username')
-    );
-    
-    $this->db->where('id', $id);
-    $this->db->update('customer', $data);
-  }
-  
-  function remove_data($param){
-    //Set Param
-    $id = (isset($param['id'])) ? $param['id'] : 0;
-    //End Set Param
-    
-    $data = array(
-      'deleted' => 1,
-      'modtime' => date('Y-m-d H:i:s'),
-      'modby' => $this->session->userdata('username')
-    );
-    
-    $this->db->where('id', $id);
-    $this->db->update('customer', $data);
   }
 }
