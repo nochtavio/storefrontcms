@@ -29,6 +29,13 @@
     }
   ?>
   <?php 
+    if(check_menu("Customer", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Customer") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>customer/"><i class="fa fa-users"></i> <span>Customer</span></a></li> 
+      <?php
+    }
+  ?>
+  <?php 
     if(check_menu("Customer_return", $type = 0)){
       ?>
         <li class="<?php echo ($page == "Customer_return") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>customer_return/"><i class="fa fa-history"></i> <span>Customer Return</span></a></li> 

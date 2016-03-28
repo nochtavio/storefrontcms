@@ -23,7 +23,7 @@ class Model_customer extends CI_Model {
     //Validation
     if($customer_id > 0){$this->db->where('customer.customer_id', $customer_id);}
     if($customer_email != ""){$this->db->like('customer.customer_email', $customer_email);}
-    if($name != ""){$this->db->where('customer.customer_fname', $name);$this->db->or_where('customer.customer_lname', $name); }
+    if($name != ""){$this->db->like('customer.customer_fname', $name);$this->db->or_like('customer.customer_lname', $name); }
     if($customer_gender > -1){$this->db->where('customer.customer_gender', $customer_gender);}
     if($customer_province != ""){$this->db->like('customer.customer_email', $customer_email);}
     if($customer_city != ""){$this->db->like('customer.customer_email', $customer_email);}
@@ -48,5 +48,20 @@ class Model_customer extends CI_Model {
     $query = $this->db->get();
     
     return $query;
+  }
+  
+  function edit_data($param){
+    //Set Param
+    $customer_id = (isset($param['customer_id'])) ? $param['customer_id'] : 0;
+    $customer_status = (isset($param['customer_status'])) ? $param['customer_status'] : 0;
+    //End Set Param
+    
+    $data = array(
+      'customer_status' => $customer_status,
+      'last_modified' => date('Y-m-d H:i:s')
+    );
+    
+    $this->db->where('customer_id', $customer_id);
+    $this->db->update('customer', $data);
   }
 }
