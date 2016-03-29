@@ -1,11 +1,11 @@
 $(document).ready(function(){
   //Function Write Paging
   writePaging = function (total_page, page, class_page){
+    $('#paging').empty();
     if (total_page > 1){
       var initial = (parseInt(page) - parseInt(4) > 1) ? parseInt(page) - parseInt(5) : 0 ;
       var total = (parseInt(page) + parseInt(4) <= total_page) ? parseInt(page) + parseInt(4) : parseInt(total_page);
       
-      $('#paging').empty();
       $('#paging').append("<li><a href='#' class='firstpage'>&laquo;</a></li>");
       for (var y = initial; y < total; y++){
         $('#paging').append("<li class='page" + (y + 1) + "'><a href='#' class='page'>" + (y + 1) + "</a></li>");

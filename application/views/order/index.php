@@ -9,6 +9,11 @@
           <div class="input-group">
             <input id="txt_purchase_code" name="txt_purchase_code" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Purchase Code">
             <input id="txt_customer_email" name="txt_customer_email" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Customer Email">
+            <select id="sel_status_payment" name="sel_status_payment" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
+              <option value="-1">All Status Payment</option>
+              <option value="1">Confirmed</option>
+              <option value="2">Not Confirmed</option>
+            </select>
             <select id="sel_status" name="sel_status" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status</option>
               <option value="1">Paid</option>

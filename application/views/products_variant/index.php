@@ -90,6 +90,12 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="txt_data_max_quantity_order" class="col-lg-3 col-sm-3 control-label">Max Quantity Order</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_max_quantity_order" placeholder="Enter maximum quantity order">
+            </div>
+          </div>
+          <div class="form-group">
             <label for="txt_data_show_order" class="col-lg-3 col-sm-3 control-label">Show Order</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_show_order" placeholder="Enter show order">

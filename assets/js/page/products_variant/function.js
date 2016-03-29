@@ -156,7 +156,7 @@ $(document).ready(function () {
     }
   };
 
-  add_data = function (id_color, size, quantity, show_order, active) {
+  add_data = function (id_color, size, quantity, max_quantity_order, show_order, active) {
     $.ajax({
       url: base_url + 'products_variant/add_data',
       type: 'POST',
@@ -165,6 +165,7 @@ $(document).ready(function () {
         id_color: id_color,
         size: size,
         quantity: quantity,
+        max_quantity_order: max_quantity_order,
         show_order: show_order,
         active: active
       },

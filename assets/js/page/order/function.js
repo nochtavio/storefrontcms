@@ -3,6 +3,7 @@ $(document).ready(function () {
     //Filter
     var purchase_code = $('#txt_purchase_code').val();
     var customer_email = $('#txt_customer_email').val();
+    var status_payment = $('#sel_status_payment').val();
     var status = $('#sel_status').val();
     var order = $('#sel_order').val();
     //End Filter
@@ -14,6 +15,7 @@ $(document).ready(function () {
         page: page,
         purchase_code: purchase_code,
         customer_email: customer_email,
+        status_payment: status_payment,
         status: status,
         order: order
       },

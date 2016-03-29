@@ -16,6 +16,7 @@ $(document).ready(function () {
     var id = $('#txt_data_id').val();
     var size = $('#txt_data_size').val();
     var quantity = $('#txt_data_quantity').val();
+    var max_quantity_order = $('#txt_data_max_quantity_order').val();
     var show_order = $('#txt_data_show_order').val();
     var active = 0;
     if ($('#txt_data_active').prop('checked')) {
@@ -24,9 +25,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data( size, quantity, show_order, active);
+      add_data( size, quantity, max_quantity_order, show_order, active);
     }else{
-      edit_data(id, size, quantity, show_order, active);
+      edit_data(id, size, quantity, max_quantity_order, show_order, active);
     }
   });
   

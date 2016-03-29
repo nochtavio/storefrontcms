@@ -157,6 +157,7 @@ class Products_variant_detail extends CI_Controller {
       $data['id_color'] = $result_data->row()->id_color;
       $data['size'] = ($result_data->row()->size == NULL) ? '' : $result_data->row()->size;
       $data['quantity'] = $result_data->row()->quantity;
+      $data['max_quantity_order'] = $result_data->row()->max_quantity_order;
       $data['show_order'] = $result_data->row()->show_order;
       $data['active'] = $result_data->row()->active;
     } else {
@@ -174,6 +175,7 @@ class Products_variant_detail extends CI_Controller {
     $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $size = (isset($param['size'])) ? $param['size'] : "";
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
+    $max_quantity_order = (isset($param['max_quantity_order'])) ? $param['max_quantity_order'] : 0;
     $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
     //end param
 
@@ -205,6 +207,11 @@ class Products_variant_detail extends CI_Controller {
       $data['result_message'] .= "<strong>Quantity</strong> must be a number !<br/>";
     }
     
+    if (!is_numeric($max_quantity_order)) {
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Maximum Quantity Order</strong> must be a number !<br/>";
+    }
+    
     if (!is_numeric($show_order)) {
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Show Order</strong> must be a number !<br/>";
@@ -220,6 +227,7 @@ class Products_variant_detail extends CI_Controller {
     $param['color_name'] = $this->get_color_name($param['id_color']);
     $param['size'] = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : NULL;
     $param['quantity'] = ($this->input->post('quantity', TRUE)) ? $this->input->post('quantity', TRUE) : 0;
+    $param['max_quantity_order'] = ($this->input->post('max_quantity_order', TRUE)) ? $this->input->post('max_quantity_order', TRUE) : 0;
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
@@ -251,6 +259,7 @@ class Products_variant_detail extends CI_Controller {
     $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
     $param['size'] = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : NULL;
     $param['quantity'] = ($this->input->post('quantity', TRUE)) ? $this->input->post('quantity', TRUE) : 0;
+    $param['max_quantity_order'] = ($this->input->post('max_quantity_order', TRUE)) ? $this->input->post('max_quantity_order', TRUE) : 0;
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
@@ -291,6 +300,7 @@ class Products_variant_detail extends CI_Controller {
       $param_set['id_color'] = $result_data->row()->id_color;
       $param_set['size'] = ($result_data->row()->size == NULL) ? '-' : $result_data->row()->size;
       $param_set['quantity'] = $result_data->row()->quantity;
+      $param_set['max_quantity_order'] = $result_data->row()->max_quantity_order;
       $param_set['show_order'] = $result_data->row()->show_order;
       $param_set['active'] = ($result_data->row()->active == 0) ? 1 : 0;
       $this->Model_products_variant_detail->edit_data($param_set);

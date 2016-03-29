@@ -60,6 +60,7 @@ class Model_products_variant_detail extends CI_Model {
     $size = (isset($param['size'])) ? $param['size'] : "";
     $size_url = url_title($param['color_name'], 'dash', true);
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
+    $max_quantity_order = (isset($param['max_quantity_order'])) ? $param['max_quantity_order'] : 0;
     $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
@@ -72,6 +73,7 @@ class Model_products_variant_detail extends CI_Model {
       'size_url' => $size_url,
       'quantity' => $quantity,
       'quantity_warehouse' => $quantity,
+      'max_quantity_order' => $max_quantity_order,
       'show_order' => $show_order,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
@@ -94,6 +96,20 @@ class Model_products_variant_detail extends CI_Model {
     }
     //End Check Duplicate Size URL
     
+    //Insert Inventory Logs
+    $data_inventory_logs = array(
+      'user' => $this->session->userdata('id'),
+      'product_id' => $id_products,
+      'SKU' => $sku,
+      'quantity' => $quantity,
+      'history_date' => date('Y-m-d H:i:s'),
+      'history_type' => 1,
+      'history_description' => 'Backend',
+      'history_category' => 2
+    );
+    $this->db->insert('inventory_logs', $data_inventory_logs);
+    //End Insert Inventory Logs
+    
     return $insert_id;
   }
 
@@ -102,6 +118,7 @@ class Model_products_variant_detail extends CI_Model {
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $size = (isset($param['size'])) ? $param['size'] : "";
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
+    $max_quantity_order = (isset($param['max_quantity_order'])) ? $param['max_quantity_order'] : 0;
     $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
@@ -110,6 +127,7 @@ class Model_products_variant_detail extends CI_Model {
       'size' => $size,
       'quantity' => $quantity,
       'quantity_warehouse' => $quantity,
+      'max_quantity_order' => $max_quantity_order,
       'show_order' => $show_order,
       'active' => $active,
       'modtime' => date('Y-m-d H:i:s'),

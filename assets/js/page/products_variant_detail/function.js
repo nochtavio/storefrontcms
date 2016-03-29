@@ -173,6 +173,7 @@ $(document).ready(function () {
               $("#txt_data_id").val(val);
               $("#txt_data_size").val(result['size']);
               $("#txt_data_quantity").val(result['quantity']);
+              $("#txt_data_max_quantity_order").val(result['max_quantity_order']);
               $("#txt_data_show_order").val(result['show_order']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
@@ -225,13 +226,14 @@ $(document).ready(function () {
       $('.form_data').val('');
       $('#txt_data_id_color').val(id_color);
       $('#txt_data_id_color').prop("disabled", true);
+      $('#txt_data_quantity').prop("readonly", true);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
   };
 
-  add_data = function (size, quantity, show_order, active) {
+  add_data = function (size, quantity, max_quantity_order, show_order, active) {
     $.ajax({
       url: base_url + 'products_variant_detail/add_data',
       type: 'POST',
@@ -240,6 +242,7 @@ $(document).ready(function () {
         id_color: id_color,
         size: size,
         quantity: quantity,
+        max_quantity_order: max_quantity_order,
         show_order: show_order,
         active: active
       },
@@ -260,7 +263,7 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, size, quantity, show_order, active) {
+  edit_data = function (id, size, quantity, max_quantity_order, show_order, active) {
     $.ajax({
       url: base_url + 'products_variant_detail/edit_data',
       type: 'POST',
@@ -270,6 +273,7 @@ $(document).ready(function () {
         id_color: id_color,
         size: size,
         quantity: quantity,
+        max_quantity_order: max_quantity_order,
         show_order: show_order,
         active: active
       },

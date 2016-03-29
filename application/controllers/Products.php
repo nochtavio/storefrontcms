@@ -219,6 +219,42 @@ class Products extends CI_Controller {
     $param['category_child'] = ($this->input->post('category_child', TRUE)) ? $this->input->post('category_child', TRUE) : "" ;
     $param['category_child_'] = ($this->input->post('category_child_', TRUE)) ? $this->input->post('category_child_', TRUE) : "" ;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "" ;
+    
+    //get initial price
+    $param_price['id'] = $param['id'];
+    $result_price = $this->Model_products->get_data($param_price);
+    if($result_price->num_rows() > 0){
+      $price_logs_type = array();
+      $price_logs_initial_value = array();
+      $price_logs_changed_value = array();
+      
+      $initial_price = $result_price->row()->price;
+      $initial_sale_price = $result_price->row()->sale_price;
+      $initial_reseller_price = $result_price->row()->reseller_price;
+      
+      if($initial_price != $param['price']){
+        array_push($price_logs_type, 1);
+        array_push($price_logs_initial_value, $initial_price);
+        array_push($price_logs_changed_value, $param['price']);
+      }
+      
+      if($initial_sale_price != $param['sale_price']){
+        array_push($price_logs_type, 2);
+        array_push($price_logs_initial_value, $initial_sale_price);
+        array_push($price_logs_changed_value, $param['sale_price']);
+      }
+      
+      if($initial_reseller_price != $param['reseller_price']){
+        array_push($price_logs_type, 3);
+        array_push($price_logs_initial_value, $initial_reseller_price);
+        array_push($price_logs_changed_value, $param['reseller_price']);
+      }
+    }
+    $param['price_logs_type'] = $price_logs_type;
+    $param['price_logs_initial_value'] = $price_logs_initial_value;
+    $param['price_logs_changed_value'] = $price_logs_changed_value;
+    //end initial price
+    
     //end param
     
     if($param['id'] != ""){

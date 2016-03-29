@@ -33,6 +33,7 @@ class Order extends CI_Controller {
     //param
     $param['purchase_code'] = ($this->input->post('purchase_code', TRUE)) ? $this->input->post('purchase_code', TRUE) : "";
     $param['customer_email'] = ($this->input->post('customer_email', TRUE)) ? $this->input->post('customer_email', TRUE) : "";
+    $param['status_payment'] = ($this->input->post('status_payment', TRUE)) ? $this->input->post('status_payment', TRUE) : -1;
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param

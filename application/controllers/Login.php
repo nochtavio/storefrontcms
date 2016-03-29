@@ -37,6 +37,7 @@ class Login extends CI_Controller {
       $result_check = $this->Model_admin->get_data($param_check);
       if($result_check->num_rows() > 0){
         //Get Username Detail
+        $id = $result_check->row()->id;
         $active = $result_check->row()->active;
         $password = $result_check->row()->password;
         $id_role = $result_check->row()->id_role;
@@ -53,6 +54,7 @@ class Login extends CI_Controller {
           }else{
             //Set Session Login
             $sess_login = array(
+              'id'        => $id,
               'username'  => $param['username'],
               'id_role'   => $id_role,
               'role'      => $role_name,

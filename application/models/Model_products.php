@@ -138,8 +138,27 @@ class Model_products extends CI_Model {
     $category = (isset($param['category'])) ? $param['category'] : array();
     $category_child = (isset($param['category_child'])) ? $param['category_child'] : array();
     $category_child_ = (isset($param['category_child_'])) ? $param['category_child_'] : array();
+    $price_logs_type = (isset($param['price_logs_type'])) ? $param['price_logs_type'] : array();
+    $price_logs_initial_value = (isset($param['price_logs_initial_value'])) ? $param['price_logs_initial_value'] : array();
+    $price_logs_changed_value = (isset($param['price_logs_changed_value'])) ? $param['price_logs_changed_value'] : array();
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
+    
+    //Insert Price Logs
+    if(!empty($price_logs_type)){
+      for($i=0;$i<count($price_logs_type);$i++){
+        $data = array(
+          'product_id' => $id,
+          'type' => $price_logs_type[$i],
+          'initial_value' => $price_logs_initial_value[$i],
+          'changed_value' => $price_logs_changed_value[$i],
+          'modtime' => date('Y-m-d H:i:s'),
+          'modby' => $this->session->userdata('username')
+        );
+        $this->db->insert('price_log', $data);
+      }
+    }
+    //End Insert Price Logs
     
     $data = array(
       'id_brand' => $id_brand,

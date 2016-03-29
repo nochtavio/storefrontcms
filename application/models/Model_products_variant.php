@@ -74,6 +74,20 @@ class Model_products_variant extends CI_Model {
     $this->db->insert('products_variant', $data);
     $insert_id = $this->db->insert_id();
     
+    //Insert Inventory Logs
+    $data_inventory_logs = array(
+      'user' => $this->session->userdata('id'),
+      'product_id' => $id_products,
+      'SKU' => $sku,
+      'quantity' => $quantity,
+      'history_date' => date('Y-m-d H:i:s'),
+      'history_type' => 1,
+      'history_description' => 'Backend',
+      'history_category' => 2
+    );
+    $this->db->insert('inventory_logs', $data_inventory_logs);
+    //End Insert Inventory Logs
+    
     return $insert_id;
   }
 
