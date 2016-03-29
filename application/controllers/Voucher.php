@@ -7,6 +7,7 @@ class Voucher extends CI_Controller {
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
+    check_address();
     check_login();
     if(!check_menu()){
       redirect(base_url().'dashboard/');
