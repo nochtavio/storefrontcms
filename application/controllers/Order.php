@@ -88,6 +88,8 @@ class Order extends CI_Controller {
         $data['id'][$temp] = $row->order_item_id;
         $data['product_name'][$temp] = $row->product_name;
         $data['SKU'][$temp] = $row->SKU;
+        $data['shipping_status'][$temp] = $row->shipping_status;
+        $data['resi'][$temp] = $row->resi;
         $data['quantity'][$temp] = number_format($row->quantity);
         $data['each_price'][$temp] = number_format($row->each_price);
         $data['total_price'][$temp] = number_format($row->total_price);
@@ -96,6 +98,7 @@ class Order extends CI_Controller {
         $data['paycode_before_format'] = ($row->paycode == NULL) ? 0 : $row->paycode;
         $data['discount_before_format'] = ($row->discount == NULL) ? 0 : $row->discount;
         $data['credit_use_before_format'] = ($row->credit_use == NULL) ? 0 : $row->credit_use;
+        $data['payment_status'] = $row->payment_status;
         
         $data['shipping_cost'] = number_format($data['shipping_cost_before_format']);
         $data['paycode'] = number_format($data['paycode_before_format']);
@@ -163,5 +166,45 @@ class Order extends CI_Controller {
     }
     
     echo json_encode($validate_post);
+  }
+  
+  public function update_shipping(){
+    //param
+    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : 0 ;
+    $param['shipping_status'] = ($this->input->post('shipping_status', TRUE)) ? $this->input->post('shipping_status', TRUE) : 0 ;
+    $param['resi'] = ($this->input->post('resi', TRUE)) ? $this->input->post('resi', TRUE) : "" ;
+    
+    //Inventory Logs
+    $param_order_item['id'] = $param['id'];
+    $get_order_item = $this->Model_order->get_order_item($param_order_item);
+    if ($get_order_item->num_rows() > 0) {
+      $param['purchase_code'] = $get_order_item->row()->purchase_code;
+      $param['product_id'] = $get_order_item->row()->product_id;
+      $param['SKU'] = $get_order_item->row()->SKU;
+      $param['quantity'] = $get_order_item->row()->quantity;
+      
+      $add_log = FALSE;
+      $history_type = 0;
+      if($param['shipping_status'] != $get_order_item->row()->shipping_status){
+        if($get_order_item->row()->shipping_status == 0){
+          $add_log = TRUE;
+          $history_type = 2;
+        }else if($param['shipping_status'] == 0){
+          $add_log = TRUE;
+          $history_type = 1;
+        }else{
+          $add_log = FALSE;
+        }
+      }
+      $param['add_log'] = $add_log;
+      $param['history_type'] = $history_type;
+    }
+    //End Inventory Logs
+    //end param
+    
+    $this->Model_order->update_shipping($param);
+    $data['result'] = "r1";
+    
+    echo json_encode($data);
   }
 }

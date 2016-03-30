@@ -12,7 +12,10 @@ class Customer_return extends CI_Controller {
     if(!check_menu()){
       redirect(base_url().'dashboard/');
     }
+    $this->load->model('Model_customer');
     $this->load->model('Model_customer_return');
+    $this->load->model('Model_products_variant_detail');
+    $this->load->model('Model_order');
   }
   
   public function index() {
@@ -201,10 +204,92 @@ class Customer_return extends CI_Controller {
       if($result_data->num_rows() > 0){
         $pc_edited = FALSE;
       }
-      //var_dump($param_check);die();
       //end check
+      
       $validate_post = $this->validate_post($param, $pc_edited);
       if($validate_post['result'] == "r1"){
+        //Additional Update
+        
+        //Inventory
+        $param_inv['sku'] = $param['SKU'];
+        $get_product_variant_detail = $this->Model_products_variant_detail->get_data($param_inv);
+        if ($get_product_variant_detail->num_rows() > 0) {
+          $pvd_qty = $get_product_variant_detail->row()->quantity;
+          $pvd_qty_warehouse = $get_product_variant_detail->row()->quantity_warehouse;
+        }
+        $update_qty = 0;
+        $update_qty_warehouse = 0;
+        //End Inventory
+        
+        //Inventory Logs
+        $param_inv_logs['id'] = $param['id'];
+        $get_customer_return = $this->Model_customer_return->get_data($param_inv_logs);
+        if ($get_customer_return->num_rows() > 0) {
+          $cr_product_id = $get_customer_return->row()->product_id;
+          $cr_status = $get_customer_return->row()->status;
+        }
+        $history_type = 0;
+        //End Inventory Logs
+        
+        //Order Item
+        $shipping_status = 0;
+        $purchase_status = 1;
+        //End Order Item
+        
+        //Customer Credit
+        $param_cc['customer_id'] = $param['customer_id'];
+        $get_customer = $this->Model_customer->get_data($param_cc);
+        if ($get_customer->num_rows() > 0) {
+          $cc_credit = ($get_customer->row()->customer_credit == NULL) ? 0 : $get_customer->row()->customer_credit;
+        }
+        
+        $param_order_item['id'] = $param['order_item_id'];
+        $get_order_item = $this->Model_order->get_order_item($param_order_item);
+        if ($get_order_item->num_rows() > 0) {
+          $cc_amount = $get_order_item->row()->each_price * $param['qty'];
+        }
+        
+        $updated_cc_credit = 0;
+        $cc_type = 0;
+        //End Customer Credit
+        
+        $apply_update = FALSE;
+        if($param['status'] != $cr_status){
+          if($cr_status == 2){
+            //Inventory Out
+            $apply_update = TRUE;
+            $history_type = 2;
+            $update_qty = $pvd_qty - $param['qty'];
+            $update_qty_warehouse = $pvd_qty_warehouse - $param['qty'];
+            $updated_cc_credit = ($cc_credit - $cc_amount < 0) ? 0 : $cc_credit - $cc_amount;
+            $cc_type = 2;
+          }else if($param['status'] == 2){
+            //Inventory In
+            $apply_update = TRUE;
+            $history_type = 1;
+            $update_qty = $pvd_qty + $param['qty'];
+            $update_qty_warehouse = $pvd_qty_warehouse + $param['qty'];
+            $shipping_status = 4;
+            $purchase_status = 5;
+            $updated_cc_credit = $cc_credit + $cc_amount;
+            $cc_type = 1;
+          }else{
+            $apply_update = FALSE;
+          }
+        }
+        
+        $param['apply_update'] = $apply_update;
+        $param['product_id'] = $cr_product_id;
+        $param['history_type'] = $history_type;
+        $param['updated_qty'] = $update_qty;
+        $param['updated_qty_warehouse'] = $update_qty_warehouse;
+        $param['shipping_status'] = $shipping_status;
+        $param['purchase_status'] = $purchase_status;
+        $param['updated_cc_credit'] = $updated_cc_credit;
+        $param['cc_amount'] = $cc_amount;
+        $param['cc_type'] = $cc_type;
+        //End Additional Update
+        
         $this->Model_customer_return->edit_data($param);
       }
     }else{

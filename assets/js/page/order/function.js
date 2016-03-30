@@ -169,16 +169,9 @@ $(document).ready(function () {
       $(document).off('click', '#btn_detail' + val);
       $(document).on('click', '#btn_detail' + val, function (event) {
         event.preventDefault();
+        $('#div_hidden_detail').empty();
         $('#table_content_detail').empty();
-        $('#table_content_detail').append("\
-          <tr>\
-            <th>Product Name</th>\
-            <th>SKU</th>\
-            <th>Each Price</th>\
-            <th>Quantity</th>\
-            <th>Total Price</th>\
-          </tr>\
-        ");
+        $('#div_alert').hide();
         $.ajax({
           url: base_url + 'order/get_order_item',
           type: 'POST',
@@ -189,16 +182,84 @@ $(document).ready(function () {
           success: function (result) {
             if (result['result'] === 'r1') {
               $("#txt_detail_purchase_code").html(val);
-              for (var x = 0; x < result['total']; x++) {
+              if(result['payment_status'] === '1'){
+                //Paid Order
                 $('#table_content_detail').append("\
-                <tr>\
-                  <td>" + result['product_name'][x] + "</td>\
-                  <td>" + result['SKU'][x] + "</td>\
-                  <td>" + result['each_price'][x] + "</td>\
-                  <td>" + result['quantity'][x] + "</td>\
-                  <td>" + result['total_price'][x] + "</td>\
-                </tr>");
+                  <tr>\
+                    <th>Product Name</th>\
+                    <th>SKU</th>\
+                    <th>Each Price</th>\
+                    <th>Quantity</th>\
+                    <th>Total Price</th>\
+                    <th>Shipping Status</th>\
+                    <th>Resi</th>\
+                    <th>Action</th>\
+                  </tr>\
+                ");
+                
+                for (var x = 0; x < result['total']; x++) {
+                  $('#table_content_detail').append("\
+                  <tr>\
+                    <td>" + result['product_name'][x] + "</td>\
+                    <td>" + result['SKU'][x] + "</td>\
+                    <td>" + result['each_price'][x] + "</td>\
+                    <td>" + result['quantity'][x] + "</td>\
+                    <td>" + result['total_price'][x] + "</td>\
+                    <td>\
+                      <select id='sel_shipping_status" + result['id'][x] + "' class='form-control form_data'>\
+                        <option value='0'>Not Shipped</option>\
+                        <option value='1'>Shipped</option>\
+                        <option value='2'>Delivered</option>\
+                        <option value='4' disabled>Returned</option>\
+                      </select>\
+                    </td>\
+                    <td><input id='txt_resi" + result['id'][x] + "' type='text' class='form-control form_data' /></td>\
+                    <td><input id='btn_update_order_item" + result['id'][x] + "' type='button' class='btn btn-default' value='Apply' /></td>\
+                  </tr>");
+                  
+                  $('#sel_shipping_status'+result['id'][x]).val(result['shipping_status'][x]);
+                  $('#txt_resi'+result['id'][x]).val(result['resi'][x]);
+                  if(result['shipping_status'][x] == '0'){
+                    $('#txt_resi'+result['id'][x]).prop('readonly', true);
+                  }
+                  
+                  //Set Object ID
+                  $('#div_hidden_detail').append("\
+                    <input type='hidden' id='object_detail" + x + "' value='" + result['id'][x] + "' />\
+                  ");
+                }
+                
+                set_shipping_status();
+                set_update_order_item();
+              }else{
+                //Unpaid Order
+                $('#table_content_detail').append("\
+                  <tr>\
+                    <th>Product Name</th>\
+                    <th>SKU</th>\
+                    <th>Each Price</th>\
+                    <th>Quantity</th>\
+                    <th>Total Price</th>\
+                  </tr>\
+                ");
+                
+                for (var x = 0; x < result['total']; x++) {
+                  $('#table_content_detail').append("\
+                  <tr>\
+                    <td>" + result['product_name'][x] + "</td>\
+                    <td>" + result['SKU'][x] + "</td>\
+                    <td>" + result['each_price'][x] + "</td>\
+                    <td>" + result['quantity'][x] + "</td>\
+                    <td>" + result['total_price'][x] + "</td>\
+                  </tr>");
+                  
+                  //Set Object ID
+                  $('#div_hidden_detail').append("\
+                    <input type='hidden' id='object_detail" + x + "' value='" + result['id'][x] + "' />\
+                  ");
+                }
               }
+              
               $("#txt_detail_subtotal").html(result['subtotal']);
               $("#txt_detail_paycode").html(result['paycode']);
               $("#txt_detail_shipping_cost").html(result['shipping_cost']);
@@ -211,6 +272,55 @@ $(document).ready(function () {
               alert("Error in connection");
               $('#modal_detail_order').modal('hide');
             }
+          }
+        });
+      });
+    });
+  };
+  
+  set_shipping_status = function () {
+    var id = [];
+    for (var x = 0; x < total_data; x++) {
+      id[x] = $('#object_detail' + x).val();
+    }
+
+    $.each(id, function (x, val) {
+      $(document).off('change', '#sel_shipping_status' + val);
+      $(document).on('change', '#sel_shipping_status' + val, function () {
+        if($(this).val() == '0'){
+          $('#txt_resi'+val).val('');
+          $('#txt_resi'+val).prop('readonly', true);
+        }else{
+          $('#txt_resi'+val).prop('readonly', false);
+        }
+      });
+    });
+  };
+  
+  set_update_order_item = function () {
+    var id = [];
+    for (var x = 0; x < total_data; x++) {
+      id[x] = $('#object_detail' + x).val();
+    }
+
+    $.each(id, function (x, val) {
+      $(document).off('click', '#btn_update_order_item' + val);
+      $(document).on('click', '#btn_update_order_item' + val, function () {
+        var shipping_status = $('#sel_shipping_status'+val).val();
+        var resi = $('#txt_resi'+val).val();
+        $.ajax({
+          url: base_url + 'order/update_shipping',
+          type: 'POST',
+          data: {
+            id: val,
+            shipping_status: shipping_status,
+            resi: resi
+          },
+          dataType: 'json',
+          success: function (result) {
+            if (result['result'] === 'r1') {
+              $('#div_alert').show();
+            } 
           }
         });
       });

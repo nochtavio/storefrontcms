@@ -113,6 +113,11 @@
       <div class="modal-body">
         <div class="table-responsive">
           <table class="table table-hover">
+            <div id="div_hidden_detail" style="display: none;"></div>
+            <div id="div_alert" class="alert alert-success alert-dismissible" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <strong>Update Success!</strong>
+            </div>
             <tbody id="table_content_detail">
 
             </tbody>
