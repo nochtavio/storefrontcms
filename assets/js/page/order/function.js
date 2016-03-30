@@ -221,6 +221,9 @@ $(document).ready(function () {
                   $('#txt_resi'+result['id'][x]).val(result['resi'][x]);
                   if(result['shipping_status'][x] == '0'){
                     $('#txt_resi'+result['id'][x]).prop('readonly', true);
+                  }else if(result['shipping_status'][x] == '4'){
+                    $('#sel_shipping_status'+result['id'][x]).prop('disabled', true);
+                    $('#txt_resi'+result['id'][x]).prop('disabled', true);
                   }
                   
                   //Set Object ID
