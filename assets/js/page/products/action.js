@@ -21,8 +21,8 @@ $(document).ready(function () {
     var reseller_price = $('#txt_data_reseller_price').val();
     var weight = $('#txt_data_weight').val();
     var attribute = $('#txt_data_attribute').val();
-    var description = $('#txt_data_description').code();
-    var short_description = $('#txt_data_short_description').code();
+    var description = $('#txt_data_description').summernote('code');
+    var short_description = $('#txt_data_short_description').summernote('code');
     var info = $('#txt_data_info').val();
     var size_guideline = $('#txt_data_size_guideline').val();
     var category = $('#sel_data_category').val();

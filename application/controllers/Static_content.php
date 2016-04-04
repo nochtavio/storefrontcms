@@ -37,6 +37,12 @@ class Static_content extends CI_Controller {
       $type_name = "Terms and Condition";
     }else if($type == 3){
       $type_name = "Privacy Policy";
+    }else if($type == 4){
+      $type_name = "Phone";
+    }else if($type == 5){
+      $type_name = "Email";
+    }else if($type == 6){
+      $type_name = "Address";
     }
     
     return $type_name;
@@ -60,6 +66,7 @@ class Static_content extends CI_Controller {
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
+        $data['name'][$temp] = $row->name;
         $data['type'][$temp] = $row->type;
         $data['type_name'][$temp] = $this->get_type_name($row->type);
         $data['modtime'][$temp] = ($row->modtime == NULL) ? NULL : date_format(date_create($row->modtime), 'd F Y H:i:s');
@@ -88,6 +95,7 @@ class Static_content extends CI_Controller {
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
+      $data['name'] = $result_data->row()->name;
       $data['type'] = $result_data->row()->type;
       $data['type_name'] = $this->get_type_name($result_data->row()->type);
       $data['content'] = $result_data->row()->content;
@@ -101,11 +109,17 @@ class Static_content extends CI_Controller {
   
   public function validate_post($param){
     //param
+    $name = (isset($param['name'])) ? $param['name'] : "";
     $content = (isset($param['content'])) ? $param['content'] : "";
     //end param
     
     $data['result'] = "r1";
     $data['result_message'] = "";
+    
+    if($name == ""){
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Name</strong> must be filled !<br/>";
+    }
     
     if($content == ""){
       $data['result'] = "r2";
@@ -118,6 +132,7 @@ class Static_content extends CI_Controller {
   public function edit_data(){
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
+    $param['name'] = ($this->input->post('name', FALSE)) ? $this->input->post('name', FALSE) : "" ;
     $param['content'] = ($this->input->post('content', FALSE)) ? $this->input->post('content', FALSE) : "" ;
     //end param
     

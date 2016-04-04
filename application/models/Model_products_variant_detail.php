@@ -17,9 +17,10 @@ class Model_products_variant_detail extends CI_Model {
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
-    $this->db->select('products_variant.*, color.id AS color_id, color.name AS color_name');
+    $this->db->select('products_variant.*, color.id AS color_id, color.name AS color_name, products.name AS products_name');
     $this->db->from('products_variant');
     $this->db->join('color', 'color.id = products_variant.id_color');
+    $this->db->join('products', 'products.id = products_variant.id_products');
     
     //Validation
     if($id > 0){$this->db->where('products_variant.id', $id);}

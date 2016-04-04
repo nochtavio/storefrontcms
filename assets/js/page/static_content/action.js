@@ -14,13 +14,14 @@ $(document).ready(function () {
     
     //Parameter
     var id = $('#txt_data_id').val();
-    var content = $('#txt_data_content').code();
+    var name = $('#txt_data_name').val();
+    var content = $('#txt_data_content').summernote('code');
     //End Parameter
     
     if(state == "add"){
       
     }else{
-      edit_data(id, content);
+      edit_data(id, name, content);
     }
   });
   

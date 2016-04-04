@@ -13,6 +13,9 @@
               <option value="1">Contact Us</option>
               <option value="2">Terms and Condition</option>
               <option value="3">Privacy Policy</option>
+              <option value="4">Phone</option>
+              <option value="5">Email</option>
+              <option value="6">Address</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
           </div>
@@ -51,8 +54,16 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="txt_data_name" class="col-lg-3 col-sm-3 control-label">Name</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_name" placeholder="Enter name">
+            </div>
+          </div>
+          <div class="form-group">
             <label for="txt_data_content" class="col-lg-3 col-sm-3 control-label">Content</label>
-            <div class="col-lg-9 col-sm-9" id="txt_data_content"></div>
+            <div class="col-lg-9 col-sm-9">
+              <div id="txt_data_content"></div>
+            </div>
           </div>
           <div id="error_container" class="alert alert-block alert-danger" style="display: none;">
             <div id="error_container_message">

@@ -30,10 +30,12 @@ class Model_static_content extends CI_Model {
   function edit_data($param){
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
+    $name = (isset($param['name'])) ? $param['name'] : "";
     $content = (isset($param['content'])) ? $param['content'] : "";
     //End Set Param
     
     $data = array(
+      'name' => $name,
       'content' => $content,
       'modtime' => date('Y-m-d H:i:s'),
       'modby' => $this->session->userdata('username')

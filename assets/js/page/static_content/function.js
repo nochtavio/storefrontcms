@@ -18,6 +18,7 @@ $(document).ready(function () {
         $('#table_content').append("\
           <tr>\
             <th>No</th>\
+            <th>Name</th>\
             <th>Type</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -56,6 +57,7 @@ $(document).ready(function () {
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
+                <td>" + result['name'][x] + "</td>\
                 <td>" + result['type_name'][x] + "</td>\
                 <td>" + date + "</td>\
                 <td>" + action + "</td>\
@@ -73,7 +75,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='4'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='5'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -101,8 +103,9 @@ $(document).ready(function () {
           success: function (result) {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
+              $("#txt_data_name").val(result['name']);
               $("#txt_data_type_name").val(result['type_name']);
-              $("#txt_data_content").code(result['content']);
+              $("#txt_data_content").summernote('code', result['content']);
               $('#modal_data').modal('show');
             }
             else {
@@ -129,12 +132,13 @@ $(document).ready(function () {
     }
   };
 
-  edit_data = function (id, content) {
+  edit_data = function (id, name, content) {
     $.ajax({
       url: base_url + 'static_content/edit_data',
       type: 'POST',
       data: {
         id: id,
+        name: name,
         content: content
       },
       dataType: 'json',

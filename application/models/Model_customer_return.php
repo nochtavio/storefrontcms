@@ -169,7 +169,7 @@ class Model_customer_return extends CI_Model {
         'id_customer' => $customer_id,
         'amount' => $cc_amount,
         'type' => $cc_type,
-        'description' => $purchase_code,
+        'description' => 'Return Purchase '.$purchase_code,
         'cretime' => date('Y-m-d H:i:s'),
         'status' => 0
       );

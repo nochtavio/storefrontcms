@@ -43,6 +43,13 @@
     }
   ?>
   <?php 
+    if(check_menu("Inventory_correction", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Inventory_correction") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>inventory_correction/"><i class="fa fa-check-square"></i> <span>Inventory Correction</span></a></li> 
+      <?php
+    }
+  ?>
+  <?php 
     if(check_menu("Order", $type = 0)){
       ?>
         <li class="<?php echo ($page == "Order") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>order/"><i class="fa fa-shopping-bag"></i> <span>Order</span></a></li> 
