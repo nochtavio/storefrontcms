@@ -152,4 +152,66 @@ class Model_order extends CI_Model {
     }
     //End Inventory Logs
   }
+  
+  function get_unconfirmed_order(){
+    $date_before = date('Y-m-d', strtotime("-2 days"));
+    
+    $this->db->select('order_payment.*');
+    $this->db->from('order_payment');
+    $this->db->where('order_payment.status', 0);
+    $this->db->where('order_payment.transactionDate <=', $date_before);
+    
+    $query = $this->db->get();
+    
+    return $query;
+  }
+  
+  function cancel_order($param){
+    $purchase_code = (isset($param['purchase_code'])) ? $param['purchase_code'] : "";
+    
+    //Update Order Payment Status
+    $data_update_order_payment = array(
+      'status' => 2
+    );
+    
+    $this->db->where('purchase_code', $purchase_code);
+    $this->db->update('order_payment', $data_update_order_payment);
+    //End Update Order Payment Status
+    
+    //Update Order Item Status
+    $data_update_order_item = array(
+      'purchase_status' => 4
+    );
+    
+    $this->db->where('purchase_code', $purchase_code);
+    $this->db->update('order_item', $data_update_order_item);
+    //End Update Order Item Status
+  }
+  
+  function update_quantity($param){
+    $purchase_code = (isset($param['purchase_code'])) ? $param['purchase_code'] : "";
+    $product_id = (isset($param['product_id'])) ? $param['product_id'] : 0;
+    $SKU = (isset($param['SKU'])) ? $param['SKU'] : "";
+    $updated_quantity = (isset($param['updated_quantity'])) ? $param['updated_quantity'] : 0;
+    
+    $data_update_quantity = array(
+      'quantity' => $updated_quantity
+    );
+    
+    $this->db->where('SKU', $SKU);
+    $this->db->update('products_variant', $data_update_quantity);
+    
+    $data_inv_logs = array(
+      'user' => 'CRON',
+      'product_id' => $product_id,
+      'SKU' => $SKU,
+      'quantity' => $updated_quantity,
+      'history_date' => date('Y-m-d H:i:s'),
+      'history_type' => 1,
+      'history_description' => 'Cancel Purchase',
+      'history_category' => 3,
+      'purchase_code' => $purchase_code
+    );
+    $this->db->insert('inventory_logs', $data_inv_logs);
+  }
 }
