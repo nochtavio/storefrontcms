@@ -13,6 +13,7 @@ class Order extends CI_Controller {
       redirect(base_url().'dashboard/');
     }
     $this->load->model('Model_order');
+    $this->load->model('Model_customer');
   }
   
   public function index() {
@@ -89,6 +90,7 @@ class Order extends CI_Controller {
         $data['product_name'][$temp] = $row->product_name;
         $data['SKU'][$temp] = $row->SKU;
         $data['shipping_status'][$temp] = $row->shipping_status;
+        $data['notes'][$temp] = ($row->notes == NULL) ? '-' : $row->notes;
         $data['resi'][$temp] = $row->resi;
         $data['quantity'][$temp] = number_format($row->quantity);
         $data['each_price'][$temp] = number_format($row->each_price);
@@ -152,12 +154,40 @@ class Order extends CI_Controller {
   public function edit_data(){
     //param
     $param['purchase_code'] = ($this->input->post('purchase_code', TRUE)) ? $this->input->post('purchase_code', TRUE) : "" ;
-    $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : "" ;
+    $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : "0" ;
     //end param
     
     if($param['purchase_code'] != ""){
       $validate_post = $this->validate_post($param);
       if($validate_post['result'] == "r1"){
+        //Get Paycode
+        $param_order['purchase_code'] = $param['purchase_code'];
+        $get_order = $this->Model_order->get_data($param_order);
+        if($get_order->num_rows() > 0){
+          $param['customer_id'] = $get_order->row()->customer_id;
+          $param['paycode'] = $get_order->row()->paycode;
+          $status = $get_order->row()->status;
+        }
+        //End Get Paycode
+        
+        //Get Customer Credit
+        $param_customer_credit['customer_id'] = $param['customer_id'];
+        $get_customer_credit = $this->Model_customer->get_data($param_customer_credit);
+        if($get_customer_credit->num_rows() > 0){
+          $customer_credit = $get_customer_credit->row()->customer_credit;
+        }
+        //End Get Customer Credit
+        
+        if($param['status'] != $status && $param['status'] != ""){
+          if($param['status'] == 1){
+            $param['updated_credit'] = $customer_credit + $param['paycode'];
+            $param['cc_type'] = 1;
+          }else{
+            $param['updated_credit'] = $customer_credit - $param['paycode'];
+            $param['cc_type'] = 2;
+          }
+        }
+        
         $this->Model_order->edit_data($param);
       }
     }else{

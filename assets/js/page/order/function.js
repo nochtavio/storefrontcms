@@ -191,6 +191,7 @@ $(document).ready(function () {
                     <th>Each Price</th>\
                     <th>Quantity</th>\
                     <th>Total Price</th>\
+                    <th>Notes</th>\
                     <th>Shipping Status</th>\
                     <th>Resi</th>\
                     <th>Action</th>\
@@ -205,6 +206,7 @@ $(document).ready(function () {
                     <td>" + result['each_price'][x] + "</td>\
                     <td>" + result['quantity'][x] + "</td>\
                     <td>" + result['total_price'][x] + "</td>\
+                    <td>" + result['notes'][x] + "</td>\
                     <td>\
                       <select id='sel_shipping_status" + result['id'][x] + "' class='form-control form_data'>\
                         <option value='0'>Not Shipped</option>\
@@ -243,6 +245,7 @@ $(document).ready(function () {
                     <th>Each Price</th>\
                     <th>Quantity</th>\
                     <th>Total Price</th>\
+                    <th>Notes</th>\
                   </tr>\
                 ");
                 
@@ -254,6 +257,7 @@ $(document).ready(function () {
                     <td>" + result['each_price'][x] + "</td>\
                     <td>" + result['quantity'][x] + "</td>\
                     <td>" + result['total_price'][x] + "</td>\
+                    <td>" + result['notes'][x] + "</td>\
                   </tr>");
                   
                   //Set Object ID

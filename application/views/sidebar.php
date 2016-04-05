@@ -29,6 +29,13 @@
     }
   ?>
   <?php 
+    if(check_menu("Credit_log", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Credit_log") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>credit_log/"><i class="fa fa-money"></i> <span>Credit Log</span></a></li> 
+      <?php
+    }
+  ?>
+  <?php 
     if(check_menu("Customer", $type = 0)){
       ?>
         <li class="<?php echo ($page == "Customer") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>customer/"><i class="fa fa-users"></i> <span>Customer</span></a></li> 

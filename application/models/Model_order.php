@@ -45,6 +45,10 @@ class Model_order extends CI_Model {
     //Set Param
     $purchase_code = (isset($param['purchase_code'])) ? $param['purchase_code'] : 0;
     $status = (isset($param['status'])) ? $param['status'] : 0;
+    $customer_id = (isset($param['customer_id'])) ? $param['customer_id'] : 0;
+    $paycode = (isset($param['paycode'])) ? $param['paycode'] : 0;
+    $cc_type = (isset($param['cc_type'])) ? $param['cc_type'] : 0;
+    $updated_credit = (isset($param['updated_credit'])) ? $param['updated_credit'] : NULL;
     //End Set Param
     
     $data = array(
@@ -67,6 +71,30 @@ class Model_order extends CI_Model {
     $this->db->where('purchase_code', $purchase_code);
     $this->db->update('order_item', $data_update_order_item);
     //End Update Order Item Status
+    
+    //Update Customer Credit
+    if($updated_credit !== NULL){
+      $data_update_order_item = array(
+        'customer_credit' => $updated_credit
+      );
+
+      $this->db->where('customer_id', $customer_id);
+      $this->db->update('customer', $data_update_order_item);
+    }
+    //End Update Customer Credit
+    
+    //Customer Credit Log
+    $data_credit_log = array(
+      'id_customer' => $customer_id,
+      'amount' => $paycode,
+      'type' => $cc_type,
+      'description' => 'Purchase '.$purchase_code,
+      'cretime' => date('Y-m-d H:i:s'),
+      'status' => 1
+    );
+
+    $this->db->insert('credit_log', $data_credit_log);
+    //End Customer Credit Log
   }
   
   function get_order_item($param) {

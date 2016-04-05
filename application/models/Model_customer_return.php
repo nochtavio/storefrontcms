@@ -171,7 +171,7 @@ class Model_customer_return extends CI_Model {
         'type' => $cc_type,
         'description' => 'Return Purchase '.$purchase_code,
         'cretime' => date('Y-m-d H:i:s'),
-        'status' => 0
+        'status' => 1
       );
       
       $this->db->insert('credit_log', $data_credit_log);
