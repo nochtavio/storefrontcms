@@ -222,8 +222,8 @@ $(document).ready(function () {
       
       $('.form_data').val('');
       $("#sel_data_brand").val('0');
-      $('#txt_data_description').code('');
-      $('#txt_data_short_description').code('');
+      $("#txt_data_description").summernote('code', '');
+      $("#txt_data_short_description").summernote('code', '');
       $('option', $('#sel_data_category')).each(function(element) {
           $(this).removeAttr('selected').prop('selected', false);
       });

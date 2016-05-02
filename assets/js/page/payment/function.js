@@ -180,7 +180,7 @@ $(document).ready(function () {
               
               $("#txt_data_id").val(val);
               $("#txt_data_name").val(result['name']);
-              $("#txt_data_description").code(result['description']);
+              $("#txt_data_description").summernote('code', result['description']);
               $("#txt_data_img").attr("src", base_url + result['logo'] + "?" + time);
               $('#sel_data_type').val(result['type']);
               $('#txt_data_minimum_grand_total').val(result['minimum_grand_total']);
@@ -225,7 +225,7 @@ $(document).ready(function () {
       $('#modal_data_title').html("Add Payment");
       
       $('.form_data').val('');
-      $('#txt_data_description').code('');
+      $("#txt_data_description").summernote('code', '');
       $("#txt_data_img").hide();
       $('#txt_data_add_file').show();
       $('#txt_data_edit_file').hide();

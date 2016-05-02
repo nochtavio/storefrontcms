@@ -73,7 +73,9 @@
           </div>
           <div class="form-group">
             <label for="txt_data_description" class="col-lg-3 col-sm-3 control-label">Description</label>
-            <div class="col-lg-9 col-sm-9" id="txt_data_description"></div>
+            <div class="col-lg-9 col-sm-9">
+              <div id="txt_data_description"></div>
+            </div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 col-sm-3 control-label">Logo</label>

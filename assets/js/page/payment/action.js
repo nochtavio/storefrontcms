@@ -15,7 +15,7 @@ $(document).ready(function () {
     //Parameter
     var id = $('#txt_data_id').val();
     var name = $('#txt_data_name').val();
-    var description = $('#txt_data_description').code();
+    var description = $('#txt_data_description').summernote('code');
     var type = $('#sel_data_type').val();
     var minimum_grand_total = $('#txt_data_minimum_grand_total').val();
     var show_order = $('#txt_data_show_order').val();
