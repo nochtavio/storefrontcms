@@ -107,8 +107,33 @@ class Reseller_request extends CI_Controller {
       $param['email'] = $result_data->row()->email;
       $param['phone'] = $result_data->row()->phone;
       
-      $data['result'] = "r1";
-      $this->Model_reseller_request->approval($param);
+      //Send Email
+      $config = Array(
+        'protocol' => 'smtp',
+        'smtp_host' => 'mail.storefrontindo.com',
+        'smtp_port' => 25,
+        'smtp_user' => 'do-not-reply@storefrontindo.com', // change it to yours
+        'smtp_pass' => 'v0AOsm[viHJB', // change it to yours
+        'mailtype' => 'html',
+        'charset' => 'iso-8859-1',
+        'wordwrap' => TRUE
+      );
+
+      $this->load->library('email', $config);
+      $this->email->set_newline("\r\n");
+      $this->email->from('do-not-reply@storefrontindo.com', 'Storefront Indonesia'); // change it to yours
+      $this->email->to($param['email']); // change it to yours
+      $this->email->subject("Reseller Approval");
+      $this->email->message("Welcome to Storefront Indonesia Reseller Program");
+      //End Send Email
+      
+      if ($this->email->send()) {
+        $data['result'] = "r1";
+        $this->Model_reseller_request->approval($param);
+      } else {
+        $data['result'] = "r2";
+        $data['result_message'] = show_error($this->email->print_debugger());
+      }
     }else{
       $data['result'] = "r2";
       $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
