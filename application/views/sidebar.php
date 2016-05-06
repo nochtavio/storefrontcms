@@ -78,6 +78,13 @@
     }
   ?>
   <?php 
+    if(check_menu("Reseller_request", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Reseller_request") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>reseller_request/"><i class="fa fa-gavel"></i> <span>Reseller Request</span></a></li> 
+      <?php
+    }
+  ?>
+  <?php 
     if(check_menu("Shipping", $type = 0)){
       ?>
         <li class="<?php echo ($page == "Shipping") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>shipping/"><i class="fa fa-paper-plane"></i> <span>Shipping</span></a></li>

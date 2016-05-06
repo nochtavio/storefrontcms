@@ -56,7 +56,7 @@ class Model_reseller_request extends CI_Model {
     $name = (isset($param['name'])) ? $param['name'] : "";
     $email = (isset($param['email'])) ? $param['email'] : "";
     $phone = (isset($param['phone'])) ? $param['phone'] : "";
-    $password = random_string('alnum', 8);
+    $password = random_string('alnum', 4);
     
     $data = array(
       'email' => $email,
