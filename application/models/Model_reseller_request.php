@@ -63,6 +63,7 @@ class Model_reseller_request extends CI_Model {
       'name' => $name,
       'phone' => $phone,
       'password' => sha1(md5($password)),
+      'status' => 1,
       'cretime' => date('Y-m-d H:i:s')
     );
     $this->db->insert('reseller', $data);

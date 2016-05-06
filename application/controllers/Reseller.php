@@ -2,7 +2,7 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Reseller_request extends CI_Controller {
+class Reseller extends CI_Controller {
   
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
@@ -12,20 +12,20 @@ class Reseller_request extends CI_Controller {
     if(!check_menu()){
       redirect(base_url().'dashboard/');
     }
-    $this->load->model('Model_reseller_request');
+    $this->load->model('Model_reseller');
   }
   
   public function index() {
-    $page = 'Reseller_request';
+    $page = 'Reseller';
     $sidebar['page'] = $page;
     $content['js'] = array();
-    array_push($content['js'], 'reseller_request/function.js');
-    array_push($content['js'], 'reseller_request/init.js');
-    array_push($content['js'], 'reseller_request/action.js');
+    array_push($content['js'], 'reseller/function.js');
+    array_push($content['js'], 'reseller/init.js');
+    array_push($content['js'], 'reseller/action.js');
     
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
-    $data['content'] = $this->load->view('reseller_request/index', $content, TRUE);
+    $data['content'] = $this->load->view('reseller/index', $content, TRUE);
     $this->load->view('template_index', $data);
   }
   
@@ -34,21 +34,19 @@ class Reseller_request extends CI_Controller {
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "";
     $param['email'] = ($this->input->post('email', TRUE)) ? $this->input->post('email', TRUE) : "";
     $param['phone'] = ($this->input->post('phone', TRUE)) ? $this->input->post('phone', TRUE) : "";
-    $param['barang'] = ($this->input->post('barang', TRUE)) ? $this->input->post('barang', TRUE) : "";
-    $param['promosi'] = ($this->input->post('promosi', TRUE)) ? $this->input->post('promosi', TRUE) : "";
-    $param['domain'] = ($this->input->post('domain', TRUE)) ? $this->input->post('domain', TRUE) : "";
+    $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : -1;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
     
     //paging
-    $get_data = $this->Model_reseller_request->get_data($param);
+    $get_data = $this->Model_reseller->get_data($param);
     $page = ($this->input->post('page', TRUE)) ? $this->input->post('page', TRUE) : 1 ;
     $size = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : 10 ;
     $limit = ($page - 1) * $size;
     //End Set totalpaging
 
     if ($get_data->num_rows() > 0) {
-      $get_data_paging = $this->Model_reseller_request->get_data($param, $limit, $size);
+      $get_data_paging = $this->Model_reseller->get_data($param, $limit, $size);
       $temp = 0;
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
@@ -56,7 +54,9 @@ class Reseller_request extends CI_Controller {
         $data['name'][$temp] = $row->name;
         $data['email'][$temp] = $row->email;
         $data['phone'][$temp] = $row->phone;
+        $data['status'][$temp] = $row->status;
         $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
+        $data['modtime'][$temp] = ($row->modtime == NULL) ? NULL : date_format(date_create($row->modtime), 'd F Y H:i:s');
         $temp++;
       }
       $data['allowed_edit'] = check_menu("", 2);
@@ -66,7 +66,7 @@ class Reseller_request extends CI_Controller {
       $data['totalpage'] = ceil($get_data->num_rows() / $size);
     } else {
       $data['result'] = "r2";
-      $data['message'] = "No Reseller Request";
+      $data['message'] = "No Reseller";
     }
     
     echo json_encode($data);
@@ -77,17 +77,18 @@ class Reseller_request extends CI_Controller {
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
     //end param
     
-    $result_data = $this->Model_reseller_request->get_data($param);
+    $result_data = $this->Model_reseller->get_data($param);
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['name'] = $result_data->row()->name;
       $data['email'] = $result_data->row()->email;
       $data['phone'] = $result_data->row()->phone;
-      $data['barang'] = $result_data->row()->barang;
-      $data['promosi'] = $result_data->row()->promosi;
-      $data['domain'] = $result_data->row()->domain;
-      $data['keterangan'] = $result_data->row()->keterangan;
+      $data['street'] = ($result_data->row()->street == NULL) ? '-' : $result_data->row()->street ;
+      $data['province'] = ($result_data->row()->province == NULL) ? '-' : $result_data->row()->province ;
+      $data['city'] = ($result_data->row()->city == NULL) ? '-' : $result_data->row()->city ;
+      $data['zipcode'] = ($result_data->row()->zipcode == NULL) ? '-' : $result_data->row()->zipcode ;
+      $data['status'] = $result_data->row()->status;
     }else{
       $data['result'] = "r2";
       $data['message'] = "No Data";
@@ -96,22 +97,22 @@ class Reseller_request extends CI_Controller {
     echo json_encode($data);
   }
   
-  public function approval(){
-    //post
+  public function set_status(){
+    //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
-    //end post
+    //end param
     
-    $result_data = $this->Model_reseller_request->get_data($param);
+    $data['result'] = "r1";
+    $data['result_message'] = '';
+    
+    $result_data = $this->Model_reseller->get_data($param);
     if($result_data->num_rows() > 0){
-      $param['name'] = $result_data->row()->name;
-      $param['email'] = $result_data->row()->email;
-      $param['phone'] = $result_data->row()->phone;
-      
-      $data['result'] = "r1";
-      $this->Model_reseller_request->approval($param);
+      $param_set['id'] = $result_data->row()->id;
+      $param_set['status'] = ($result_data->row()->status == 1) ? 2 : 1;
+      $this->Model_reseller->set_status($param_set);
     }else{
       $data['result'] = "r2";
-      $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
+      $data['result_message'] = '<strong>Data ID</strong> is not found, please refresh your browser!<br/>';
     }
     
     echo json_encode($data);
