@@ -85,7 +85,9 @@
           <div class="form-group">
             <label for="txt_data_keterangan" class="col-lg-3 col-sm-3 control-label">Keterangan</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_keterangan" placeholder="Enter reseller keterangan" readonly="">
+              <textarea class="form-control form_data" id="txt_data_keterangan" readonly="">
+                
+              </textarea>
             </div>
           </div>
           <div id="error_container" class="alert alert-block alert-danger" style="display: none;">

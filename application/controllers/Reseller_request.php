@@ -106,6 +106,9 @@ class Reseller_request extends CI_Controller {
       $param['name'] = $result_data->row()->name;
       $param['email'] = $result_data->row()->email;
       $param['phone'] = $result_data->row()->phone;
+      $param['upline_email'] = $result_data->row()->upline_email;
+      
+      $approval = $this->Model_reseller_request->approval($param);
       
       //Send Email
       $config = Array(
@@ -121,15 +124,23 @@ class Reseller_request extends CI_Controller {
 
       $this->load->library('email', $config);
       $this->email->set_newline("\r\n");
+      $this->email->set_mailtype("html");
       $this->email->from('do-not-reply@storefrontindo.com', 'Storefront Indonesia'); // change it to yours
       $this->email->to($param['email']); // change it to yours
       $this->email->subject("Reseller Approval");
-      $this->email->message("Welcome to Storefront Indonesia Reseller Program");
+      $this->email->message(""
+        . "Dear <strong>".$param['name']."</strong><br/> <br/>"
+        . "Selamat karena permintaan anda untuk menjadi reseller FFStore sudah kami setujui. Kami akan memproses dan membuatkan toko online anda dalam kurun waktu 5 - 10 hari kerja. Berikut adalah detail untuk masuk ke dalam admin panel reseller. <br/> <br/>"
+        . "<strong>Email: </strong> ".$param['email']."<br/> <br/>"
+        . "<strong>Password: </strong> ".$approval['password']."<br/> <br/>"
+        . "Silahkan login ke admin panel <a href='http://www.storefrontindo.com/front/reseller/login/' target='_blank'>http://www.storefrontindo.com/front/reseller/login/</a>  dengan menggunakan email dan password diatas. <br/> <br/>"
+        . "Salam <br/> <br/>"
+        . "Owner FFStore"
+        . "");
       //End Send Email
       
       if ($this->email->send()) {
         $data['result'] = "r1";
-        $this->Model_reseller_request->approval($param);
       } else {
         $data['result'] = "r2";
         $data['result_message'] = show_error($this->email->print_debugger());

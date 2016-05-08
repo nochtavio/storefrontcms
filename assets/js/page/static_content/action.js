@@ -16,6 +16,9 @@ $(document).ready(function () {
     var id = $('#txt_data_id').val();
     var name = $('#txt_data_name').val();
     var content = $('#txt_data_content').summernote('code');
+    if(id == 6){
+      content = $('#txt_data_email').val();
+    }
     //End Parameter
     
     if(state == "add"){

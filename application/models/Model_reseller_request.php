@@ -56,6 +56,7 @@ class Model_reseller_request extends CI_Model {
     $name = (isset($param['name'])) ? $param['name'] : "";
     $email = (isset($param['email'])) ? $param['email'] : "";
     $phone = (isset($param['phone'])) ? $param['phone'] : "";
+    $upline_email = (isset($param['upline_email'])) ? $param['upline_email'] : NULL;
     $password = random_string('alnum', 4);
     
     $data = array(
@@ -67,8 +68,25 @@ class Model_reseller_request extends CI_Model {
       'cretime' => date('Y-m-d H:i:s')
     );
     $this->db->insert('reseller', $data);
-    $insert_id = $this->db->insert_id();
     
-    return $insert_id;
+    $data['insert_id'] = $this->db->insert_id();
+    $data['password'] = $password;
+    
+    //Insert Reseller Level
+    if($upline_email !== NULL){
+      $this->db->select('id');
+      $this->db->from('reseller');
+      $this->db->where('email', $upline_email);
+      $fetch_id_reseller = $this->db->get();
+      
+      $data_reseller_level = array(
+        'upline_id' => $fetch_id_reseller->row()->id,
+        'downline_id' => $data['insert_id']
+      );
+      $this->db->insert('reseller_level', $data_reseller_level);
+    }
+    //End Insert Reseller Level
+    
+    return $data;
   }
 }

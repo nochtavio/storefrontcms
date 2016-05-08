@@ -59,10 +59,16 @@
               <input type="text" class="form-control form_data" id="txt_data_name" placeholder="Enter name">
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group data_content">
             <label for="txt_data_content" class="col-lg-3 col-sm-3 control-label">Content</label>
             <div class="col-lg-9 col-sm-9">
               <div id="txt_data_content"></div>
+            </div>
+          </div>
+          <div class="form-group data_email" style="display: none;">
+            <label for="txt_data_email" class="col-lg-3 col-sm-3 control-label">Email</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_email" placeholder="Enter email">
             </div>
           </div>
           <div id="error_container" class="alert alert-block alert-danger" style="display: none;">

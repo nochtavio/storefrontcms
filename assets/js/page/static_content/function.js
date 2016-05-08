@@ -105,7 +105,17 @@ $(document).ready(function () {
               $("#txt_data_id").val(val);
               $("#txt_data_name").val(result['name']);
               $("#txt_data_type_name").val(result['type_name']);
-              $("#txt_data_content").summernote('code', result['content']);
+              if(val == 6){
+                $('.data_email').show();
+                $('#txt_data_email').val(result['content']);
+                
+                $('.data_content').hide();
+              }else{
+                $('.data_content').show();
+                $("#txt_data_content").summernote('code', result['content']);
+                
+                $('.data_email').hide();
+              }
               $('#modal_data').modal('show');
             }
             else {
