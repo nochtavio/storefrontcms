@@ -32,6 +32,7 @@ class Reseller extends CI_Controller {
   public function get_data(){
     //param
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "";
+    $param['store_name'] = ($this->input->post('store_name', TRUE)) ? $this->input->post('store_name', TRUE) : "";
     $param['email'] = ($this->input->post('email', TRUE)) ? $this->input->post('email', TRUE) : "";
     $param['phone'] = ($this->input->post('phone', TRUE)) ? $this->input->post('phone', TRUE) : "";
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : -1;
@@ -52,6 +53,7 @@ class Reseller extends CI_Controller {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
         $data['name'][$temp] = $row->name;
+        $data['store_name'][$temp] = $row->store_name;
         $data['email'][$temp] = $row->email;
         $data['phone'][$temp] = $row->phone;
         $data['status'][$temp] = $row->status;
@@ -82,6 +84,7 @@ class Reseller extends CI_Controller {
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['name'] = $result_data->row()->name;
+      $data['store_name'] = $result_data->row()->store_name;
       $data['email'] = $result_data->row()->email;
       $data['phone'] = $result_data->row()->phone;
       $data['street'] = ($result_data->row()->street == NULL) ? '-' : $result_data->row()->street ;

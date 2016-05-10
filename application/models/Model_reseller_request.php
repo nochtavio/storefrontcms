@@ -9,11 +9,13 @@ class Model_reseller_request extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $store_name = (isset($param['store_name'])) ? $param['store_name'] : "";
     $email = (isset($param['email'])) ? $param['email'] : "";
     $phone = (isset($param['phone'])) ? $param['phone'] : "";
     $barang = (isset($param['barang'])) ? $param['barang'] : "";
     $promosi = (isset($param['promosi'])) ? $param['promosi'] : "";
     $domain = (isset($param['domain'])) ? $param['domain'] : "";
+    $status = (isset($param['status'])) ? $param['status'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
@@ -23,18 +25,24 @@ class Model_reseller_request extends CI_Model {
     //Validation
     if($id > 0){$this->db->where('reseller_request.id', $id);}
     if($name != ""){$this->db->like('reseller_request.name', $name);}
+    if($store_name != ""){$this->db->like('reseller_request.store_name', $store_name);}
     if($email != ""){$this->db->like('reseller_request.email', $email);}
     if($phone != ""){$this->db->like('reseller_request.phone', $phone);}
     if($barang != ""){$this->db->like('reseller_request.barang', $barang);}
     if($promosi != ""){$this->db->like('reseller_request.promosi', $promosi);}
     if($domain != ""){$this->db->like('reseller_request.domain', $domain);}
+    if($status > -1){$this->db->where('reseller_request.status', $status);}
     //End Validation
     
     if($order == 1){
       $this->db->order_by("reseller_request.name", "desc");
     }else if($order == 2){
-      $this->db->order_by("reseller_request.cretime", "desc");
+      $this->db->order_by("reseller_request.store_name", "asc");
     }else if($order == 3){
+      $this->db->order_by("reseller_request.store_name", "desc");
+    }else if($order == 4){
+      $this->db->order_by("reseller_request.cretime", "desc");
+    }else if($order == 5){
       $this->db->order_by("reseller_request.cretime", "asc");
     }else{
       $this->db->order_by("reseller_request.name", "asc");
@@ -47,13 +55,17 @@ class Model_reseller_request extends CI_Model {
   }
   
   function approval($param){
-    //Remove from reseller_request
+    //Update status reseller request
     $id = (isset($param['id'])) ? $param['id'] : 0;
+    $data_update = array(
+      'status' => 1
+    );
     $this->db->where('id', $id);
-    $this->db->delete('reseller_request');
+    $this->db->update('reseller_request', $data_update);
     
     //Insert to reseller
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $store_name = (isset($param['store_name'])) ? $param['store_name'] : "";
     $email = (isset($param['email'])) ? $param['email'] : "";
     $phone = (isset($param['phone'])) ? $param['phone'] : "";
     $upline_email = (isset($param['upline_email'])) ? $param['upline_email'] : NULL;
@@ -62,6 +74,7 @@ class Model_reseller_request extends CI_Model {
     $data = array(
       'email' => $email,
       'name' => $name,
+      'store_name' => $store_name,
       'phone' => $phone,
       'password' => sha1(md5($password)),
       'status' => 1,

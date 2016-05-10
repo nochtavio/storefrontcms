@@ -23,7 +23,7 @@ class Model_role extends CI_Model {
     //End Validation
     
     $this->db->where('role.deleted', 0);
-    $this->db->where('role.id !=', 1);
+    //$this->db->where('role.id !=', 1);
     if($order == 1){
       $this->db->order_by("role.name", "desc");
     }else if($order == 2){

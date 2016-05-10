@@ -32,11 +32,13 @@ class Reseller_request extends CI_Controller {
   public function get_data(){
     //param
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "";
+    $param['store_name'] = ($this->input->post('store_name', TRUE)) ? $this->input->post('store_name', TRUE) : "";
     $param['email'] = ($this->input->post('email', TRUE)) ? $this->input->post('email', TRUE) : "";
     $param['phone'] = ($this->input->post('phone', TRUE)) ? $this->input->post('phone', TRUE) : "";
     $param['barang'] = ($this->input->post('barang', TRUE)) ? $this->input->post('barang', TRUE) : "";
     $param['promosi'] = ($this->input->post('promosi', TRUE)) ? $this->input->post('promosi', TRUE) : "";
     $param['domain'] = ($this->input->post('domain', TRUE)) ? $this->input->post('domain', TRUE) : "";
+    $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
     
@@ -54,8 +56,10 @@ class Reseller_request extends CI_Controller {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
         $data['name'][$temp] = $row->name;
+        $data['store_name'][$temp] = $row->store_name;
         $data['email'][$temp] = $row->email;
         $data['phone'][$temp] = $row->phone;
+        $data['status'][$temp] = $row->status;
         $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
         $temp++;
       }
@@ -82,6 +86,7 @@ class Reseller_request extends CI_Controller {
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['name'] = $result_data->row()->name;
+      $data['store_name'] = $result_data->row()->store_name;
       $data['email'] = $result_data->row()->email;
       $data['phone'] = $result_data->row()->phone;
       $data['barang'] = $result_data->row()->barang;
@@ -104,6 +109,7 @@ class Reseller_request extends CI_Controller {
     $result_data = $this->Model_reseller_request->get_data($param);
     if($result_data->num_rows() > 0){
       $param['name'] = $result_data->row()->name;
+      $param['store_name'] = $result_data->row()->store_name;
       $param['email'] = $result_data->row()->email;
       $param['phone'] = $result_data->row()->phone;
       $param['upline_email'] = $result_data->row()->upline_email;

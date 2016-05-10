@@ -9,6 +9,7 @@ class Model_reseller extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $name = (isset($param['name'])) ? $param['name'] : "";
+    $store_name = (isset($param['store_name'])) ? $param['store_name'] : "";
     $email = (isset($param['email'])) ? $param['email'] : "";
     $phone = (isset($param['phone'])) ? $param['phone'] : "";
     $status = (isset($param['status'])) ? $param['status'] : -1;
@@ -21,6 +22,7 @@ class Model_reseller extends CI_Model {
     //Validation
     if($id > 0){$this->db->where('reseller.id', $id);}
     if($name != ""){$this->db->like('reseller.name', $name);}
+    if($store_name != ""){$this->db->like('reseller.store_name', $store_name);}
     if($email != ""){$this->db->like('reseller.email', $email);}
     if($phone != ""){$this->db->like('reseller.phone', $phone);}
     if($status > -1){$this->db->where('reseller.status', $status);}
@@ -29,8 +31,12 @@ class Model_reseller extends CI_Model {
     if($order == 1){
       $this->db->order_by("reseller.name", "desc");
     }else if($order == 2){
-      $this->db->order_by("reseller.cretime", "desc");
+      $this->db->order_by("reseller.store_name", "asc");
     }else if($order == 3){
+      $this->db->order_by("reseller.store_name", "desc");
+    }else if($order == 4){
+      $this->db->order_by("reseller.cretime", "desc");
+    }else if($order == 5){
       $this->db->order_by("reseller.cretime", "asc");
     }else{
       $this->db->order_by("reseller.name", "asc");

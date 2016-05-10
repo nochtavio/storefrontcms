@@ -8,6 +8,7 @@
         <div class="box-tools m-b-15">
           <div class="input-group">
             <input id="txt_name" name="txt_name" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Reseller Name">
+            <input id="txt_store_name" name="txt_store_name" type="text" class="form-control input-sm" style="margin-right: 7px;width: 175px;" placeholder="Filter Reseller Store Name">
             <input id="txt_email" name="txt_email" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Reseller Email">
             <input id="txt_phone" name="txt_phone" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Reseller Phone">
             <select id="sel_status" name="sel_status" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
@@ -18,8 +19,10 @@
             <select id="sel_order" name="sel_order" class="form-control input-sm" style="margin-right: 7px;width: 200px;">
               <option value="-1">Order by Reseller Name A-Z</option>
               <option value="1">Order by Reseller Name Z-A</option>
-              <option value="2">Order by Latest Data</option> 
-              <option value="3">Order by Oldest Data</option>
+              <option value="2">Order by Reseller Store Name A-Z</option>
+              <option value="3">Order by Reseller Store Name Z-A</option>
+              <option value="4">Order by Latest Data</option> 
+              <option value="5">Order by Oldest Data</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
           </div>
@@ -55,6 +58,12 @@
             <label for="txt_data_name" class="col-lg-3 col-sm-3 control-label">Name</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_name" placeholder="Enter reseller name" readonly="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_store_name" class="col-lg-3 col-sm-3 control-label">Store Name</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_store_name" placeholder="Enter reseller store name" readonly="">
             </div>
           </div>
           <div class="form-group">

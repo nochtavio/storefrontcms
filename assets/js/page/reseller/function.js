@@ -2,6 +2,7 @@ $(document).ready(function () {
   get_data = function (page) {
     //Filter
     var name = $('#txt_name').val();
+    var store_name = $('#txt_store_name').val();
     var email = $('#txt_email').val();
     var phone = $('#txt_phone').val();
     var status = $('#sel_status').val();
@@ -14,6 +15,7 @@ $(document).ready(function () {
       data: {
         page: page,
         name: name,
+        store_name: store_name,
         email: email,
         phone: phone,
         status: status,
@@ -27,6 +29,7 @@ $(document).ready(function () {
           <tr>\
             <th>No</th>\
             <th>Name</th>\
+            <th>Store Name</th>\
             <th>Email</th>\
             <th>Phone</th>\
             <th>Status</th>\
@@ -80,6 +83,7 @@ $(document).ready(function () {
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
                 <td>" + result['name'][x] + "</td>\
+                <td>" + result['store_name'][x] + "</td>\
                 <td>" + result['email'][x] + "</td>\
                 <td>" + result['phone'][x] + "</td>\
                 <td>" + status + "</td>\
@@ -100,7 +104,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='7'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -130,6 +134,7 @@ $(document).ready(function () {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
               $("#txt_data_name").val(result['name']);
+              $("#txt_data_store_name").val(result['store_name']);
               $("#txt_data_email").val(result['email']);
               $("#txt_data_phone").val(result['phone']);
               $("#txt_data_street").val(result['street']);
