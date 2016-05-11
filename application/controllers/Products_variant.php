@@ -171,8 +171,10 @@ class Products_variant extends CI_Controller {
     //param
     $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
     $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
+    $param['color_name'] = $this->get_color_name($param['id_color']);
     $param['size'] = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : NULL;
     $param['quantity'] = ($this->input->post('quantity', TRUE)) ? $this->input->post('quantity', TRUE) : 0;
+    $param['max_quantity_order'] = ($this->input->post('max_quantity_order', TRUE)) ? $this->input->post('max_quantity_order', TRUE) : 0;
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param

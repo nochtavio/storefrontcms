@@ -188,7 +188,9 @@ class Products_image extends CI_Controller {
     //Check Directory
     if (!is_dir('images/products/'.$param['id_products'])){
       mkdir('./images/products/'.$param['id_products'].'/', 0777, true);
-    }else if(!is_dir('images/products/'.$param['id_products'].'/'.$param['id_color'])){
+    }
+    
+    if(!is_dir('images/products/'.$param['id_products'].'/'.$param['id_color'])){
       mkdir('./images/products/'.$param['id_products'].'/'.$param['id_color'].'/', 0777, true);
     }
     //End Check Directory
