@@ -13,6 +13,9 @@ class Model_category_child extends CI_Model {
     $url = (isset($param['url'])) ? $param['url'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
+    
+    $now = (isset($param['now'])) ? $param['now'] : 0;
+    $now_updated = (isset($param['now_updated'])) ? $param['now_updated'] : 0;
     //End Set Param
     
     $this->db->select('category_child.*');
@@ -25,6 +28,16 @@ class Model_category_child extends CI_Model {
     if($name != ""){$this->db->like('category_child.name', $name);}
     if($url != ""){$this->db->where('category_child.url', $url);}
     if($active > -1){$this->db->where('category_child.active', $active);}
+    
+    if($now > 0){
+      $this->db->where('category_child.cretime >=', date('Y-m-d'));
+      $this->db->where('category_child.cretime <=', date('Y-m-d')." 23:59:59");
+    }
+    
+    if($now_updated > 0){
+      $this->db->where('category_child.modtime >=', date('Y-m-d'));
+      $this->db->where('category_child.modtime <=', date('Y-m-d')." 23:59:59");
+    }
     //End Validation
     
     $this->db->where('category_child.parent', 0);

@@ -12,6 +12,9 @@ class Model_category extends CI_Model {
     $url = (isset($param['url'])) ? $param['url'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
+    
+    $now = (isset($param['now'])) ? $param['now'] : 0;
+    $now_updated = (isset($param['now_updated'])) ? $param['now_updated'] : 0;
     //End Set Param
     
     $this->db->select('category.*');
@@ -22,6 +25,16 @@ class Model_category extends CI_Model {
     if($name != ""){$this->db->like('category.name', $name);}
     if($url != ""){$this->db->where('category.url', $url);}
     if($active > -1){$this->db->where('category.active', $active);}
+    
+    if($now > 0){
+      $this->db->where('category.cretime >=', date('Y-m-d'));
+      $this->db->where('category.cretime <=', date('Y-m-d')." 23:59:59");
+    }
+    
+    if($now_updated > 0){
+      $this->db->where('category.modtime >=', date('Y-m-d'));
+      $this->db->where('category.modtime <=', date('Y-m-d')." 23:59:59");
+    }
     //End Validation
     
     $this->db->where('category.deleted', 0);
@@ -36,6 +49,29 @@ class Model_category extends CI_Model {
     }
     
     if($size >= 0){$this->db->limit($size, $limit);}
+    $query = $this->db->get();
+    
+    return $query;
+  }
+  
+  function get_category_reseller($param){
+    //Set Param
+    $id = (isset($param['id'])) ? $param['id'] : 0;
+    $id_reseller = (isset($param['id_reseller'])) ? $param['id_reseller'] : 0;
+    $id_category = (isset($param['id_category'])) ? $param['id_category'] : 0;
+    //End Set Param
+    
+    $this->db->select('category_reseller.id_reseller, category_reseller.id_category, reseller.name, reseller.store_name, reseller.email');
+    $this->db->from('category_reseller');
+    $this->db->join('reseller', 'reseller.id = category_reseller.id_reseller');
+    
+    //Validation
+    if($id > 0){$this->db->where('category_reseller.id', $id);}
+    if($id_reseller > 0){$this->db->where('category_reseller.id_reseller', $id_reseller);}
+    if($id_category > 0){$this->db->where('category_reseller.id_category', $id_category);}
+    //End Validation
+    
+    $this->db->distinct();
     $query = $this->db->get();
     
     return $query;
