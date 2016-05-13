@@ -15,6 +15,7 @@ class Category extends CI_Controller {
     $this->load->model('Model_category');
     $this->load->model('Model_category_child');
     $this->load->model('Model_brand');
+    $this->load->model('Model_reseller');
   }
   
   public function index() {

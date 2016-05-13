@@ -72,7 +72,7 @@ $(document).ready(function () {
             
             //Action
             var action = "";
-            if(result['allowed_edit']){
+            if(result['allowed_edit'] && result['type'][x] == 1){
               action += "<a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;";
             }
             //End Action

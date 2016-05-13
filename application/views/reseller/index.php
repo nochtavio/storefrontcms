@@ -16,6 +16,11 @@
               <option value="1">Active</option>
               <option value="2">Banned</option>
             </select>
+            <select id="sel_minimum_wallet" name="sel_minimum_wallet" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
+              <option value="-1">All Reseller</option>
+              <option value="1">Enough Wallet</option>
+              <option value="2">Not Enough Wallet</option>
+            </select>
             <select id="sel_order" name="sel_order" class="form-control input-sm" style="margin-right: 7px;width: 200px;">
               <option value="-1">Order by Reseller Name A-Z</option>
               <option value="1">Order by Reseller Name Z-A</option>
@@ -100,6 +105,12 @@
             <label for="txt_data_zipcode" class="col-lg-3 col-sm-3 control-label">Zipcode</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_zipcode" placeholder="Enter reseller zipcode" readonly="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_wallet" class="col-lg-3 col-sm-3 control-label">Wallet</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_wallet" placeholder="Enter reseller wallet" readonly="">
             </div>
           </div>
           <div id="error_container" class="alert alert-block alert-danger" style="display: none;">

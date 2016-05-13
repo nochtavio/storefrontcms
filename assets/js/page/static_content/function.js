@@ -110,11 +110,19 @@ $(document).ready(function () {
                 $('#txt_data_email').val(result['content']);
                 
                 $('.data_content').hide();
+                $('.data_minimum_reseller_wallet').hide();
+              }else if(val == 8){
+                $('.data_minimum_reseller_wallet').show();
+                $('#txt_data_minimum_reseller_wallet').val(result['content']);
+                
+                $('.data_email').hide();
+                $('.data_content').hide();
               }else{
                 $('.data_content').show();
                 $("#txt_data_content").summernote('code', result['content']);
                 
                 $('.data_email').hide();
+                $('.data_minimum_reseller_wallet').hide();
               }
               $('#modal_data').modal('show');
             }

@@ -6,6 +6,7 @@ $(document).ready(function () {
     var email = $('#txt_email').val();
     var phone = $('#txt_phone').val();
     var status = $('#sel_status').val();
+    var minimum_wallet = $('#sel_minimum_wallet').val();
     var order = $('#sel_order').val();
     //End Filter
 
@@ -19,6 +20,7 @@ $(document).ready(function () {
         email: email,
         phone: phone,
         status: status,
+        minimum_wallet: minimum_wallet,
         order: order
       },
       dataType: 'json',
@@ -32,6 +34,7 @@ $(document).ready(function () {
             <th>Store Name</th>\
             <th>Email</th>\
             <th>Phone</th>\
+            <th>Wallet</th>\
             <th>Status</th>\
             <th>Date</th>\
             <th>Action</th>\
@@ -86,6 +89,7 @@ $(document).ready(function () {
                 <td>" + result['store_name'][x] + "</td>\
                 <td>" + result['email'][x] + "</td>\
                 <td>" + result['phone'][x] + "</td>\
+                <td>" + result['wallet'][x] + "</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>" + action + "</td>\
@@ -104,7 +108,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='9'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }
@@ -141,6 +145,7 @@ $(document).ready(function () {
               $("#txt_data_province").val(result['province']);
               $("#txt_data_city").val(result['city']);
               $("#txt_data_zipcode").val(result['zipcode']);
+              $("#txt_data_wallet").val(result['wallet']);
               $('#modal_data').modal('show');
             }
             else {

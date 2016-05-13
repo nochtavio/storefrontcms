@@ -71,6 +71,12 @@
               <input type="text" class="form-control form_data" id="txt_data_email" placeholder="Enter email">
             </div>
           </div>
+          <div class="form-group data_minimum_reseller_wallet" style="display: none;">
+            <label for="txt_data_minimum_reseller_wallet" class="col-lg-3 col-sm-3 control-label">Minimum Reseller Wallet</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_minimum_reseller_wallet" placeholder="Enter minimum reseller wallet">
+            </div>
+          </div>
           <div id="error_container" class="alert alert-block alert-danger" style="display: none;">
             <div id="error_container_message">
 

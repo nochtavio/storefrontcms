@@ -43,6 +43,8 @@ class Static_content extends CI_Controller {
       $type_name = "Email";
     }else if($type == 6){
       $type_name = "Address";
+    }else if($type == 7){
+      $type_name = "Minimum Reseller Wallet";
     }
     
     return $type_name;

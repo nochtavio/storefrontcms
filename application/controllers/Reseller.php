@@ -36,6 +36,7 @@ class Reseller extends CI_Controller {
     $param['email'] = ($this->input->post('email', TRUE)) ? $this->input->post('email', TRUE) : "";
     $param['phone'] = ($this->input->post('phone', TRUE)) ? $this->input->post('phone', TRUE) : "";
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : -1;
+    $param['minimum_wallet'] = ($this->input->post('minimum_wallet', TRUE)) ? $this->input->post('minimum_wallet', TRUE) : -1;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
     
@@ -56,6 +57,7 @@ class Reseller extends CI_Controller {
         $data['store_name'][$temp] = $row->store_name;
         $data['email'][$temp] = $row->email;
         $data['phone'][$temp] = $row->phone;
+        $data['wallet'][$temp] = number_format($row->wallet);
         $data['status'][$temp] = $row->status;
         $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
         $data['modtime'][$temp] = ($row->modtime == NULL) ? NULL : date_format(date_create($row->modtime), 'd F Y H:i:s');
@@ -91,6 +93,7 @@ class Reseller extends CI_Controller {
       $data['province'] = ($result_data->row()->province == NULL) ? '-' : $result_data->row()->province ;
       $data['city'] = ($result_data->row()->city == NULL) ? '-' : $result_data->row()->city ;
       $data['zipcode'] = ($result_data->row()->zipcode == NULL) ? '-' : $result_data->row()->zipcode ;
+      $data['wallet'] = $result_data->row()->wallet;
       $data['status'] = $result_data->row()->status;
     }else{
       $data['result'] = "r2";

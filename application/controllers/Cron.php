@@ -42,5 +42,46 @@ class Cron extends CI_Controller {
       }
     }
   }
+  
+  function new_category(){
+    $this->load->model('Model_reseller');
+    
+    //Send Email to Active Reseller
+    $param_reseller_data['status'] = 1;
+    $get_reseller_data = $this->Model_reseller->get_data($param_reseller_data);
+    if ($get_reseller_data->num_rows() > 0) {
+      $config = Array(
+        'protocol' => 'smtp',
+        'smtp_host' => 'mail.storefrontindo.com',
+        'smtp_port' => 25,
+        'smtp_user' => 'do-not-reply@storefrontindo.com', // change it to yours
+        'smtp_pass' => 'v0AOsm[viHJB', // change it to yours
+        'mailtype' => 'html',
+        'charset' => 'iso-8859-1',
+        'wordwrap' => TRUE
+      );
+      
+      $this->load->library('email', $config);
+      
+      foreach ($get_reseller_data->result() as $row) {
+        $this->email->clear();
+        $this->email->set_newline("\r\n");
+        $this->email->set_mailtype("html");
+        $this->email->from('do-not-reply@storefrontindo.com', 'Storefront Indonesia'); // change it to yours
+        $this->email->to($row->email); // change it to yours
+        $this->email->subject("Info Penambahan Kategori");
+        $this->email->message(""
+          . "Dear <strong>".$row->name."</strong><br/> <br/>"
+          . "Berikut adalah daftar kategori baru yang bisa anda pilih untuk dijual di web anda. <br/> <br/>"
+          . "<strong>Email: </strong> ".$param['email']."<br/> <br/>"
+          . "<strong>Password: </strong> ".$approval['password']."<br/> <br/>"
+          . "Silahkan login ke admin panel <a href='http://www.storefrontindo.com/front/reseller/login/' target='_blank'>http://www.storefrontindo.com/front/reseller/login/</a>  dengan menggunakan email dan password diatas. <br/> <br/>"
+          . "Salam <br/> <br/>"
+          . "Owner FFStore"
+          . "");
+        $this->email->send();
+      }
+    }
+  }
 
 }

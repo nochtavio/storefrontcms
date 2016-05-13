@@ -19,6 +19,9 @@ $(document).ready(function () {
     if(id == 6){
       content = $('#txt_data_email').val();
     }
+    if(id == 8){
+      content = $('#txt_data_minimum_reseller_wallet').val();
+    }
     //End Parameter
     
     if(state == "add"){

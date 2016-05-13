@@ -13,6 +13,7 @@ class Model_reseller extends CI_Model {
     $email = (isset($param['email'])) ? $param['email'] : "";
     $phone = (isset($param['phone'])) ? $param['phone'] : "";
     $status = (isset($param['status'])) ? $param['status'] : -1;
+    $minimum_wallet = (isset($param['minimum_wallet'])) ? $param['minimum_wallet'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
@@ -26,6 +27,9 @@ class Model_reseller extends CI_Model {
     if($email != ""){$this->db->like('reseller.email', $email);}
     if($phone != ""){$this->db->like('reseller.phone', $phone);}
     if($status > -1){$this->db->where('reseller.status', $status);}
+    if($minimum_wallet == 1){
+      $this->db->where('reseller.wallet >= (SELECT content FROM static_content WHERE TYPE = 7)');
+    }
     //End Validation
     
     if($order == 1){

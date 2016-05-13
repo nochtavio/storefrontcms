@@ -92,6 +92,13 @@
     }
   ?>
   <?php 
+    if(check_menu("Order_item", $type = 0)){
+      ?>
+        <li class="<?php echo ($page == "Order_item") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>order_item/"><i class="fa fa-gift"></i> <span>Reseller Item</span></a></li> 
+      <?php
+    }
+  ?>
+  <?php 
     if(check_menu("Shipping", $type = 0)){
       ?>
         <li class="<?php echo ($page == "Shipping") ? "active" : ""; ?>"><a href="<?php echo base_url() ?>shipping/"><i class="fa fa-paper-plane"></i> <span>Shipping</span></a></li>
