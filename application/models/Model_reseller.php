@@ -29,6 +29,8 @@ class Model_reseller extends CI_Model {
     if($status > -1){$this->db->where('reseller.status', $status);}
     if($minimum_wallet == 1){
       $this->db->where('reseller.wallet >= (SELECT content FROM static_content WHERE TYPE = 7)');
+    }else if($minimum_wallet == 2){
+      $this->db->where('reseller.wallet < (SELECT content FROM static_content WHERE TYPE = 7)');
     }
     //End Validation
     
