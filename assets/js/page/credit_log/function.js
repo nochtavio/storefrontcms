@@ -1,8 +1,9 @@
 $(document).ready(function () {
   get_data = function (page) {
     //Filter
-    var customer_email = $('#txt_customer_email').val();
+    var email = $('#txt_email').val();
     var type = $('#sel_type').val();
+    var credit_log_type = $('#sel_credit_log_type').val();
     var status = $('#sel_status').val();
     var order = $('#sel_order').val();
     //End Filter
@@ -12,8 +13,9 @@ $(document).ready(function () {
       type: 'POST',
       data: {
         page: page,
-        customer_email: customer_email,
+        email: email,
         type: type,
+        credit_log_type: credit_log_type,
         status: status,
         order: order
       },
@@ -24,7 +26,8 @@ $(document).ready(function () {
         $('#table_content').append("\
           <tr>\
             <th>No</th>\
-            <th>Customer Email</th>\
+            <th>Email</th>\
+            <th>Credit Log Type</th>\
             <th>Amount</th>\
             <th>Type</th>\
             <th>Description</th>\
@@ -80,7 +83,8 @@ $(document).ready(function () {
             $('#table_content').append("\
               <tr>\
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
-                <td>" + result['customer_email'][x] + "</td>\
+                <td>" + result['email'][x] + "</td>\
+                <td>" + result['credit_log_type'][x] + "</td>\
                 <td>" + result['amount'][x] + "</td>\
                 <td>" + type + "</td>\
                 <td>" + result['description'][x] + "</td>\
@@ -101,7 +105,7 @@ $(document).ready(function () {
         } else {
           $('#table_content').append("\
           <tr>\
-            <td colspan='8'><strong style='color:red;'>" + result['message'] + "</strong></td>\
+            <td colspan='9'><strong style='color:red;'>" + result['message'] + "</strong></td>\
           </tr>");
         }
       }

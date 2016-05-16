@@ -45,6 +45,18 @@ class Static_content extends CI_Controller {
       $type_name = "Address";
     }else if($type == 7){
       $type_name = "Minimum Reseller Wallet";
+    }else if($type == 8){
+      $type_name = "Potongan Gold";
+    }else if($type == 9){
+      $type_name = "Potongan Silver";
+    }else if($type == 10){
+      $type_name = "Potongan Bronze";
+    }else if($type == 11){
+      $type_name = "Minimum Omzet Gold";
+    }else if($type == 12){
+      $type_name = "Minimum Omzet Silver";
+    }else if($type == 13){
+      $type_name = "Minimum Omzet Bronze";
     }
     
     return $type_name;
@@ -58,7 +70,7 @@ class Static_content extends CI_Controller {
     //paging
     $get_data = $this->Model_static_content->get_data($param);
     $page = ($this->input->post('page', TRUE)) ? $this->input->post('page', TRUE) : 1 ;
-    $size = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : 10 ;
+    $size = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : 20 ;
     $limit = ($page - 1) * $size;
     //End Set totalpaging
 

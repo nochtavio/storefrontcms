@@ -49,6 +49,9 @@ class Model_products extends CI_Model {
     $price = (isset($param['price'])) ? $param['price'] : 0;
     $sale_price = (isset($param['sale_price'])) ? $param['sale_price'] : 0;
     $reseller_price = (isset($param['reseller_price'])) ? $param['reseller_price'] : 0;
+    $potongan_gold = (isset($param['potongan_gold'])) ? $param['potongan_gold'] : NULL;
+    $potongan_silver = (isset($param['potongan_silver'])) ? $param['potongan_silver'] : NULL;
+    $potongan_bronze = (isset($param['potongan_bronze'])) ? $param['potongan_bronze'] : NULL;
     $weight = (isset($param['weight'])) ? $param['weight'] : 0;
     $attribute = (isset($param['attribute'])) ? $param['attribute'] : "";
     $description = (isset($param['description'])) ? $param['description'] : "";
@@ -67,6 +70,9 @@ class Model_products extends CI_Model {
       'price' => $price,
       'sale_price' => $sale_price,
       'reseller_price' => $reseller_price,
+      'potongan_gold' => $potongan_gold,
+      'potongan_silver' => $potongan_silver,
+      'potongan_bronze' => $potongan_bronze,
       'weight' => $weight,
       'attribute' => $attribute,
       'description' => $description,
@@ -129,6 +135,9 @@ class Model_products extends CI_Model {
     $price = (isset($param['price'])) ? $param['price'] : 0;
     $sale_price = (isset($param['sale_price'])) ? $param['sale_price'] : 0;
     $reseller_price = (isset($param['reseller_price'])) ? $param['reseller_price'] : 0;
+    $potongan_gold = (isset($param['potongan_gold'])) ? $param['potongan_gold'] : NULL;
+    $potongan_silver = (isset($param['potongan_silver'])) ? $param['potongan_silver'] : NULL;
+    $potongan_bronze = (isset($param['potongan_bronze'])) ? $param['potongan_bronze'] : NULL;
     $weight = (isset($param['weight'])) ? $param['weight'] : 0;
     $attribute = (isset($param['attribute'])) ? $param['attribute'] : "";
     $description = (isset($param['description'])) ? $param['description'] : "";
@@ -166,6 +175,9 @@ class Model_products extends CI_Model {
       'price' => $price,
       'sale_price' => $sale_price,
       'reseller_price' => $reseller_price,
+      'potongan_gold' => $potongan_gold,
+      'potongan_silver' => $potongan_silver,
+      'potongan_bronze' => $potongan_bronze,
       'weight' => $weight,
       'attribute' => $attribute,
       'description' => $description,

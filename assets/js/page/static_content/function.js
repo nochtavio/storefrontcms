@@ -105,24 +105,16 @@ $(document).ready(function () {
               $("#txt_data_id").val(val);
               $("#txt_data_name").val(result['name']);
               $("#txt_data_type_name").val(result['type_name']);
-              if(val == 6){
-                $('.data_email').show();
-                $('#txt_data_email').val(result['content']);
+              if(val == 6 || val == 8 || val == 9 || val == 10 || val == 11 || val == 12 || val == 13){
+                $('.data_text_field').show();
+                $('#txt_data_text_field').val(result['content']);
                 
-                $('.data_content').hide();
-                $('.data_minimum_reseller_wallet').hide();
-              }else if(val == 8){
-                $('.data_minimum_reseller_wallet').show();
-                $('#txt_data_minimum_reseller_wallet').val(result['content']);
-                
-                $('.data_email').hide();
-                $('.data_content').hide();
+                $('.data_text_area').hide();
               }else{
                 $('.data_content').show();
                 $("#txt_data_content").summernote('code', result['content']);
                 
-                $('.data_email').hide();
-                $('.data_minimum_reseller_wallet').hide();
+                $('.data_text_field').hide();
               }
               $('#modal_data').modal('show');
             }

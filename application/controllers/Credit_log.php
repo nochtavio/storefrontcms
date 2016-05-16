@@ -32,8 +32,9 @@ class Credit_log extends CI_Controller {
   
   public function get_data(){
     //param
-    $param['customer_email'] = ($this->input->post('customer_email', TRUE)) ? $this->input->post('customer_email', TRUE) : "";
+    $param['email'] = ($this->input->post('email', TRUE)) ? $this->input->post('email', TRUE) : "";
     $param['type'] = ($this->input->post('type', TRUE)) ? $this->input->post('type', TRUE) : 0;
+    $param['credit_log_type'] = ($this->input->post('credit_log_type', TRUE)) ? $this->input->post('credit_log_type', TRUE) : 0;
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
@@ -51,7 +52,8 @@ class Credit_log extends CI_Controller {
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
         $data['id'][$temp] = $row->id;
-        $data['customer_email'][$temp] = $row->customer_email;
+        $data['email'][$temp] = ($row->customer_email != NULL) ? $row->customer_email : $row->email ;
+        $data['credit_log_type'][$temp] = ($row->id_customer == 1) ? 'Customer' : 'Reseller' ;
         $data['amount'][$temp] = number_format($row->amount);
         $data['type'][$temp] = $row->type;
         $data['description'][$temp] = $row->description;
@@ -86,6 +88,7 @@ class Credit_log extends CI_Controller {
       $data['id_customer'] = $result_data->row()->id_customer;
       $data['customer_email'] = $result_data->row()->customer_email;
       $data['amount'] = $result_data->row()->amount;
+      $data['type'] = $result_data->row()->type;
       $data['type'] = $result_data->row()->type;
       $data['description'] = $result_data->row()->description;
       $data['status'] = $result_data->row()->status;

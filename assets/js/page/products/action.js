@@ -19,6 +19,9 @@ $(document).ready(function () {
     var price = $('#txt_data_price').val();
     var sale_price = $('#txt_data_sale_price').val();
     var reseller_price = $('#txt_data_reseller_price').val();
+    var potongan_gold = $('#txt_data_potongan_gold').val();
+    var potongan_silver = $('#txt_data_potongan_silver').val();
+    var potongan_bronze = $('#txt_data_potongan_bronze').val();
     var weight = $('#txt_data_weight').val();
     var attribute = $('#txt_data_attribute').val();
     var description = $('#txt_data_description').summernote('code');
@@ -35,9 +38,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(id_brand, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active);
+      add_data(id_brand, name, price, sale_price, reseller_price, potongan_gold, potongan_silver, potongan_bronze, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active);
     }else{
-      edit_data(id, id_brand, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active);
+      edit_data(id, id_brand, name, price, sale_price, reseller_price, potongan_gold, potongan_silver, potongan_bronze, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active);
     }
   });
   

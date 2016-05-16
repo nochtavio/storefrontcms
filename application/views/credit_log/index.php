@@ -7,7 +7,12 @@
       <div class="panel-body table-responsive">
         <div class="box-tools m-b-15">
           <div class="input-group">
-            <input id="txt_customer_email" name="txt_customer_email" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Customer Email">
+            <input id="txt_email" name="txt_email" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Email">
+            <select id="sel_credit_log_type" name="sel_credit_log_type" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
+              <option value="-1">All Credit Log Type</option>
+              <option value="1">Customer</option>
+              <option value="2">Reseller</option>
+            </select>
             <select id="sel_type" name="sel_type" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Type</option>
               <option value="1">Add Type</option>

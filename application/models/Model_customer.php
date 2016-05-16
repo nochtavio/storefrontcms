@@ -30,6 +30,7 @@ class Model_customer extends CI_Model {
     if($customer_status > -1){$this->db->where('customer.customer_status', $customer_status);}
     //End Validation
     
+    $this->db->where('customer.store_id', 0);
     if($order == 1){
       $this->db->order_by("customer.customer_registration_date", "asc");
     }else if($order == 2){

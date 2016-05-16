@@ -101,6 +101,27 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="txt_data_potongan_gold" class="col-lg-3 col-sm-3 control-label">Potongan Gold</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_potongan_gold" placeholder="Enter product potongan gold">
+              <p class="help-block" style="margin-bottom: 0;">Default value is <?php echo isset($default_potongan_gold) ? $default_potongan_gold : 0 ; ?></p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_potongan_silver" class="col-lg-3 col-sm-3 control-label">Potongan Silver</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_potongan_silver" placeholder="Enter product potongan silver">
+              <p class="help-block" style="margin-bottom: 0;">Default value is <?php echo isset($default_potongan_silver) ? $default_potongan_silver : 0 ; ?></p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="txt_data_potongan_bronze" class="col-lg-3 col-sm-3 control-label">Potongan Bronze</label>
+            <div class="col-lg-9 col-sm-9">
+              <input type="text" class="form-control form_data" id="txt_data_potongan_bronze" placeholder="Enter product potongan bronze">
+              <p class="help-block" style="margin-bottom: 0;">Default value is <?php echo isset($default_potongan_bronze) ? $default_potongan_bronze : 0 ; ?></p>
+            </div>
+          </div>
+          <div class="form-group">
             <label for="txt_data_weight" class="col-lg-3 col-sm-3 control-label">Weight</label>
             <div class="col-lg-9 col-sm-9">
               <input type="text" class="form-control form_data" id="txt_data_weight" placeholder="Enter product weight">

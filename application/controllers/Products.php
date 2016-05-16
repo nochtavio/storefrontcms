@@ -17,6 +17,25 @@ class Products extends CI_Controller {
     $this->load->model('Model_category');
     $this->load->model('Model_category_child');
     $this->load->model('Model_category_child_');
+    $this->load->model('Model_static_content');
+  }
+  
+  public function get_default_potongan($type){
+    //1: Gold | 2: Silver | 3: Bronze
+    $id = 11;
+    if($type == 1){
+      $id = 9;
+    }else if($type == 2){
+      $id = 10;
+    }
+    
+    $param['id'] = $id;
+    $result_data = $this->Model_static_content->get_data($param);
+    if($result_data->num_rows() > 0){
+      return $result_data->row()->content;
+    }else{
+      return 0;
+    }
   }
   
   public function index() {
@@ -32,6 +51,9 @@ class Products extends CI_Controller {
     $content['brand'] = $this->Model_brand->get_data($param, 0, 100)->result();
     $content['category'] = $this->Model_category->get_data($param, 0, 100)->result();
     $content['category_child_'] = $this->Model_category_child_->get_data($param, 0, 100)->result();
+    $content['default_potongan_gold'] = $this->get_default_potongan(1);
+    $content['default_potongan_silver'] = $this->get_default_potongan(2);
+    $content['default_potongan_bronze'] = $this->get_default_potongan(3);
     //end get list category
     
     $data['header'] = $this->load->view('header', '', TRUE);
@@ -103,6 +125,9 @@ class Products extends CI_Controller {
       $data['price'] = $result_data->row()->price;
       $data['sale_price'] = $result_data->row()->sale_price;
       $data['reseller_price'] = $result_data->row()->reseller_price;
+      $data['potongan_gold'] = $result_data->row()->potongan_gold;
+      $data['potongan_silver'] = $result_data->row()->potongan_silver;
+      $data['potongan_bronze'] = $result_data->row()->potongan_bronze;
       $data['weight'] = $result_data->row()->weight;
       $data['attribute'] = $result_data->row()->attribute;
       $data['description'] = $result_data->row()->description;
@@ -181,6 +206,9 @@ class Products extends CI_Controller {
     $param['price'] = ($this->input->post('price', TRUE)) ? $this->input->post('price', TRUE) : 0 ;
     $param['sale_price'] = ($this->input->post('sale_price', TRUE)) ? $this->input->post('sale_price', TRUE) : 0 ;
     $param['reseller_price'] = ($this->input->post('reseller_price', TRUE)) ? $this->input->post('reseller_price', TRUE) : 0 ;
+    $param['potongan_gold'] = ($this->input->post('potongan_gold', TRUE)) ? $this->input->post('potongan_gold', TRUE) : $this->get_default_potongan(1) ;
+    $param['potongan_silver'] = ($this->input->post('potongan_silver', TRUE)) ? $this->input->post('potongan_silver', TRUE) : $this->get_default_potongan(2) ;
+    $param['potongan_bronze'] = ($this->input->post('potongan_bronze', TRUE)) ? $this->input->post('potongan_bronze', TRUE) : $this->get_default_potongan(3) ;
     $param['weight'] = ($this->input->post('weight', TRUE)) ? $this->input->post('weight', TRUE) : 0 ;
     $param['attribute'] = ($this->input->post('attribute', TRUE)) ? $this->input->post('attribute', TRUE) : "" ;
     $param['description'] = ($this->input->post('description', FALSE)) ? $this->input->post('description', FALSE) : "" ;
@@ -209,6 +237,9 @@ class Products extends CI_Controller {
     $param['price'] = ($this->input->post('price', TRUE)) ? $this->input->post('price', TRUE) : 0 ;
     $param['sale_price'] = ($this->input->post('sale_price', TRUE)) ? $this->input->post('sale_price', TRUE) : 0 ;
     $param['reseller_price'] = ($this->input->post('reseller_price', TRUE)) ? $this->input->post('reseller_price', TRUE) : 0 ;
+    $param['potongan_gold'] = ($this->input->post('potongan_gold', TRUE)) ? $this->input->post('potongan_gold', TRUE) : $this->get_default_potongan(1) ;
+    $param['potongan_silver'] = ($this->input->post('potongan_silver', TRUE)) ? $this->input->post('potongan_silver', TRUE) : $this->get_default_potongan(2) ;
+    $param['potongan_bronze'] = ($this->input->post('potongan_bronze', TRUE)) ? $this->input->post('potongan_bronze', TRUE) : $this->get_default_potongan(3) ;
     $param['weight'] = ($this->input->post('weight', TRUE)) ? $this->input->post('weight', TRUE) : 0 ;
     $param['attribute'] = ($this->input->post('attribute', TRUE)) ? $this->input->post('attribute', TRUE) : "" ;
     $param['description'] = ($this->input->post('description', FALSE)) ? $this->input->post('description', FALSE) : "" ;
@@ -286,6 +317,9 @@ class Products extends CI_Controller {
       $param_set['price'] = $result_data->row()->price;
       $param_set['sale_price'] = $result_data->row()->sale_price;
       $param_set['reseller_price'] = $result_data->row()->reseller_price;
+      $param_set['potongan_gold'] = $result_data->row()->potongan_gold;
+      $param_set['potongan_silver'] = $result_data->row()->potongan_silver;
+      $param_set['potongan_bronze'] = $result_data->row()->potongan_bronze;
       $param_set['weight'] = $result_data->row()->weight;
       $param_set['attribute'] = $result_data->row()->attribute;
       $param_set['description'] = $result_data->row()->description;

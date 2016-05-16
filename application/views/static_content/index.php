@@ -59,22 +59,16 @@
               <input type="text" class="form-control form_data" id="txt_data_name" placeholder="Enter name">
             </div>
           </div>
-          <div class="form-group data_content">
+          <div class="form-group data_text_area">
             <label for="txt_data_content" class="col-lg-3 col-sm-3 control-label">Content</label>
             <div class="col-lg-9 col-sm-9">
               <div id="txt_data_content"></div>
             </div>
           </div>
-          <div class="form-group data_email" style="display: none;">
-            <label for="txt_data_email" class="col-lg-3 col-sm-3 control-label">Email</label>
+          <div class="form-group data_text_field" style="display: none;">
+            <label for="txt_data_text_field" class="col-lg-3 col-sm-3 control-label">Content</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_email" placeholder="Enter email">
-            </div>
-          </div>
-          <div class="form-group data_minimum_reseller_wallet" style="display: none;">
-            <label for="txt_data_minimum_reseller_wallet" class="col-lg-3 col-sm-3 control-label">Minimum Reseller Wallet</label>
-            <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_minimum_reseller_wallet" placeholder="Enter minimum reseller wallet">
+              <input type="text" class="form-control form_data" id="txt_data_text_field" placeholder="Enter content">
             </div>
           </div>
           <div id="error_container" class="alert alert-block alert-danger" style="display: none;">

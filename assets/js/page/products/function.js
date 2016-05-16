@@ -168,6 +168,9 @@ $(document).ready(function () {
               $("#txt_data_price").val(result['price']);
               $("#txt_data_sale_price").val(result['sale_price']);
               $("#txt_data_reseller_price").val(result['reseller_price']);
+              $("#txt_data_potongan_gold").val(result['potongan_gold']);
+              $("#txt_data_potongan_silver").val(result['potongan_silver']);
+              $("#txt_data_potongan_bronze").val(result['potongan_bronze']);
               $("#txt_data_weight").val(result['weight']);
               $("#txt_data_description").summernote('code', result['description']);
               $("#txt_data_short_description").summernote('code', result['short_description']);
@@ -251,7 +254,7 @@ $(document).ready(function () {
     }
   };
 
-  add_data = function (id_brand, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active) {
+  add_data = function (id_brand, name, price, sale_price, reseller_price, potongan_gold, potongan_silver, potongan_bronze, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active) {
     $.ajax({
       url: base_url + 'products/add_data',
       type: 'POST',
@@ -261,6 +264,9 @@ $(document).ready(function () {
         price: price,
         sale_price: sale_price,
         reseller_price: reseller_price,
+        potongan_gold: potongan_gold,
+        potongan_silver: potongan_silver,
+        potongan_bronze: potongan_bronze,
         weight: weight,
         attribute: attribute,
         description: description,
@@ -289,7 +295,7 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, id_brand, name, price, sale_price, reseller_price, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active) {
+  edit_data = function (id, id_brand, name, price, sale_price, reseller_price, potongan_gold, potongan_silver, potongan_bronze, weight, attribute, description, short_description, info, size_guideline, category, category_child, category_child_, active) {
     $.ajax({
       url: base_url + 'products/edit_data',
       type: 'POST',
@@ -300,6 +306,9 @@ $(document).ready(function () {
         price: price,
         sale_price: sale_price,
         reseller_price: reseller_price,
+        potongan_gold: potongan_gold,
+        potongan_silver: potongan_silver,
+        potongan_bronze: potongan_bronze,
         weight: weight,
         attribute: attribute,
         description: description,

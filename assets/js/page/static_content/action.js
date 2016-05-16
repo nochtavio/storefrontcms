@@ -16,11 +16,8 @@ $(document).ready(function () {
     var id = $('#txt_data_id').val();
     var name = $('#txt_data_name').val();
     var content = $('#txt_data_content').summernote('code');
-    if(id == 6){
-      content = $('#txt_data_email').val();
-    }
-    if(id == 8){
-      content = $('#txt_data_minimum_reseller_wallet').val();
+    if(id == 6 || id == 8 || id == 9 || id == 10 || id == 11 || id == 12 || id == 13){
+      content = $('#txt_data_text_field').val();
     }
     //End Parameter
     
