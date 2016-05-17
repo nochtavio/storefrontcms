@@ -59,9 +59,9 @@
           <input type="hidden" id="txt_data_id" name="txt_data_id" />
           <input type="hidden" id="txt_data_id_customer" name="txt_data_id_customer" />
           <div class="form-group">
-            <label for="txt_data_customer_email" class="col-lg-3 col-sm-3 control-label">Customer Email</label>
+            <label for="txt_data_email" class="col-lg-3 col-sm-3 control-label">Email</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_customer_email" placeholder="" readonly="">
+              <input type="text" class="form-control form_data" id="txt_data_email" placeholder="" readonly="">
             </div>
           </div>
           <div class="form-group">

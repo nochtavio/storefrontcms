@@ -134,7 +134,7 @@ $(document).ready(function () {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
               $("#txt_data_id_customer").val(result['id_customer']);
-              $("#txt_data_customer_email").val(result['customer_email']);
+              $("#txt_data_email").val(result['email']);
               $("#txt_data_amount").val(result['amount']);
               $("#sel_data_status").val(result['status']);
               $('#modal_data').modal('show');

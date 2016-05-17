@@ -86,7 +86,7 @@ class Credit_log extends CI_Controller {
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['id_customer'] = $result_data->row()->id_customer;
-      $data['customer_email'] = $result_data->row()->customer_email;
+      $data['email'] = ($result_data->row()->customer_email != NULL) ? $result_data->row()->customer_email : $result_data->row()->email ;
       $data['amount'] = $result_data->row()->amount;
       $data['type'] = $result_data->row()->type;
       $data['type'] = $result_data->row()->type;
@@ -130,21 +130,23 @@ class Credit_log extends CI_Controller {
         }
         //End Get Credit log
         
-        //Get Customer Credit
-        $param_customer_credit['customer_id'] = $param['id_customer'];
-        $get_customer_credit = $this->Model_customer->get_data($param_customer_credit);
-        if($get_customer_credit->num_rows() > 0){
-          $customer_credit = $get_customer_credit->row()->customer_credit;
-        }
-        //End Get Customer Credit
-        
-        if($param['status'] != $status && $param['status'] != ""){
-          if($param['status'] == 1){
-            $param['updated_credit'] = $customer_credit + $param['amount'];
-          }else{
-            $param['updated_credit'] = $customer_credit - $param['amount'];
+        //Update Customer Credit
+        if($param['id_customer'] != ""){
+          $param_customer_credit['customer_id'] = $param['id_customer'];
+          $get_customer_credit = $this->Model_customer->get_data($param_customer_credit);
+          if($get_customer_credit->num_rows() > 0){
+            $customer_credit = $get_customer_credit->row()->customer_credit;
+          }
+          
+          if($param['status'] != $status && $param['status'] != ""){
+            if($param['status'] == 1){
+              $param['updated_credit'] = $customer_credit + $param['amount'];
+            }else{
+              $param['updated_credit'] = $customer_credit - $param['amount'];
+            }
           }
         }
+        //End Update Customer Credit
         
         $this->Model_credit_log->edit_data($param);
       }
