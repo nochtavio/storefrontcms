@@ -124,7 +124,7 @@ class Products extends CI_Controller {
       $data['name'] = $result_data->row()->name;
       $data['price'] = $result_data->row()->price;
       $data['sale_price'] = $result_data->row()->sale_price;
-      $data['reseller_price'] = $result_data->row()->reseller_price;
+      $data['modal_price'] = $result_data->row()->modal_price;
       $data['potongan_gold'] = $result_data->row()->potongan_gold;
       $data['potongan_silver'] = $result_data->row()->potongan_silver;
       $data['potongan_bronze'] = $result_data->row()->potongan_bronze;
@@ -205,7 +205,7 @@ class Products extends CI_Controller {
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "" ;
     $param['price'] = ($this->input->post('price', TRUE)) ? $this->input->post('price', TRUE) : 0 ;
     $param['sale_price'] = ($this->input->post('sale_price', TRUE)) ? $this->input->post('sale_price', TRUE) : 0 ;
-    $param['reseller_price'] = ($this->input->post('reseller_price', TRUE)) ? $this->input->post('reseller_price', TRUE) : 0 ;
+    $param['modal_price'] = ($this->input->post('modal_price', TRUE)) ? $this->input->post('modal_price', TRUE) : 0 ;
     $param['potongan_gold'] = ($this->input->post('potongan_gold', TRUE)) ? $this->input->post('potongan_gold', TRUE) : $this->get_default_potongan(1) ;
     $param['potongan_silver'] = ($this->input->post('potongan_silver', TRUE)) ? $this->input->post('potongan_silver', TRUE) : $this->get_default_potongan(2) ;
     $param['potongan_bronze'] = ($this->input->post('potongan_bronze', TRUE)) ? $this->input->post('potongan_bronze', TRUE) : $this->get_default_potongan(3) ;
@@ -236,7 +236,7 @@ class Products extends CI_Controller {
     $param['name'] = ($this->input->post('name', TRUE)) ? $this->input->post('name', TRUE) : "" ;
     $param['price'] = ($this->input->post('price', TRUE)) ? $this->input->post('price', TRUE) : 0 ;
     $param['sale_price'] = ($this->input->post('sale_price', TRUE)) ? $this->input->post('sale_price', TRUE) : 0 ;
-    $param['reseller_price'] = ($this->input->post('reseller_price', TRUE)) ? $this->input->post('reseller_price', TRUE) : 0 ;
+    $param['modal_price'] = ($this->input->post('modal_price', TRUE)) ? $this->input->post('modal_price', TRUE) : 0 ;
     $param['potongan_gold'] = ($this->input->post('potongan_gold', TRUE)) ? $this->input->post('potongan_gold', TRUE) : $this->get_default_potongan(1) ;
     $param['potongan_silver'] = ($this->input->post('potongan_silver', TRUE)) ? $this->input->post('potongan_silver', TRUE) : $this->get_default_potongan(2) ;
     $param['potongan_bronze'] = ($this->input->post('potongan_bronze', TRUE)) ? $this->input->post('potongan_bronze', TRUE) : $this->get_default_potongan(3) ;
@@ -261,7 +261,7 @@ class Products extends CI_Controller {
       
       $initial_price = $result_price->row()->price;
       $initial_sale_price = $result_price->row()->sale_price;
-      $initial_reseller_price = $result_price->row()->reseller_price;
+      $initial_modal_price = $result_price->row()->modal_price;
       
       if($initial_price != $param['price']){
         array_push($price_logs_type, 1);
@@ -275,10 +275,10 @@ class Products extends CI_Controller {
         array_push($price_logs_changed_value, $param['sale_price']);
       }
       
-      if($initial_reseller_price != $param['reseller_price']){
+      if($initial_modal_price != $param['modal_price']){
         array_push($price_logs_type, 3);
-        array_push($price_logs_initial_value, $initial_reseller_price);
-        array_push($price_logs_changed_value, $param['reseller_price']);
+        array_push($price_logs_initial_value, $initial_modal_price);
+        array_push($price_logs_changed_value, $param['modal_price']);
       }
     }
     $param['price_logs_type'] = $price_logs_type;
@@ -316,7 +316,7 @@ class Products extends CI_Controller {
       $param_set['name'] = $result_data->row()->name;
       $param_set['price'] = $result_data->row()->price;
       $param_set['sale_price'] = $result_data->row()->sale_price;
-      $param_set['reseller_price'] = $result_data->row()->reseller_price;
+      $param_set['modal_price'] = $result_data->row()->modal_price;
       $param_set['potongan_gold'] = $result_data->row()->potongan_gold;
       $param_set['potongan_silver'] = $result_data->row()->potongan_silver;
       $param_set['potongan_bronze'] = $result_data->row()->potongan_bronze;

@@ -48,7 +48,7 @@ class Model_products extends CI_Model {
     $name = (isset($param['name'])) ? $param['name'] : "";
     $price = (isset($param['price'])) ? $param['price'] : 0;
     $sale_price = (isset($param['sale_price'])) ? $param['sale_price'] : 0;
-    $reseller_price = (isset($param['reseller_price'])) ? $param['reseller_price'] : 0;
+    $modal_price = (isset($param['modal_price'])) ? $param['modal_price'] : 0;
     $potongan_gold = (isset($param['potongan_gold'])) ? $param['potongan_gold'] : NULL;
     $potongan_silver = (isset($param['potongan_silver'])) ? $param['potongan_silver'] : NULL;
     $potongan_bronze = (isset($param['potongan_bronze'])) ? $param['potongan_bronze'] : NULL;
@@ -69,7 +69,7 @@ class Model_products extends CI_Model {
       'name' => $name,
       'price' => $price,
       'sale_price' => $sale_price,
-      'reseller_price' => $reseller_price,
+      'modal_price' => $modal_price,
       'potongan_gold' => $potongan_gold,
       'potongan_silver' => $potongan_silver,
       'potongan_bronze' => $potongan_bronze,
@@ -134,7 +134,7 @@ class Model_products extends CI_Model {
     $name = (isset($param['name'])) ? $param['name'] : "";
     $price = (isset($param['price'])) ? $param['price'] : 0;
     $sale_price = (isset($param['sale_price'])) ? $param['sale_price'] : 0;
-    $reseller_price = (isset($param['reseller_price'])) ? $param['reseller_price'] : 0;
+    $modal_price = (isset($param['modal_price'])) ? $param['modal_price'] : 0;
     $potongan_gold = (isset($param['potongan_gold'])) ? $param['potongan_gold'] : NULL;
     $potongan_silver = (isset($param['potongan_silver'])) ? $param['potongan_silver'] : NULL;
     $potongan_bronze = (isset($param['potongan_bronze'])) ? $param['potongan_bronze'] : NULL;
@@ -174,7 +174,7 @@ class Model_products extends CI_Model {
       'name' => $name,
       'price' => $price,
       'sale_price' => $sale_price,
-      'reseller_price' => $reseller_price,
+      'modal_price' => $modal_price,
       'potongan_gold' => $potongan_gold,
       'potongan_silver' => $potongan_silver,
       'potongan_bronze' => $potongan_bronze,

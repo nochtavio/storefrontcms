@@ -15,6 +15,7 @@ $(document).ready(function () {
     //Parameter
     var id = $('#txt_data_id').val();
     var id_customer = $('#txt_data_id_customer').val();
+    var id_reseller = $('#txt_data_id_reseller').val();
     var amount = $('#txt_data_amount').val();
     var status = $('#sel_data_status').val();
     //End Parameter
@@ -22,7 +23,7 @@ $(document).ready(function () {
     if(state == "add"){
       //add_data(name, active);
     }else{
-      edit_data(id, id_customer, amount, status);
+      edit_data(id, id_customer, id_reseller, amount, status);
     }
   });
   

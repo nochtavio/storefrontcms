@@ -58,6 +58,7 @@
         <form class="form-horizontal" role="form">
           <input type="hidden" id="txt_data_id" name="txt_data_id" />
           <input type="hidden" id="txt_data_id_customer" name="txt_data_id_customer" />
+          <input type="hidden" id="txt_data_id_reseller" name="txt_data_id_reseller" />
           <div class="form-group">
             <label for="txt_data_email" class="col-lg-3 col-sm-3 control-label">Email</label>
             <div class="col-lg-9 col-sm-9">

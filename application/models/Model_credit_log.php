@@ -54,8 +54,10 @@ class Model_credit_log extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $id_customer = (isset($param['id_customer'])) ? $param['id_customer'] : 0;
+    $id_reseller = (isset($param['id_reseller'])) ? $param['id_reseller'] : 0;
     $status = (isset($param['status'])) ? $param['status'] : 0;
     $updated_credit = (isset($param['updated_credit'])) ? $param['updated_credit'] : NULL;
+    $updated_wallet = (isset($param['updated_wallet'])) ? $param['updated_wallet'] : NULL;
     //End Set Param
     
     $data = array(
@@ -77,5 +79,16 @@ class Model_credit_log extends CI_Model {
       $this->db->update('customer', $data_update_order_item);
     }
     //End Update Customer Credit
+    
+    //Update Reseller Wallet
+    if($updated_wallet !== NULL){
+      $data_update_reseller = array(
+        'wallet' => $updated_wallet
+      );
+
+      $this->db->where('id', $id_reseller);
+      $this->db->update('reseller', $data_update_reseller);
+    }
+    //End Update Reseller Wallet
   }
 }

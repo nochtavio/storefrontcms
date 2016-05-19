@@ -94,9 +94,9 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="txt_data_reseller_price" class="col-lg-3 col-sm-3 control-label">Reseller Price</label>
+            <label for="txt_data_modal_price" class="col-lg-3 col-sm-3 control-label">Modal Price</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_reseller_price" placeholder="Enter product reseller price">
+              <input type="text" class="form-control form_data" id="txt_data_modal_price" placeholder="Enter product modal price">
               <p class="help-block" style="margin-bottom: 0;">Leave this 0 if this product is not on reseller program</p>
             </div>
           </div>

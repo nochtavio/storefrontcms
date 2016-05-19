@@ -14,6 +14,7 @@ class Credit_log extends CI_Controller {
     }
     $this->load->model('Model_credit_log');
     $this->load->model('Model_customer');
+    $this->load->model('Model_reseller');
   }
   
   public function index() {
@@ -86,6 +87,7 @@ class Credit_log extends CI_Controller {
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['id_customer'] = $result_data->row()->id_customer;
+      $data['id_reseller'] = $result_data->row()->id_reseller;
       $data['email'] = ($result_data->row()->customer_email != NULL) ? $result_data->row()->customer_email : $result_data->row()->email ;
       $data['amount'] = $result_data->row()->amount;
       $data['type'] = $result_data->row()->type;
@@ -115,6 +117,7 @@ class Credit_log extends CI_Controller {
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
     $param['id_customer'] = ($this->input->post('id_customer', TRUE)) ? $this->input->post('id_customer', TRUE) : "" ;
+    $param['id_reseller'] = ($this->input->post('id_reseller', TRUE)) ? $this->input->post('id_reseller', TRUE) : "" ;
     $param['amount'] = ($this->input->post('amount', TRUE)) ? $this->input->post('amount', TRUE) : 0 ;
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : "0" ;
     //end param
@@ -147,6 +150,24 @@ class Credit_log extends CI_Controller {
           }
         }
         //End Update Customer Credit
+        
+        //Update Reseller Wallet
+        if($param['id_reseller'] != ""){
+          $param_reseller_wallet['id'] = $param['id_reseller'];
+          $get_reseller_wallet = $this->Model_reseller->get_data($param_reseller_wallet);
+          if($get_reseller_wallet->num_rows() > 0){
+            $reseller_wallet = $get_reseller_wallet->row()->wallet;
+          }
+          
+          if($param['status'] != $status && $param['status'] != ""){
+            if($param['status'] == 1){
+              $param['updated_wallet'] = $reseller_wallet + $param['amount'];
+            }else{
+              $param['updated_wallet'] = $reseller_wallet - $param['amount'];
+            }
+          }
+        }
+        //End Update Reseller Wallet
         
         $this->Model_credit_log->edit_data($param);
       }
