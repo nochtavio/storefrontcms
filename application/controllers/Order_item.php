@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Order_item extends CI_Controller {
-  
+
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
@@ -14,7 +14,7 @@ class Order_item extends CI_Controller {
     }
     $this->load->model('Model_order_item');
   }
-  
+
   public function index() {
     $page = 'Order_item';
     $sidebar['page'] = $page;
@@ -22,13 +22,13 @@ class Order_item extends CI_Controller {
     array_push($content['js'], 'order_item/function.js');
     array_push($content['js'], 'order_item/init.js');
     array_push($content['js'], 'order_item/action.js');
-    
+
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
     $data['content'] = $this->load->view('order_item/index', $content, TRUE);
     $this->load->view('template_index', $data);
   }
-  
+
   public function get_data(){
     //param
     $param['products_name'] = ($this->input->post('products_name', TRUE)) ? $this->input->post('products_name', TRUE) : "";
@@ -37,7 +37,7 @@ class Order_item extends CI_Controller {
     $param['reseller_name'] = ($this->input->post('reseller_name', TRUE)) ? $this->input->post('reseller_name', TRUE) : "";
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
-    
+
     //paging
     $get_data = $this->Model_order_item->get_data($param);
     $page = ($this->input->post('page', TRUE)) ? $this->input->post('page', TRUE) : 1 ;
@@ -50,7 +50,7 @@ class Order_item extends CI_Controller {
       $temp = 0;
       foreach ($get_data_paging->result() as $row) {
         $data['result'] = "r1";
-        $data['id'][$temp] = $row->id;
+        $data['id'][$temp] = $row->order_item_id;
         $data['products_name'][$temp] = $row->products_name;
         $data['SKU'][$temp] = $row->SKU;
         $data['color_name'][$temp] = $row->color_name;
@@ -68,7 +68,7 @@ class Order_item extends CI_Controller {
       $data['result'] = "r2";
       $data['message'] = "No Data";
     }
-    
+
     echo json_encode($data);
   }
 }

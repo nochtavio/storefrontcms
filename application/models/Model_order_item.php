@@ -14,9 +14,10 @@ class Model_order_item extends CI_Model {
     $reseller_name = (isset($param['reseller_name'])) ? $param['reseller_name'] : "";
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
-    
-    $this->db->select(' prod.name AS products_name, 
-                        oi.SKU,  
+
+    $this->db->select(' oi.order_item_id,
+                        prod.name AS products_name,
+                        oi.SKU,
                         color.name AS color_name,
                         reseller.email AS reseller_email,
                         reseller.name AS reseller_name,
@@ -26,7 +27,7 @@ class Model_order_item extends CI_Model {
     $this->db->join('products prod', 'prod.id = var.id_products');
     $this->db->join('color', 'color.id = var.id_color');
     $this->db->join('reseller', 'reseller.id = oi.id_reseller');
-    
+
     //Validation
     if($id > 0){$this->db->where('oi.order_item_id', $id);}
     if($products_name != ""){$this->db->like('products_name', $products_name);}
@@ -34,10 +35,10 @@ class Model_order_item extends CI_Model {
     if($reseller_email != ""){$this->db->like('reseller_email', $reseller_email);}
     if($reseller_name != ""){$this->db->like('reseller_name', $reseller_name);}
     //End Validation
-    
+
     $this->db->where('oi.id_reseller !=', 0);
     $this->db->where('oi.titip_stok', 1);
-    
+
     if($order == 1){
       $this->db->order_by("oi.order_item_id", "asc");
     }else if($order == 2){
@@ -59,10 +60,10 @@ class Model_order_item extends CI_Model {
     }else{
       $this->db->order_by("oi.order_item_id", "desc");
     }
-    
+
     if($size >= 0){$this->db->limit($size, $limit);}
     $query = $this->db->get();
-    
+
     return $query;
   }
 }

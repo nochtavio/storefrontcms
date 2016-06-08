@@ -55,12 +55,12 @@ $(document).ready(function () {
             //Date
             var date = "Created on <br/> <strong>" + result['cretime'][x] + "</strong>";
             //End Date
-            
+
             //Action
             var action = "";
             if(result['allowed_edit']){
               action += "<a href='#' id='btn_edit" + result['id'][x] + "' class='fa fa-pencil-square-o'></a> &nbsp;";
-              if(result['status'] == 0){
+              if(result['status'][x] == 0){
                 action += "<a href='#' id='btn_approval" + result['id'][x] + "' class='fa fa-check'></a> &nbsp;";
               }
             }
@@ -84,7 +84,7 @@ $(document).ready(function () {
             total_data++;
             //End Set Object ID
           }
-          
+
           set_edit();
           set_approval();
         } else {
@@ -96,7 +96,7 @@ $(document).ready(function () {
       }
     });
   };
-  
+
 
   set_edit = function () {
     var id = [];
@@ -138,7 +138,7 @@ $(document).ready(function () {
       });
     });
   };
-  
+
   set_approval = function () {
     var id = [];
     for (var x = 0; x < total_data; x++) {
@@ -160,7 +160,7 @@ $(document).ready(function () {
     state = x;
     if (x == "add") {
       $('#modal_data_title').html("Add Reseller");
-      
+
       $('.form_data').val('');
 
       $('#error_container').hide();
@@ -174,12 +174,12 @@ $(document).ready(function () {
       $('#error_container_message').empty();
     }
   };
-  
+
   approval = function () {
     //param
     var id = $('#txt_approval_id').val();
     //end param
-    
+
     $.ajax({
       url: base_url + 'reseller_request/approval',
       type: 'POST',
