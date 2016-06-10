@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Credit_log extends CI_Controller {
-  
+
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
@@ -16,7 +16,7 @@ class Credit_log extends CI_Controller {
     $this->load->model('Model_customer');
     $this->load->model('Model_reseller');
   }
-  
+
   public function index() {
     $page = 'Credit_log';
     $sidebar['page'] = $page;
@@ -24,13 +24,13 @@ class Credit_log extends CI_Controller {
     array_push($content['js'], 'credit_log/function.js');
     array_push($content['js'], 'credit_log/init.js');
     array_push($content['js'], 'credit_log/action.js');
-    
+
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
     $data['content'] = $this->load->view('credit_log/index', $content, TRUE);
     $this->load->view('template_index', $data);
   }
-  
+
   public function get_data(){
     //param
     $param['email'] = ($this->input->post('email', TRUE)) ? $this->input->post('email', TRUE) : "";
@@ -39,7 +39,7 @@ class Credit_log extends CI_Controller {
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
-    
+
     //paging
     $get_data = $this->Model_credit_log->get_data($param);
     $page = ($this->input->post('page', TRUE)) ? $this->input->post('page', TRUE) : 1 ;
@@ -73,15 +73,15 @@ class Credit_log extends CI_Controller {
       $data['result'] = "r2";
       $data['message'] = "No Credit_log";
     }
-    
+
     echo json_encode($data);
   }
-  
+
   public function get_specific_data(){
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
     //end param
-    
+
     $result_data = $this->Model_credit_log->get_data($param);
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
@@ -98,21 +98,74 @@ class Credit_log extends CI_Controller {
       $data['result'] = "r2";
       $data['message'] = "No Data";
     }
-    
+
     echo json_encode($data);
   }
-  
+
   public function validate_post($param){
     //param
-    
+    $id_customer = (isset($param['id_customer'])) ? $param['id_customer'] : NULL;
+    $id_reseller = (isset($param['id_reseller'])) ? $param['id_reseller'] : NULL;
+    $amount = (isset($param['amount'])) ? $param['amount'] : 0;
     //end param
-    
+
     $data['result'] = "r1";
     $data['result_message'] = "";
-    
+
+    if($id_customer == NULL && $id_reseller == NULL){
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Email</strong> is invalid !<br/>";
+    }
+
+    if($amount == ''){
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Amount</strong> must be filled !<br/>";
+    }else if(!is_numeric($amount) || $amount <= 0){
+      $data['result'] = "r2";
+      $data['result_message'] .= "<strong>Amount</strong> is incorrect !<br/>";
+    }
+
     return $data;
   }
-  
+
+  public function add_data(){
+    //param
+    $param['email'] = ($this->input->post('email', TRUE)) ? $this->input->post('email', TRUE) : NULL ;
+    $param['type'] = ($this->input->post('type', TRUE)) ? $this->input->post('type', TRUE) : 1 ;
+    $param['amount'] = ($this->input->post('amount', TRUE)) ? $this->input->post('amount', TRUE) : 0 ;
+
+    //Get ID
+    if($param['type'] == 1 && $param['email'] != NULL){
+      //Customer
+      $param_customer['exact_customer_email'] = $param['email'];
+      $get_customer = $this->Model_customer->get_data($param_customer);
+      if($get_customer->num_rows() > 0){
+        $param['id_customer'] = $get_customer->row()->customer_id;
+        $customer_credit = $get_customer->row()->customer_credit;
+      }
+    }else if($param['type'] == 2 && $param['email'] != NULL){
+      //Reseller
+      $param_reseller['exact_email'] = $param['email'];
+      $get_reseller = $this->Model_reseller->get_data($param_reseller);
+      if($get_reseller->num_rows() > 0){
+        $param['id_reseller'] = $get_reseller->row()->id;
+        $reseller_wallet = $get_reseller->row()->wallet;
+      }
+    }
+    //End Get ID
+    //end param
+
+    $validate_post = $this->validate_post($param);
+    if($validate_post['result'] == "r1"){
+      $param['updated_credit'] = (isset($customer_credit)) ? $customer_credit + $param['amount'] : NULL ;
+      $param['updated_wallet'] = (isset($reseller_wallet)) ? $reseller_wallet + $param['amount'] : NULL ;
+
+      $this->Model_credit_log->add_data($param);
+    }
+
+    echo json_encode($validate_post);
+  }
+
   public function edit_data(){
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
@@ -121,7 +174,7 @@ class Credit_log extends CI_Controller {
     $param['amount'] = ($this->input->post('amount', TRUE)) ? $this->input->post('amount', TRUE) : 0 ;
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : "0" ;
     //end param
-    
+
     if($param['id'] != ""){
       $validate_post = $this->validate_post($param);
       if($validate_post['result'] == "r1"){
@@ -132,7 +185,7 @@ class Credit_log extends CI_Controller {
           $status = $get_credit_log->row()->status;
         }
         //End Get Credit log
-        
+
         //Update Customer Credit
         if($param['id_customer'] != ""){
           $param_customer_credit['customer_id'] = $param['id_customer'];
@@ -140,7 +193,7 @@ class Credit_log extends CI_Controller {
           if($get_customer_credit->num_rows() > 0){
             $customer_credit = $get_customer_credit->row()->customer_credit;
           }
-          
+
           if($param['status'] != $status && $param['status'] != ""){
             if($param['status'] == 1){
               $param['updated_credit'] = $customer_credit + $param['amount'];
@@ -150,7 +203,7 @@ class Credit_log extends CI_Controller {
           }
         }
         //End Update Customer Credit
-        
+
         //Update Reseller Wallet
         if($param['id_reseller'] != ""){
           $param_reseller_wallet['id'] = $param['id_reseller'];
@@ -158,7 +211,7 @@ class Credit_log extends CI_Controller {
           if($get_reseller_wallet->num_rows() > 0){
             $reseller_wallet = $get_reseller_wallet->row()->wallet;
           }
-          
+
           if($param['status'] != $status && $param['status'] != ""){
             if($param['status'] == 1){
               $param['updated_wallet'] = $reseller_wallet + $param['amount'];
@@ -168,14 +221,14 @@ class Credit_log extends CI_Controller {
           }
         }
         //End Update Reseller Wallet
-        
+
         $this->Model_credit_log->edit_data($param);
       }
     }else{
       $validate_post['result'] = "r2";
       $validate_post['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
     }
-    
+
     echo json_encode($validate_post);
   }
 }

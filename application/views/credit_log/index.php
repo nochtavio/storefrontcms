@@ -24,10 +24,19 @@
               <option value="1">Paid</option>
             </select>
             <select id="sel_order" name="sel_order" class="form-control input-sm" style="margin-right: 7px;width: 200px;">
-              <option value="-1">Order by Latest Data</option> 
+              <option value="-1">Order by Latest Data</option>
               <option value="1">Order by Oldest Data</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
+            <?php
+              if(check_menu("", 1)){
+                ?>
+                  <div class="input-group-btn">
+                    <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm pull-right">Add Credit Log</a>
+                  </div>
+                <?php
+              }
+            ?>
           </div>
         </div>
         <table class="table table-hover">
@@ -62,16 +71,25 @@
           <div class="form-group">
             <label for="txt_data_email" class="col-lg-3 col-sm-3 control-label">Email</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_email" placeholder="" readonly="">
+              <input type="text" class="form-control form_data" id="txt_data_email" placeholder="Enter email" readonly="">
+            </div>
+          </div>
+          <div class="form-group form-add">
+            <label for="sel_data_type" class="col-lg-3 col-sm-3 control-label">Type</label>
+            <div class="col-lg-9 col-sm-9">
+              <select id="sel_data_type" name="sel_data_type" class="form-control">
+                <option value="1">Customer</option>
+                <option value="2">Reseller</option>
+              </select>
             </div>
           </div>
           <div class="form-group">
             <label for="txt_data_amount" class="col-lg-3 col-sm-3 control-label">Amount</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_amount" placeholder="" readonly="">
+              <input type="text" class="form-control form_data" id="txt_data_amount" placeholder="Enter amount" readonly="">
             </div>
           </div>
-          <div class="form-group">
+          <div class="form-group form-edit">
             <label for="sel_data_status" class="col-lg-3 col-sm-3 control-label">Status</label>
             <div class="col-lg-9 col-sm-9">
               <select id="sel_data_status" name="sel_data_status" class="form-control">

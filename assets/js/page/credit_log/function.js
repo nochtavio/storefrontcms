@@ -58,21 +58,21 @@ $(document).ready(function () {
               type = "Deduct";
             }
             //End Type
-            
+
             //Status
             var status = "Request";
             if(result['status'][x] == 1){
               status = "Paid";
             }
             //End Status
-            
+
             //Date
             var date = "Created <br/> on <strong>" + result['cretime'][x] + "</strong>";
             if (result['modby'][x] != null) {
               date += "<br/><br/> Modified by <strong>" + result['modby'][x] + "</strong> <br/> on <strong>" + result['modtime'][x] + "</strong>";
             }
             //End Date
-            
+
             //Action
             var action = "";
             if(result['allowed_edit'] && result['type'][x] == 1){
@@ -100,7 +100,7 @@ $(document).ready(function () {
             total_data++;
             //End Set Object ID
           }
-          
+
           set_edit();
         } else {
           $('#table_content').append("\
@@ -111,7 +111,7 @@ $(document).ready(function () {
       }
     });
   };
-  
+
   set_edit = function () {
     var id = [];
     for (var x = 0; x < total_data; x++) {
@@ -154,8 +154,12 @@ $(document).ready(function () {
     state = x;
     if (x == "add") {
       $('#modal_data_title').html("Add Credit Log");
-      
+
       $('.form_data').val('');
+      $(".form-add").show();
+      $(".form-edit").hide();
+      $('#txt_data_email').prop('readonly', false);
+      $('#txt_data_amount').prop('readonly', false);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
@@ -163,10 +167,40 @@ $(document).ready(function () {
       $('#modal_data_title').html("Edit Credit Log");
 
       $('.form_data').val('');
+      $(".form-add").hide();
+      $(".form-edit").show();
+      $('#txt_data_email').prop('readonly', true);
+      $('#txt_data_amount').prop('readonly', true);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
     }
+  };
+
+  add_data = function (email, type, amount) {
+    $.ajax({
+      url: base_url + 'credit_log/add_data',
+      type: 'POST',
+      data: {
+        email: email,
+        type: type,
+        amount: amount
+      },
+      dataType: 'json',
+      beforeSend: function () {
+        $('#error_container').hide();
+        $('#error_container_message').empty();
+      },
+      success: function (result) {
+        if (result['result'] === 'r1') {
+          $('#modal_data').modal('hide');
+          get_data(page);
+        } else {
+          $('#error_container').show();
+          $('#error_container_message').append(result['result_message']);
+        }
+      }
+    });
   };
 
   edit_data = function (id, id_customer, id_reseller, amount, status) {
