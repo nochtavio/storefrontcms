@@ -17,6 +17,7 @@ class Model_reseller_request extends CI_Model {
     $domain = (isset($param['domain'])) ? $param['domain'] : "";
     $status = (isset($param['status'])) ? $param['status'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
+    $read = (isset($param['read'])) ? $param['read'] : -1;
     //End Set Param
     
     $this->db->select('reseller_request.*');
@@ -32,6 +33,7 @@ class Model_reseller_request extends CI_Model {
     if($promosi != ""){$this->db->like('reseller_request.promosi', $promosi);}
     if($domain != ""){$this->db->like('reseller_request.domain', $domain);}
     if($status > -1){$this->db->where('reseller_request.status', $status);}
+    if($read > -1){$this->db->where('reseller_request.read', $read);}
     //End Validation
     
     if($order == 1){
@@ -101,5 +103,13 @@ class Model_reseller_request extends CI_Model {
     //End Insert Reseller Level
     
     return $data;
+  }
+  
+  function set_read(){
+    $data_update_read = array(
+      'read' => 1
+    );
+    
+    $this->db->update('reseller_request', $data_update_read);
   }
 }

@@ -56,6 +56,92 @@ $(document).ready(function(){
   });
   //End AJAX Setting
   
+  //Real Time Info
+  global_real_time_interval = 60000; //1 Minute
+  
+  real_time_order = function() {
+    $.ajax({
+      url: base_url + 'realtime/get_unread_order',
+      type: 'POST',
+      global: false,
+      data: {},
+      dataType: 'json',
+      success: function (result) {
+        if(result['result'] == 'r1'){
+          $('#realtime-order').show();
+          $('#realtime-order').html(result['unread_data']);
+        }else{
+          $('#realtime-order').hide();
+        }
+      }
+    });
+  };
+  
+  real_time_credit_log = function() {
+    $.ajax({
+      url: base_url + 'realtime/get_unread_credit_log',
+      type: 'POST',
+      global: false,
+      data: {},
+      dataType: 'json',
+      success: function (result) {
+        if(result['result'] == 'r1'){
+          $('#realtime-creditlog').show();
+          $('#realtime-creditlog').html(result['unread_data']);
+        }else{
+          $('#realtime-creditlog').hide();
+        }
+      }
+    });
+  };
+  
+  real_time_customer_return = function() {
+    $.ajax({
+      url: base_url + 'realtime/get_unread_customer_return',
+      type: 'POST',
+      global: false,
+      data: {},
+      dataType: 'json',
+      success: function (result) {
+        if(result['result'] == 'r1'){
+          $('#realtime-customerreturn').show();
+          $('#realtime-customerreturn').html(result['unread_data']);
+        }else{
+          $('#realtime-customerreturn').hide();
+        }
+      }
+    });
+  };
+  
+  real_time_reseller_request = function() {
+    $.ajax({
+      url: base_url + 'realtime/get_unread_reseller_request',
+      type: 'POST',
+      global: false,
+      data: {},
+      dataType: 'json',
+      success: function (result) {
+        if(result['result'] == 'r1'){
+          $('#realtime-resellerrequest').show();
+          $('#realtime-resellerrequest').html(result['unread_data']);
+        }else{
+          $('#realtime-resellerrequest').hide();
+        }
+      }
+    });
+  };
+  
+  real_time_order();
+  real_time_credit_log();
+  real_time_customer_return();
+  real_time_reseller_request();
+  
+  setInterval(real_time_order, global_real_time_interval);
+  setInterval(real_time_credit_log, global_real_time_interval);
+  setInterval(real_time_customer_return, global_real_time_interval);
+  setInterval(real_time_reseller_request, global_real_time_interval);
+  //End Real Time Info
+  
   //Logout
   $('#btn_logout').click(function(event){
     event.preventDefault();

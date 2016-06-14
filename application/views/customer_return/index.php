@@ -12,11 +12,12 @@
             <select id="sel_status" name="sel_status" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status</option>
               <option value="0">New</option>
-              <option value="2">Processed</option>
-              <option value="3">Finished</option>
+              <option value="1">Processed</option>
+              <option value="2">Finished</option>
+              <option value="3">Refused</option>
             </select>
             <select id="sel_order" name="sel_order" class="form-control input-sm" style="margin-right: 7px;width: 200px;">
-              <option value="-1">Order by Latest Data</option> 
+              <option value="-1">Order by Latest Data</option>
               <option value="1">Order by Oldest Data</option>
               <option value="2">Order by Customer Email A-Z</option>
               <option value="3">Order by Customer Email Z-A</option>
@@ -24,7 +25,7 @@
               <option value="5">Order by Purchase Code A-Z</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
-            <?php 
+            <?php
               if(check_menu("", 1)){
                 ?>
                   <div class="input-group-btn">
@@ -73,7 +74,7 @@
               <button id="btn_purchase_code" type="button" class="btn btn-default pull-right" style="width: 70px;">Apply</button>
             </div>
           </div>
-          
+
           <!--SHOWN AFTER PURCHASE CODE APPLIED-->
           <div class="form-group hidden-div-2">
             <label for="txt_data_customer_email" class="col-lg-3 col-sm-3 control-label">Customer Email</label>
@@ -85,7 +86,7 @@
             <label for="sel_data_sku" class="col-lg-3 col-sm-3 control-label">List Item</label>
             <div class="col-lg-9 col-sm-9">
               <select id="sel_data_sku" name="sel_data_sku" class="form-control">
-                
+
               </select>
             </div>
           </div>
@@ -108,11 +109,12 @@
                 <option value="0">New</option>
                 <option value="1">Processed</option>
                 <option value="2">Finished</option>
+                <option value="3">Refused</option>
               </select>
             </div>
           </div>
           <!--SHOWN AFTER PURCHASE CODE APPLIED-->
-          
+
           <div id="error_container" class="alert alert-block alert-danger" style="display: none;">
             <div id="error_container_message">
 

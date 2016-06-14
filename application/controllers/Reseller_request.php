@@ -19,6 +19,9 @@ class Reseller_request extends CI_Controller {
     $page = 'Reseller_request';
     $sidebar['page'] = $page;
     $content['js'] = array();
+    
+    $this->Model_reseller_request->set_read();
+    
     array_push($content['js'], 'reseller_request/function.js');
     array_push($content['js'], 'reseller_request/init.js');
     array_push($content['js'], 'reseller_request/action.js');

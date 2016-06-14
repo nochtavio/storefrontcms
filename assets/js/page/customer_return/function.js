@@ -56,13 +56,15 @@ $(document).ready(function () {
               <strong>Quantity: </strong> " + result['qty'][x] + " <br/>\
             ";
             //End Item Detail
-            
+
             //Status
-            var status = "<span class='label label-danger'>New</span>";
+            var status = "<span class='label label-info'>New</span>";
             if (result['status'][x] == 1) {
               status = "<span class='label label-warning'>Processed</span>";
             }else if(result['status'][x] == 2){
               status = "<span class='label label-success'>Finished</span>";
+            }else if(result['status'][x] == 3){
+              status = "<span class='label label-danger'>Refused</span>";
             }
             //End Status
 
@@ -72,7 +74,7 @@ $(document).ready(function () {
               date += "<br/><br/> Modified by <strong>" + result['modby'][x] + "</strong> <br/> on <strong>" + result['modtime'][x] + "</strong>";
             }
             //End Date
-            
+
             //Action
             var action = "";
             if(result['allowed_edit']){
@@ -101,7 +103,7 @@ $(document).ready(function () {
             total_data++;
             //End Set Object ID
           }
-          
+
           set_edit();
           set_remove();
         } else {
@@ -154,7 +156,7 @@ $(document).ready(function () {
       });
     });
   };
-  
+
   set_remove = function () {
     var id = [];
     for (var x = 0; x < total_data; x++) {
@@ -176,7 +178,7 @@ $(document).ready(function () {
     state = x;
     if (x == "add") {
       $('#modal_data_title').html("Add Customer Return");
-      
+
       $('.form_data').val('');
       $('#txt_data_purchase_code').val('');
       $('.hidden-div').hide();
@@ -256,12 +258,12 @@ $(document).ready(function () {
       }
     });
   };
-  
+
   remove_data = function () {
     //param
     var id = $('#txt_remove_id').val();
     //end param
-    
+
     $.ajax({
       url: base_url + 'customer_return/remove_data',
       type: 'POST',
@@ -280,7 +282,7 @@ $(document).ready(function () {
       }
     });
   };
-  
+
   get_sku = function(purchase_code, sku){
     $.ajax({
       url: base_url + 'customer_return/get_SKU',
@@ -316,7 +318,7 @@ $(document).ready(function () {
       }
     });
   };
-  
+
   get_order_item = function(sku){
     $.ajax({
       url: base_url + 'customer_return/get_order_item',

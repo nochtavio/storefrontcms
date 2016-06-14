@@ -3,7 +3,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Customer_return extends CI_Controller {
-  
+
   function __construct() {
     date_default_timezone_set('Asia/Jakarta');
     parent::__construct();
@@ -17,21 +17,24 @@ class Customer_return extends CI_Controller {
     $this->load->model('Model_products_variant_detail');
     $this->load->model('Model_order');
   }
-  
+
   public function index() {
     $page = 'Customer_return';
     $sidebar['page'] = $page;
     $content['js'] = array();
+    
+    $this->Model_customer_return->set_read();
+    
     array_push($content['js'], 'customer_return/function.js');
     array_push($content['js'], 'customer_return/init.js');
     array_push($content['js'], 'customer_return/action.js');
-    
+
     $data['header'] = $this->load->view('header', '', TRUE);
     $data['sidebar'] = $this->load->view('sidebar', $sidebar, TRUE);
     $data['content'] = $this->load->view('customer_return/index', $content, TRUE);
     $this->load->view('template_index', $data);
   }
-  
+
   public function get_data(){
     //param
     $param['purchase_code'] = ($this->input->post('purchase_code', TRUE)) ? $this->input->post('purchase_code', TRUE) : "";
@@ -39,7 +42,7 @@ class Customer_return extends CI_Controller {
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
-    
+
     //paging
     $get_data = $this->Model_customer_return->get_data($param);
     $page = ($this->input->post('page', TRUE)) ? $this->input->post('page', TRUE) : 1 ;
@@ -74,15 +77,15 @@ class Customer_return extends CI_Controller {
       $data['result'] = "r2";
       $data['message'] = "No Customer Return";
     }
-    
+
     echo json_encode($data);
   }
-  
+
   public function get_specific_data(){
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
     //end param
-    
+
     $result_data = $this->Model_customer_return->get_data($param);
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
@@ -99,10 +102,10 @@ class Customer_return extends CI_Controller {
       $data['result'] = "r2";
       $data['message'] = "No Data";
     }
-    
+
     echo json_encode($data);
   }
-  
+
   public function validate_post($param, $pc_edited = TRUE){
     //param
     $purchase_code = (isset($param['purchase_code'])) ? $param['purchase_code'] : "";
@@ -111,10 +114,10 @@ class Customer_return extends CI_Controller {
     $qty = (isset($param['qty'])) ? $param['qty'] : "";
     $reason = (isset($param['reason'])) ? $param['reason'] : "";
     //end param
-    
+
     $data['result'] = "r1";
     $data['result_message'] = "";
-    
+
     if($purchase_code == ""){
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Purchase Code</strong> must be filled !<br/>";
@@ -129,12 +132,12 @@ class Customer_return extends CI_Controller {
         }
       }
     }
-    
+
     if($order_item_id == ""){
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Order Item ID</strong> must be filled !<br/>";
     }
-    
+
     if($qty == ""){
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Quantity</strong> must be filled !<br/>";
@@ -155,15 +158,15 @@ class Customer_return extends CI_Controller {
         $data['result_message'] .= "<strong>Purchase Code</strong> is not found<br/>";
       }
     }
-    
+
     if($reason == ""){
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Reason</strong> must be filled !<br/>";
     }
-    
+
     return $data;
   }
-  
+
   public function add_data(){
     //param
     $param['purchase_code'] = ($this->input->post('purchase_code', TRUE)) ? $this->input->post('purchase_code', TRUE) : "" ;
@@ -174,15 +177,15 @@ class Customer_return extends CI_Controller {
     $param['reason'] = ($this->input->post('reason', TRUE)) ? $this->input->post('reason', TRUE) : "" ;
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : "" ;
     //end param
-    
+
     $validate_post = $this->validate_post($param, TRUE);
     if($validate_post['result'] == "r1"){
       $this->Model_customer_return->add_data($param);
     }
-    
+
     echo json_encode($validate_post);
   }
-  
+
   public function edit_data(){
     //param
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
@@ -194,7 +197,7 @@ class Customer_return extends CI_Controller {
     $param['reason'] = ($this->input->post('reason', TRUE)) ? $this->input->post('reason', TRUE) : "" ;
     $param['status'] = ($this->input->post('status', TRUE)) ? $this->input->post('status', TRUE) : "" ;
     //end param
-    
+
     if($param['id'] != ""){
       //check if purchase order edited or not
       $pc_edited = TRUE;
@@ -205,11 +208,11 @@ class Customer_return extends CI_Controller {
         $pc_edited = FALSE;
       }
       //end check
-      
+
       $validate_post = $this->validate_post($param, $pc_edited);
       if($validate_post['result'] == "r1"){
         //Additional Update
-        
+
         //Inventory
         $param_inv['sku'] = $param['SKU'];
         $get_product_variant_detail = $this->Model_products_variant_detail->get_data($param_inv);
@@ -220,7 +223,7 @@ class Customer_return extends CI_Controller {
         $update_qty = 0;
         $update_qty_warehouse = 0;
         //End Inventory
-        
+
         //Inventory Logs
         $param_inv_logs['id'] = $param['id'];
         $get_customer_return = $this->Model_customer_return->get_data($param_inv_logs);
@@ -230,29 +233,33 @@ class Customer_return extends CI_Controller {
         }
         $history_type = 0;
         //End Inventory Logs
-        
+
         //Order Item
         $shipping_status = 0;
         $purchase_status = 1;
         //End Order Item
-        
-        //Customer Credit
-        $param_cc['customer_id'] = $param['customer_id'];
-        $get_customer = $this->Model_customer->get_data($param_cc);
+
+        //Customer Data
+        $param_customer_data['customer_id'] = $param['customer_id'];
+        $get_customer = $this->Model_customer->get_data($param_customer_data);
         if ($get_customer->num_rows() > 0) {
           $cc_credit = ($get_customer->row()->customer_credit == NULL) ? 0 : $get_customer->row()->customer_credit;
+          $customer_name = $get_customer->row()->customer_fname;
+          $customer_email = $get_customer->row()->customer_email;
         }
-        
+        //End Customer Data
+
+        //Order Item Data
         $param_order_item['id'] = $param['order_item_id'];
         $get_order_item = $this->Model_order->get_order_item($param_order_item);
         if ($get_order_item->num_rows() > 0) {
           $cc_amount = $get_order_item->row()->each_price * $param['qty'];
         }
-        
+
         $updated_cc_credit = 0;
         $cc_type = 0;
-        //End Customer Credit
-        
+        //End Order Item Data
+
         $apply_update = FALSE;
         if($param['status'] != $cr_status){
           if($cr_status == 2){
@@ -277,7 +284,45 @@ class Customer_return extends CI_Controller {
             $apply_update = FALSE;
           }
         }
-        
+
+        //Send Email
+        //Set Text Status
+        $text_status = "Dibuat";
+        if($param['status'] == 1){
+          $text_status = "Diproses";
+        }elseif($param['status'] == 2){
+          $text_status = "Selesai";
+        }elseif($param['status'] == 3){
+          $text_status = "Ditolak";
+        }
+        //End Set Text Status
+
+        $config = Array(
+          'protocol' => 'smtp',
+          'smtp_host' => 'mail.storefrontindo.com',
+          'smtp_port' => 25,
+          'smtp_user' => 'do-not-reply@storefrontindo.com', // change it to yours
+          'smtp_pass' => 'v0AOsm[viHJB', // change it to yours
+          'mailtype' => 'html',
+          'charset' => 'iso-8859-1',
+          'wordwrap' => TRUE
+        );
+
+        $this->load->library('email', $config);
+        $this->email->set_newline("\r\n");
+        $this->email->set_mailtype("html");
+        $this->email->from('do-not-reply@storefrontindo.com', 'Storefront Indonesia'); // change it to yours
+        $this->email->to($customer_email); // change it to yours
+        $this->email->subject("Status Return Anda ".$text_status);
+        $this->email->message(""
+          . "Dear <strong>".$customer_name."</strong><br/> <br/>"
+          . "Status retur barang anda dengan kode SKU <strong>".$param['SKU']."</strong> saat ini telah <strong>".$text_status."</strong> <br/> <br/>"
+          . "Salam <br/> <br/>"
+          . "Owner FFStore"
+          . "");
+        $this->email->send();
+        //End Send Email
+
         $param['apply_update'] = $apply_update;
         $param['product_id'] = $cr_product_id;
         $param['history_type'] = $history_type;
@@ -289,22 +334,22 @@ class Customer_return extends CI_Controller {
         $param['cc_amount'] = $cc_amount;
         $param['cc_type'] = $cc_type;
         //End Additional Update
-        
+
         $this->Model_customer_return->edit_data($param);
       }
     }else{
       $validate_post['result'] = "r2";
       $validate_post['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
     }
-    
+
     echo json_encode($validate_post);
   }
-  
+
   public function remove_data(){
     //post
     $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
     //end post
-    
+
     if($param['id'] != ""){
       $data['result'] = "r1";
       $this->Model_customer_return->remove_data($param);
@@ -312,15 +357,15 @@ class Customer_return extends CI_Controller {
       $data['result'] = "r2";
       $data['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
     }
-    
+
     echo json_encode($data);
   }
-  
+
   public function get_SKU(){
     //param
     $param['purchase_code'] = ($this->input->post('purchase_code', TRUE)) ? $this->input->post('purchase_code', TRUE) : "";
     //end param
-    
+
     if($param['purchase_code'] == ""){
       $data['result'] = "r2";
       $data['result_message'] = "Purchase Code must be filled!";
@@ -345,15 +390,15 @@ class Customer_return extends CI_Controller {
         $data['result_message'] = "No Data";
       }
     }
-    
+
     echo json_encode($data);
   }
-  
+
   public function get_order_item(){
     //param
     $param['SKU'] = ($this->input->post('SKU', TRUE)) ? $this->input->post('SKU', TRUE) : "";
     //end param
-    
+
     $result_data = $this->Model_customer_return->get_order_item($param);
     if($result_data->num_rows() > 0){
       $data['result'] = "r1";
@@ -363,7 +408,7 @@ class Customer_return extends CI_Controller {
       $data['result'] = "r2";
       $data['result_message'] = "No Data";
     }
-    
+
     echo json_encode($data);
   }
 }

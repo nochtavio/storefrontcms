@@ -1,5 +1,8 @@
 <div class="row" style="margin-bottom:5px;">
-  <div class="col-md-3">
+  <div class="col-xs-12">
+    <h1>Welcome, <?php echo $this->session->userdata('username') ?></h1>
+  </div>
+<!--  <div class="col-md-3">
     <div class="sm-st clearfix">
       <span class="sm-st-icon st-red"><i class="fa fa-check-square-o"></i></span>
       <div class="sm-st-info">
@@ -34,5 +37,5 @@
         Total Documents
       </div>
     </div>
-  </div>
+  </div>-->
 </div>

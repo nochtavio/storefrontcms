@@ -21,6 +21,9 @@ class Credit_log extends CI_Controller {
     $page = 'Credit_log';
     $sidebar['page'] = $page;
     $content['js'] = array();
+    
+    $this->Model_credit_log->set_read();
+    
     array_push($content['js'], 'credit_log/function.js');
     array_push($content['js'], 'credit_log/init.js');
     array_push($content['js'], 'credit_log/action.js');

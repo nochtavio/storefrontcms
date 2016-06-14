@@ -20,6 +20,9 @@ class Order extends CI_Controller {
     $page = 'Order';
     $sidebar['page'] = $page;
     $content['js'] = array();
+    
+    $this->Model_order->set_read();
+    
     array_push($content['js'], 'order/function.js');
     array_push($content['js'], 'order/init.js');
     array_push($content['js'], 'order/action.js');

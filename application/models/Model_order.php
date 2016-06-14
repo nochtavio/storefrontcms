@@ -13,6 +13,7 @@ class Model_order extends CI_Model {
     $status_payment = (isset($param['status_payment'])) ? $param['status_payment'] : -1;
     $status = (isset($param['status'])) ? $param['status'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
+    $read = (isset($param['read'])) ? $param['read'] : -1;
     //End Set Param
     
     $this->db->select('oh.*, op.status, payment.name AS payment_name, op.updated_by, op.confirm_transfer_by, op.confirm_transfer_bank, op.confirm_transfer_amount');
@@ -27,6 +28,7 @@ class Model_order extends CI_Model {
     if($status_payment == 1){$this->db->where('op.confirm_transfer_by is NOT NULL', NULL, FALSE);}
     if($status_payment == 2){$this->db->where('op.confirm_transfer_by is NULL', NULL, FALSE);}
     if($status > -1){$this->db->where('op.status', $status);}
+    if($read > -1){$this->db->where('oh.read', $read);}
     //End Validation
     
     if($order == 1){
@@ -241,5 +243,13 @@ class Model_order extends CI_Model {
       'purchase_code' => $purchase_code
     );
     $this->db->insert('inventory_logs', $data_inv_logs);
+  }
+  
+  function set_read(){
+    $data_update_read = array(
+      'read' => 1
+    );
+    
+    $this->db->update('order_header', $data_update_read);
   }
 }

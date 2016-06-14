@@ -13,6 +13,7 @@ class Model_customer_return extends CI_Model {
     $SKU = (isset($param['SKU'])) ? $param['SKU'] : "";
     $status = (isset($param['status'])) ? $param['status'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
+    $read = (isset($param['read'])) ? $param['read'] : -1;
     //End Set Param
     
     $this->db->select('customer_return.*, products.name AS products_name, customer.customer_email, products.id AS product_id');
@@ -27,6 +28,7 @@ class Model_customer_return extends CI_Model {
     if($customer_email != ""){$this->db->like('customer.customer_email', $customer_email);}
     if($SKU != ""){$this->db->where('customer_return.SKU', $SKU);}
     if($status > -1){$this->db->where('customer_return.status', $status);}
+    if($read > -1){$this->db->where('customer_return.read', $read);}
     //End Validation
     
     $this->db->where('customer_return.deleted', 0);
@@ -213,5 +215,13 @@ class Model_customer_return extends CI_Model {
     
     $query = $this->db->get();
     return $query;
+  }
+  
+  function set_read(){
+    $data_update_read = array(
+      'read' => 1
+    );
+    
+    $this->db->update('customer_return', $data_update_read);
   }
 }

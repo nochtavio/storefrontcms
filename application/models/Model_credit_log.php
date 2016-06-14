@@ -13,6 +13,7 @@ class Model_credit_log extends CI_Model {
     $credit_log_type = (isset($param['credit_log_type'])) ? $param['credit_log_type'] : -1; //1: Customer || 2: Reseller
     $status = (isset($param['status'])) ? $param['status'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
+    $read = (isset($param['read'])) ? $param['read'] : -1;
     //End Set Param
 
     $this->db->select('credit_log.*, customer.customer_email, reseller.email');
@@ -35,6 +36,7 @@ class Model_credit_log extends CI_Model {
       }
     }
     if($status > -1){$this->db->where('credit_log.status', $status);}
+    if($read > -1){$this->db->where('credit_log.read', $read);}
     //End Validation
 
     $this->db->where('credit_log.store_id', 0);
@@ -137,5 +139,13 @@ class Model_credit_log extends CI_Model {
       $this->db->update('reseller', $data_update_reseller);
     }
     //End Update Reseller Wallet
+  }
+  
+  function set_read(){
+    $data_update_read = array(
+      'read' => 1
+    );
+    
+    $this->db->update('credit_log', $data_update_read);
   }
 }
