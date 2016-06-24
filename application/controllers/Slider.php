@@ -154,7 +154,7 @@ class Slider extends CI_Controller {
     if ($validate_post['result'] == "r1") {
       //Upload Image
       $config['upload_path'] = './images/slider/';
-      $config['allowed_types'] = 'jpg';
+      $config['allowed_types'] = 'jpg|png';
       $config['max_size'] = 1000;
       $config['overwrite'] = TRUE;
       
