@@ -67,7 +67,7 @@ class Slider extends CI_Controller {
         $data['link'][$temp] = $row->link;
         $data['target'][$temp] = $row->target;
         $data['title'][$temp] = $row->title;
-        $data['description'][$temp] = $row->description;
+        $data['description'][$temp] = $row->description;				$data['additional_text'][$temp] = $row->additional_text;
         $data['active'][$temp] = $row->active;
         $data['cretime'][$temp] = date_format(date_create($row->cretime), 'd F Y H:i:s');
         $data['creby'][$temp] = $row->creby;
@@ -102,7 +102,7 @@ class Slider extends CI_Controller {
       $data['link'] = $result_data->row()->link;
       $data['target'] = $result_data->row()->target;
       $data['title'] = $result_data->row()->title;
-      $data['description'] = $result_data->row()->description;
+      $data['description'] = $result_data->row()->description;	  	  $data['additional_text'] = $result_data->row()->additional_text;
       $data['active'] = $result_data->row()->active;
     } else {
       $data['result'] = "r2";
@@ -140,7 +140,7 @@ class Slider extends CI_Controller {
     $param['link'] = ($this->input->post('link', TRUE)) ? $this->input->post('link', TRUE) : '';
     $param['target'] = ($this->input->post('target', TRUE)) ? $this->input->post('target', TRUE) : 0;
     $param['title'] = ($this->input->post('title', TRUE)) ? $this->input->post('title', TRUE) : '';
-    $param['description'] = ($this->input->post('description', TRUE)) ? $this->input->post('description', TRUE) : '';
+    $param['description'] = ($this->input->post('description', TRUE)) ? $this->input->post('description', TRUE) : '';		$param['additional_text'] = ($this->input->post('additional_text', TRUE)) ? $this->input->post('additional_text', TRUE) : '';
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
     
@@ -155,7 +155,7 @@ class Slider extends CI_Controller {
       //Upload Image
       $config['upload_path'] = './images/slider/';
       $config['allowed_types'] = 'jpg|png';
-      $config['max_size'] = 1000;
+      $config['max_size'] = 3000;
       $config['overwrite'] = TRUE;
       
       foreach ($_FILES['txt_data_add_file']['name'] as $key => $image) {
@@ -191,7 +191,7 @@ class Slider extends CI_Controller {
     $param['link'] = ($this->input->post('link', TRUE)) ? $this->input->post('link', TRUE) : '';
     $param['target'] = ($this->input->post('target', TRUE)) ? $this->input->post('target', TRUE) : 0;
     $param['title'] = ($this->input->post('title', TRUE)) ? $this->input->post('title', TRUE) : '';
-    $param['description'] = ($this->input->post('description', TRUE)) ? $this->input->post('description', TRUE) : '';
+    $param['description'] = ($this->input->post('description', TRUE)) ? $this->input->post('description', TRUE) : '';		$param['additional_text'] = ($this->input->post('additional_text', TRUE)) ? $this->input->post('additional_text', TRUE) : '';
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
 
@@ -201,8 +201,8 @@ class Slider extends CI_Controller {
         //Upload Image
         $file_element_name = 'txt_data_edit_file';
         $config['upload_path'] = './images/slider/';
-        $config['allowed_types'] = 'jpg';
-        $config['max_size'] = 1000;
+        $config['allowed_types'] = 'jpg|png';
+        $config['max_size'] = 3000;
         $config['overwrite'] = TRUE;
 
         $this->upload->initialize($config);

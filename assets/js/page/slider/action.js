@@ -18,7 +18,7 @@ $(document).ready(function () {
     var link = $('#txt_data_link').val();
     var target = $('#sel_data_target').val();
     var title = $('#txt_data_title').val();
-    var description = $('#txt_data_description').val();
+    var description = $('#txt_data_description').val();		var additional_text = $('#txt_data_additional_text').val();
     var active = 0;
     if ($('#txt_data_active').prop('checked')) {
       active = 1;
@@ -26,9 +26,9 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(show_order, link, target, title, description, active);
+      add_data(show_order, link, target, title, description, active, additional_text);
     }else{
-      edit_data(id, show_order, link, target, title, description, active);
+      edit_data(id, show_order, link, target, title, description, active, additional_text);
     }
   });
   

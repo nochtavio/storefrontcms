@@ -86,7 +86,7 @@ $(document).ready(function () {
                 <td>" + (parseInt(no) + parseInt(x)) + "</td>\
                 <td><img src='" + base_url + result['url'][x] + "?"+time+"' width='400px' height='200px' /> <br/> <strong>URL : </strong> " + result['url'][x] + "  <br/> <strong>Link : </strong> " + result['link'][x] + "</td>\
                 <td>" + result['show_order'][x] + "</td>\
-                <td><strong>" + result['title'][x] + "</strong> <br/> " + result['description'][x] + "</td>\
+                <td><strong>" + result['title'][x] + "</strong> <br/> " + result['description'][x] + "<br/>"+ result['additional_text'][x] +"</td>\
                 <td>" + status + "</td>\
                 <td>" + date + "</td>\
                 <td>" + action + "</td>\
@@ -173,7 +173,7 @@ $(document).ready(function () {
               $("#txt_data_link").val(result['link']);
               $("#sel_data_target").val(result['target']);
               $("#txt_data_title").val(result['title']);
-              $("#txt_data_description").val(result['description']);
+              $("#txt_data_description").val(result['description']);			  			  $("#txt_data_additional_text").val(result['additional_text']);
               if (result['active'] == "1") {
                 $('#txt_data_active').prop('checked', true);
               } else {
@@ -233,7 +233,7 @@ $(document).ready(function () {
     }
   };
 
-  add_data = function (show_order, link, target, title, description, active) {
+  add_data = function (show_order, link, target, title, description, active, additional_text) {
     $.ajaxFileUpload({
       url: base_url + 'slider/add_data',
       secureuri: false,
@@ -244,7 +244,7 @@ $(document).ready(function () {
         link: link,
         target: target,
         title: title,
-        description: description,
+        description: description,				additional_text : additional_text,
         active: active
       },
       success: function (result){
@@ -262,7 +262,7 @@ $(document).ready(function () {
     });
   };
 
-  edit_data = function (id, show_order, link, target, title, description, active) {
+  edit_data = function (id, show_order, link, target, title, description, active, additional_text) {
     $.ajaxFileUpload({
       url: base_url + 'slider/edit_data',
       secureuri: false,
@@ -274,7 +274,7 @@ $(document).ready(function () {
         link: link,
         target: target,
         title: title,
-        description: description,
+        description: description,				additional_text: additional_text,
         active: active
       },
       success: function (result){

@@ -25,14 +25,14 @@
               <option value="5">Order by Show Order &darr;</option>
             </select>
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
-            <?php 
-              if(check_menu("", 1)){
-                ?>
-                  <div class="input-group-btn">
-                    <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm">Add Variant</a>
-                  </div>
-                <?php
-              }
+            <?php
+            if (check_menu("", 1)) {
+              ?>
+              <div class="input-group-btn">
+                <a id="btn_add_data" href="#modal_data" data-toggle="modal" class="btn btn-info btn-sm">Add Variant</a>
+              </div>
+              <?php
+            }
             ?>
             <div class="input-group-btn">
               <a href="<?php echo base_url() ?>products_variant/?id_products=<?php echo $id_products ?>" data-toggle="modal" class="btn btn-warning btn-sm">Back</a>
@@ -65,18 +65,24 @@
       </div>
       <div class="modal-body">
         <form class="form-horizontal" role="form">
-          <input type="hidden" id="txt_data_id" name="txt_data_id" />
+          <input type="hidden" id="txt_data_id" name="txt_data_id" />		  		  
+          <div class="form-group">            
+            <label for="txt_data_sku" class="col-lg-3 col-sm-3 control-label">SKU</label>            
+            <div class="col-lg-9 col-sm-9">              
+              <input type="text" class="form-control form_data" id="txt_data_sku" placeholder="Enter Variant SKU">            
+            </div>          
+          </div>
           <div class="form-group">
             <label for="txt_data_name" class="col-lg-3 col-sm-3 control-label">Color</label>
             <div class="col-lg-9 col-sm-9">
               <select id="txt_data_id_color" name="txt_data_id_color" class="form-control">
                 <option value="0">Select Color</option>
-                <?php 
-                  foreach($color as $col){
-                    ?>
-                      <option value="<?php echo $col->id ?>"><?php echo $col->name ?></option>
-                    <?php
-                  }
+                <?php
+                foreach ($color as $col) {
+                  ?>
+                  <option value="<?php echo $col->id ?>"><?php echo $col->name ?></option>
+                  <?php
+                }
                 ?>
               </select>
             </div>

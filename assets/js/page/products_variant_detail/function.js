@@ -171,6 +171,7 @@ $(document).ready(function () {
           success: function (result) {
             if (result['result'] === 'r1') {
               $("#txt_data_id").val(val);
+              $("#txt_data_sku").val(result['sku']);
               $("#txt_data_size").val(result['size']);
               $("#txt_data_quantity").val(result['quantity']);
               $("#txt_data_max_quantity_order").val(result['max_quantity_order']);
@@ -217,6 +218,8 @@ $(document).ready(function () {
       $('.form_data').val('');
       $('#txt_data_id_color').val(id_color);
       $('#txt_data_id_color').prop("disabled", true);
+      $('#txt_data_sku').prop("readonly", false);
+      $('#txt_data_quantity').prop("readonly", false);
 
       $('#error_container').hide();
       $('#error_container_message').empty();
@@ -226,6 +229,7 @@ $(document).ready(function () {
       $('.form_data').val('');
       $('#txt_data_id_color').val(id_color);
       $('#txt_data_id_color').prop("disabled", true);
+      $('#txt_data_sku').prop("readonly", true);
       $('#txt_data_quantity').prop("readonly", true);
 
       $('#error_container').hide();
@@ -233,13 +237,14 @@ $(document).ready(function () {
     }
   };
 
-  add_data = function (size, quantity, max_quantity_order, show_order, active) {
+  add_data = function (sku, size, quantity, max_quantity_order, show_order, active) {
     $.ajax({
       url: base_url + 'products_variant_detail/add_data',
       type: 'POST',
       data: {
         id_products: id_products,
-        id_color: id_color,
+        id_color: id_color,				
+        sku : sku,
         size: size,
         quantity: quantity,
         max_quantity_order: max_quantity_order,

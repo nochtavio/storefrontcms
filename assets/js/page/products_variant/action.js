@@ -16,7 +16,7 @@ $(document).ready(function () {
     var id_color = $('#txt_data_id_color').val();
     var size = $('#txt_data_size').val();
     var quantity = $('#txt_data_quantity').val();
-    var max_quantity_order = $('#txt_data_max_quantity_order').val();
+    var max_quantity_order = $('#txt_data_max_quantity_order').val();		var sku = $('#txt_data_sku').val();
     var show_order = $('#txt_data_show_order').val();
     var active = 0;
     if ($('#txt_data_active').prop('checked')) {
@@ -25,7 +25,7 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data(id_color, size, quantity, max_quantity_order, show_order, active);
+      add_data(id_color, size, quantity, max_quantity_order, show_order, active, sku);
     }
   });
   

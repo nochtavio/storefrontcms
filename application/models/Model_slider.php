@@ -48,7 +48,7 @@ class Model_slider extends CI_Model {
     $link = (isset($param['link'])) ? $param['link'] : "";
     $target = (isset($param['target'])) ? $param['target'] : 0;
     $title = (isset($param['title'])) ? $param['title'] : "";
-    $description = (isset($param['description'])) ? $param['description'] : "";
+    $description = (isset($param['description'])) ? $param['description'] : "";		$additional_text = (isset($param['additional_text'])) ? $param['additional_text'] : "";
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
     
@@ -58,7 +58,7 @@ class Model_slider extends CI_Model {
       'link' => $link,
       'target' => $target,
       'title' => $title,
-      'description' => $description,
+      'description' => $description,	  	  'additional_text' => $additional_text,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
       'creby' => $this->session->userdata('username')
@@ -76,7 +76,7 @@ class Model_slider extends CI_Model {
     $url = (isset($param['url'])) ? $param['url'] : "";
     $link = (isset($param['link'])) ? $param['link'] : "";
     $target = (isset($param['target'])) ? $param['target'] : 0;
-    $title = (isset($param['title'])) ? $param['title'] : "";
+    $title = (isset($param['title'])) ? $param['title'] : "";		$additional_text = (isset($param['additional_text'])) ? $param['additional_text'] : "";
     $description = (isset($param['description'])) ? $param['description'] : "";
     $active = (isset($param['active'])) ? $param['active'] : 0;
     //End Set Param
@@ -88,7 +88,7 @@ class Model_slider extends CI_Model {
         'link' => $link,
         'target' => $target,
         'title' => $title,
-        'description' => $description,
+        'description' => $description,				'additional_text' => $additional_text,
         'active' => $active,
         'modtime' => date('Y-m-d H:i:s'),
         'modby' => $this->session->userdata('username')
@@ -99,7 +99,7 @@ class Model_slider extends CI_Model {
         'link' => $link,
         'target' => $target,
         'title' => $title,
-        'description' => $description,
+        'description' => $description,				'additional_text' => $additional_text, 
         'active' => $active,
         'modtime' => date('Y-m-d H:i:s'),
         'modby' => $this->session->userdata('username')

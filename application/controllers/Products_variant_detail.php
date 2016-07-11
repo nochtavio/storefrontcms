@@ -9,8 +9,8 @@ class Products_variant_detail extends CI_Controller {
     parent::__construct();
     check_address();
     check_login();
-    if(!check_menu()){
-      redirect(base_url().'dashboard/');
+    if (!check_menu()) {
+      redirect(base_url() . 'dashboard/');
     }
     $this->load->model('Model_color');
     $this->load->model('Model_products');
@@ -33,7 +33,7 @@ class Products_variant_detail extends CI_Controller {
       return false;
     }
   }
-  
+
   public function get_color_name($id_color) {
     $param['id'] = $id_color;
     $result_data = $this->Model_color->get_data($param);
@@ -43,10 +43,10 @@ class Products_variant_detail extends CI_Controller {
       return false;
     }
   }
-  
-  public function generate_sku($id_products, $id_color){
+
+  public function generate_sku($id_products, $id_color) {
     $this->load->helper('string');
-    
+
     //Get Products Name
     $param['id'] = $id_products;
     $result_products_name = $this->Model_products->get_data($param);
@@ -54,7 +54,6 @@ class Products_variant_detail extends CI_Controller {
     $text_1 = substr(preg_replace('/\s+/', '', $products_name), 0, 3);
     $text_2 = substr(preg_replace('/\s+/', '', $products_name), -2);
     //End Get Products Name
-    
     //Get Color Name
     $param['id'] = $id_color;
     $result_color_name = $this->Model_color->get_data($param);
@@ -62,9 +61,9 @@ class Products_variant_detail extends CI_Controller {
     $text_3 = substr(preg_replace('/\s+/', '', $color_name), 0, 1);
     $text_4 = substr(preg_replace('/\s+/', '', $color_name), -1, 1);
     //End Get Color Name
-    
-    $sku = strtoupper($text_1.$text_2.$text_3.$text_4.random_string('numeric', 3));
-    
+
+    $sku = strtoupper($text_1 . $text_2 . $text_3 . $text_4 . random_string('numeric', 3));
+
     return $sku;
   }
 
@@ -155,6 +154,7 @@ class Products_variant_detail extends CI_Controller {
       $data['result'] = "r1";
       $data['id'] = $result_data->row()->id;
       $data['id_color'] = $result_data->row()->id_color;
+      $data['sku'] = $result_data->row()->SKU;
       $data['size'] = ($result_data->row()->size == NULL) ? '' : $result_data->row()->size;
       $data['quantity'] = $result_data->row()->quantity;
       $data['max_quantity_order'] = $result_data->row()->max_quantity_order;
@@ -177,41 +177,54 @@ class Products_variant_detail extends CI_Controller {
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
     $max_quantity_order = (isset($param['max_quantity_order'])) ? $param['max_quantity_order'] : 0;
     $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
+    $sku = (isset($param['sku'])) ? $param['sku'] : NULL;
     //end param
 
     $data['result'] = "r1";
     $data['result_message'] = "";
-    
-    if($state == "add"){
+
+    if ($state == "add") {
       if ($id_color == 0) {
         $data['result'] = "r2";
         $data['result_message'] .= "<strong>Color</strong> must be filled !<br/>";
+      } 
+      
+      if ($sku == NULL) {
+        $data['result'] = "r2";
+        $data['result_message'] .= "<strong>SKU</strong> must be filled !<br/>";
+      }else{
+        $param_check['sku'] = $sku;
+        $check_duplicate_sku = $this->Model_products_variant_detail->get_data($param_check);
+        if($check_duplicate_sku->num_rows() > 0){
+          $data['result'] = "r2";
+          $data['result_message'] .= "<strong>SKU</strong> is already existed !<br/>";
+        }
       }
     }
-    
-    if($edit_size && $id_color != 0){
+
+    if ($edit_size && $id_color != 0) {
       //check duplicate variant
       $param_check['id_products'] = $id_products;
       $param_check['id_color'] = $id_color;
       $param_check['size'] = $size;
       $check_duplicate_variant = $this->Model_products_variant_detail->get_data($param_check);
-      if($check_duplicate_variant->num_rows() > 0 && $check_duplicate_variant->row()->id !== $id){
+      if ($check_duplicate_variant->num_rows() > 0 && $check_duplicate_variant->row()->id !== $id) {
         $data['result'] = "r2";
         $data['result_message'] .= "<strong>Color</strong> with this size is already exist!<br/>";
       }
       //end check duplicate variant
     }
-    
+
     if (!is_numeric($quantity)) {
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Quantity</strong> must be a number !<br/>";
     }
-    
+
     if (!is_numeric($max_quantity_order)) {
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Maximum Quantity Order</strong> must be a number !<br/>";
     }
-    
+
     if (!is_numeric($show_order)) {
       $data['result'] = "r2";
       $data['result_message'] .= "<strong>Show Order</strong> must be a number !<br/>";
@@ -224,6 +237,7 @@ class Products_variant_detail extends CI_Controller {
     //param
     $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
     $param['id_color'] = ($this->input->post('id_color', TRUE)) ? $this->input->post('id_color', TRUE) : 0;
+    $param['sku'] = ($this->input->post('sku', TRUE)) ? $this->input->post('sku', TRUE) : NULL;
     $param['color_name'] = $this->get_color_name($param['id_color']);
     $param['size'] = ($this->input->post('size', TRUE)) ? $this->input->post('size', TRUE) : NULL;
     $param['quantity'] = ($this->input->post('quantity', TRUE)) ? $this->input->post('quantity', TRUE) : 0;
@@ -231,18 +245,6 @@ class Products_variant_detail extends CI_Controller {
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
-    
-    //generate sku
-    $sku = $this->generate_sku($param['id_products'], $param['id_color']);
-    $param_check['sku'] = $sku;
-    $check_duplicate_sku = $this->Model_products_variant_detail->get_data($param_check);
-    while($check_duplicate_sku->num_rows() > 0){
-      $sku = $this->generate_sku($param['id_products'], $param['id_color']);
-      $param_check['sku'] = $sku;
-      $check_duplicate_sku = $this->Model_products_variant_detail->get_data($param_check);
-    }
-    $param['sku'] = $sku; 
-    //end generate sku
 
     $validate_post = $this->validate_post($param, "add", TRUE);
     if ($validate_post['result'] == "r1") {
@@ -263,12 +265,11 @@ class Products_variant_detail extends CI_Controller {
     $param['show_order'] = ($this->input->post('show_order', TRUE)) ? $this->input->post('show_order', TRUE) : 0;
     $param['active'] = ($this->input->post('active', TRUE)) ? $this->input->post('active', TRUE) : "";
     //end param
-    
     //check size is edited or not
     $edit_size = TRUE;
     $param_check['id'] = $param['id'];
     $check_edited_size = $this->Model_products_variant_detail->get_data($param_check);
-    if($check_edited_size->row()->size == $param['size']){
+    if ($check_edited_size->row()->size == $param['size']) {
       $edit_size = FALSE;
     }
     //end check
@@ -282,20 +283,20 @@ class Products_variant_detail extends CI_Controller {
       $validate_post['result'] = "r2";
       $validate_post['result_message'] = "<strong>Data ID</strong> is not found, please refresh your browser!<br/>";
     }
-    
+
     echo json_encode($validate_post);
   }
-  
-  public function set_active(){
+
+  public function set_active() {
     //param
-    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "" ;
+    $param['id'] = ($this->input->post('id', TRUE)) ? $this->input->post('id', TRUE) : "";
     //end param
-    
+
     $data['result'] = "r1";
     $data['result_message'] = '';
-    
+
     $result_data = $this->Model_products_variant_detail->get_data($param);
-    if($result_data->num_rows() > 0){
+    if ($result_data->num_rows() > 0) {
       $param_set['id'] = $result_data->row()->id;
       $param_set['id_color'] = $result_data->row()->id_color;
       $param_set['size'] = ($result_data->row()->size == NULL) ? '-' : $result_data->row()->size;
@@ -304,11 +305,11 @@ class Products_variant_detail extends CI_Controller {
       $param_set['show_order'] = $result_data->row()->show_order;
       $param_set['active'] = ($result_data->row()->active == 0) ? 1 : 0;
       $this->Model_products_variant_detail->edit_data($param_set);
-    }else{
+    } else {
       $data['result'] = "r2";
       $data['result_message'] = '<strong>Data ID</strong> is not found, please refresh your browser!<br/>';
     }
-    
+
     echo json_encode($data);
   }
 

@@ -64,7 +64,7 @@
               <img id="txt_data_img" width="400px" height="200px" alt="No Image" />
               <input type="file" multiple="multiple" class="form-control form_data" name="txt_data_add_file[]" id="txt_data_add_file" size="20" />
               <input type="file" class="form-control form_data" name="txt_data_edit_file" id="txt_data_edit_file" size="20" />
-              <p class="help-block" style="margin-bottom: 0;">Allowed file is JPG and PNG | Maximum size is 1000 KB | Recommended resolution is 1920 x 800 px</p>
+              <p class="help-block" style="margin-bottom: 0;">Allowed file is JPG and PNG | Maximum size is 3000 KB | Recommended resolution is 1920 x 800 px</p>
             </div>
           </div>
           <div class="form-group">
@@ -89,17 +89,17 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="txt_data_title" class="col-lg-3 col-sm-3 control-label">Title</label>
+            <label for="txt_data_title" class="col-lg-3 col-sm-3 control-label">Text 1</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_title" placeholder="Enter title">
+              <input type="text" class="form-control form_data" id="txt_data_title" placeholder="Enter Text 1">
             </div>
           </div>
           <div class="form-group">
-            <label for="txt_data_description" class="col-lg-3 col-sm-3 control-label">Description</label>
+            <label for="txt_data_description" class="col-lg-3 col-sm-3 control-label">Text 2</label>
             <div class="col-lg-9 col-sm-9">
-              <input type="text" class="form-control form_data" id="txt_data_description" placeholder="Enter description">
+              <input type="text" class="form-control form_data" id="txt_data_description" placeholder="Enter Text 2">
             </div>
-          </div>
+          </div>		  		  <div class="form-group">            <label for="txt_data_description" class="col-lg-3 col-sm-3 control-label">Text 3</label>            <div class="col-lg-9 col-sm-9">              <input type="text" class="form-control form_data" id="txt_data_additional_text" placeholder="Enter Text 3">            </div>          </div>
           <div class="form-group">
             <label for="txt_data_active" class="col-lg-3 col-sm-3 control-label">Status</label>
             <div class="col-lg-9 col-sm-9">

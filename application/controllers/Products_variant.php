@@ -84,7 +84,7 @@ class Products_variant extends CI_Controller {
   }
 
   public function get_data() {
-    //param
+    //param 
     $param['id_products'] = ($this->input->post('id_products', TRUE)) ? $this->input->post('id_products', TRUE) : 0;
     $param['order'] = ($this->input->post('order', TRUE)) ? $this->input->post('order', TRUE) : -1;
     //end param
@@ -128,7 +128,8 @@ class Products_variant extends CI_Controller {
     $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $size = (isset($param['size'])) ? $param['size'] : "";
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
-    $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
+    $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;		
+	$sku = (isset($param['sku'])) ? $param['sku'] : NULL;
     //end param
 
     $data['result'] = "r1";
@@ -138,7 +139,11 @@ class Products_variant extends CI_Controller {
       if ($id_color == 0) {
         $data['result'] = "r2";
         $data['result_message'] .= "<strong>Color</strong> must be filled !<br/>";
-      }
+      }	  	  
+	  if ($sku == NULL) {
+		$data['result'] = "r2";            
+		$data['result_message'] .= "<strong>SKU</strong> must be filled !<br/>";            
+		}
     }
     
     if($edit_size && $id_color != 0){
@@ -165,7 +170,7 @@ class Products_variant extends CI_Controller {
     }
 
     return $data;
-  }
+  }    public function get_color_name($id_color) {    $param['id'] = $id_color;    $result_data = $this->Model_color->get_data($param);    if ($result_data->num_rows() > 0) {      return $result_data->row()->name;    } else {      return false;    }  }
 
   public function add_data() {
     //param
@@ -180,11 +185,13 @@ class Products_variant extends CI_Controller {
     //end param
     
     //generate sku
-    $sku = $this->generate_sku($param['id_products'], $param['id_color']);
+    //$sku = $this->generate_sku($param['id_products'], $param['id_color']);    $sku = ($this->input->post('sku', TRUE)) ? $this->input->post('sku', TRUE) : "";
+	$sku = ($this->input->post('sku', TRUE)) ? $this->input->post('sku', TRUE) : "";
+	
     $param_check['sku'] = $sku;
     $check_duplicate_sku = $this->Model_products_variant_detail->get_data($param_check);
-    while($check_duplicate_sku->num_rows() > 0){
-      $sku = $this->generate_sku($param['id_products'], $param['id_color']);
+    while($check_duplicate_sku->num_rows() > 0){ 
+      //$sku = $this->generate_sku($param['id_products'], $param['id_color']);
       $param_check['sku'] = $sku;
       $check_duplicate_sku = $this->Model_products_variant_detail->get_data($param_check);
     }

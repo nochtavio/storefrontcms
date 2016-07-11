@@ -14,6 +14,7 @@ $(document).ready(function () {
 
     //Parameter
     var id = $('#txt_data_id').val();
+    var sku = $('#txt_data_sku').val();
     var size = $('#txt_data_size').val();
     var quantity = $('#txt_data_quantity').val();
     var max_quantity_order = $('#txt_data_max_quantity_order').val();
@@ -25,7 +26,7 @@ $(document).ready(function () {
     //End Parameter
     
     if(state == "add"){
-      add_data( size, quantity, max_quantity_order, show_order, active);
+      add_data(sku, size, quantity, max_quantity_order, show_order, active);
     }else{
       edit_data(id, size, quantity, max_quantity_order, show_order, active);
     }
