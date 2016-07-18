@@ -59,7 +59,7 @@ class Model_products_variant_detail extends CI_Model {
     $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $sku = (isset($param['sku'])) ? $param['sku'] : '';
     $size = (isset($param['size'])) ? $param['size'] : "";
-    $size_url = url_title($param['color_name'], 'dash', true);
+    $size_url = ($size == "") ? 'all-size' : url_title($param['size'], 'dash', true);
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
     $max_quantity_order = (isset($param['max_quantity_order'])) ? $param['max_quantity_order'] : 0;
     $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
@@ -78,22 +78,24 @@ class Model_products_variant_detail extends CI_Model {
       'show_order' => $show_order,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
-      'creby' => $this->session->userdata('username')
+      'creby' => ($this->session->userdata('username')) ? $this->session->userdata('username') : 'SYSTEM'
     );
     $this->db->insert('products_variant', $data);
     $insert_id = $this->db->insert_id();
     
     //Check Duplicate Size URL
-    $param_check['size_url'] = $size_url;
-    $result_check = $this->get_data($param_check);
-    if($result_check->num_rows() > 1){
-      $size_url = url_title($param['color_name'].$insert_id, 'dash', true);
-      $data = array(
-        'size_url' => $size_url
-      );
+    if($size != ""){
+      $param_check['size_url'] = $size_url;
+      $result_check = $this->get_data($param_check);
+      if($result_check->num_rows() > 1){
+        $size_url = url_title($size.'-'.$insert_id, 'dash', true);
+        $data = array(
+          'size_url' => $size_url
+        );
 
-      $this->db->where('id', $insert_id);
-      $this->db->update('products_variant', $data);
+        $this->db->where('id', $insert_id);
+        $this->db->update('products_variant', $data);
+      }
     }
     //End Check Duplicate Size URL
     
@@ -118,6 +120,7 @@ class Model_products_variant_detail extends CI_Model {
     //Set Param
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $size = (isset($param['size'])) ? $param['size'] : "";
+    $size_url = ($size == "") ? 'all-size' : url_title($param['size'], 'dash', true);
     $quantity = (isset($param['quantity'])) ? $param['quantity'] : 0;
     $max_quantity_order = (isset($param['max_quantity_order'])) ? $param['max_quantity_order'] : 0;
     $show_order = (isset($param['show_order'])) ? $param['show_order'] : 0;
@@ -126,6 +129,7 @@ class Model_products_variant_detail extends CI_Model {
     
     $data = array(
       'size' => $size,
+      'size_url' => $size_url,
       'quantity' => $quantity,
       'quantity_warehouse' => $quantity,
       'max_quantity_order' => $max_quantity_order,
@@ -137,6 +141,22 @@ class Model_products_variant_detail extends CI_Model {
     
     $this->db->where('id', $id);
     $this->db->update('products_variant', $data);
+    
+    //Check Duplicate Size URL
+    if($size != ""){
+      $param_check['size_url'] = $size_url;
+      $result_check = $this->get_data($param_check);
+      if($result_check->num_rows() > 1){
+        $size_url = url_title($size.'-'.$id, 'dash', true);
+        $data = array(
+          'size_url' => $size_url
+        );
+
+        $this->db->where('id', $id);
+        $this->db->update('products_variant', $data);
+      }
+    }
+    //End Check Duplicate Size URL
   }
   
   function remove_data($param){

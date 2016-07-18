@@ -82,7 +82,7 @@ class Model_products extends CI_Model {
       'size_guideline' => $size_guideline,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
-      'creby' => $this->session->userdata('username')
+      'creby' => ($this->session->userdata('username')) ? $this->session->userdata('username') : 'SYSTEM'
     );
     $this->db->insert('products', $data);
     $insert_id = $this->db->insert_id();

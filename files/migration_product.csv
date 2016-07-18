@@ -1,0 +1,11 @@
+ID BRAND,NAMA PRODUK,HARGA,HARGA DISKON,HARGA MODAL,POTONGAN GOLD,POTONGAN SILVER,POTONGAN BRONZE,BERAT,DESKRIPSI,DESKRIPSI SINGKAT
+1,Baju Ketat,25000,22000,20000,10000,8000,6000,0.25,Baju ketat yang cocok untuk nikahan,Baju yang ketat
+2,Celana Longgar,30000,27000,25000,15000,13000,11000,0.5,Celana yang harus dikecilkan,Celana yang longgar
+3,Topi Bundar,45000,42000,40000,20000,18000,16000,0.75,Topi yang bundar,Topi yang tidak kotak
+1,Baju Trendy,69000,66000,64000,17000,15000,13000,0.85,Baju yang sangat trendy,Baju yang trendy
+2,Kacamata Kuda,49000,46000,44000,18000,16000,14000,1,Kacamata untuk lihat lurus,Kacamata punya kuda
+3,Sepatu Balet,93000,90000,88000,25000,23000,21000,1,Sepatu untuk para penari balet,Sepatu yang sempit
+1,Sandal Jepit,92000,89000,87000,35000,33000,31000,1,Sandal untuk pergi ke warung,Sendal yang jelek
+4,Celana Sempit,43000,40000,38000,15000,13000,11000,0.5,Celana yang harus dibesarkan,Celana yang sempit
+1,Topi Kupluk,21000,18000,16000,10000,8000,6000,0.75,Topi yang cocok untukpergi ke puncak,Topi yang kecil
+1,Kaos Kaki,15000,12000,10000,8000,6000,4000,0.25,Kaos yang cocok dipakai di kaki,Kaos yang kecil

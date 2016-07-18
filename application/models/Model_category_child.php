@@ -111,6 +111,19 @@ class Model_category_child extends CI_Model {
     $this->db->where('id', $id);
     $this->db->update('category_child', $data);
     
+    //Deactive child if parent deactivated
+    if($active == 0){
+      $data_child = array(
+        'active' => $active,
+        'modtime' => date('Y-m-d H:i:s'),
+        'modby' => $this->session->userdata('username')
+      );
+
+      $this->db->where('parent', $id);
+      $this->db->update('category_child', $data_child);
+    }
+    //End Deactive child
+    
     //Remove Child
     $this->db->where('id_category_child', $id);
     $this->db->delete('category_detail');

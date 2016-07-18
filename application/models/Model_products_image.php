@@ -11,19 +11,20 @@ class Model_products_image extends CI_Model {
     $id_products = (isset($param['id_products'])) ? $param['id_products'] : 0;
     $id_color = (isset($param['id_color'])) ? $param['id_color'] : 0;
     $url = (isset($param['url'])) ? $param['url'] : "";
+    $exact_url = (isset($param['exact_url'])) ? $param['exact_url'] : "";
     $active = (isset($param['active'])) ? $param['active'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
     //End Set Param
     
     $this->db->select('products_image.*');
     $this->db->from('products_image');
-    $this->db->join('color', 'color.id = products_image.id_color');
     
     //Validation
     if($id > 0){$this->db->where('products_image.id', $id);}
     if($id_products > 0){$this->db->where('products_image.id_products', $id_products);}
     if($id_color > 0){$this->db->where('products_image.id_color', $id_color);}
     if($url != ""){$this->db->like('products_image.url', $url);}
+    if($exact_url != ""){$this->db->where('products_image.url', $exact_url);}
     if($active > -1){$this->db->where('products_image.active', $active);}
     //End Validation
     
@@ -36,7 +37,6 @@ class Model_products_image extends CI_Model {
     
     if($size >= 0){$this->db->limit($size, $limit);}
     $query = $this->db->get();
-    
     return $query;
   }
   
@@ -58,7 +58,7 @@ class Model_products_image extends CI_Model {
       'show_order' => $show_order,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
-      'creby' => $this->session->userdata('username')
+      'creby' => ($this->session->userdata('username')) ? $this->session->userdata('username') : 'SYSTEM'
     );
     $this->db->insert('products_image', $data);
     $insert_id = $this->db->insert_id();
