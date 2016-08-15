@@ -2,6 +2,9 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+ini_set('max_execution_time', 0); 
+ini_set('memory_limit','2048M');
+
 class Migrate extends CI_Controller {
 
   function __construct() {
@@ -48,26 +51,69 @@ class Migrate extends CI_Controller {
       die();
     }
     
-    foreach($excel_data as $data){
-      //param
-      $param = array();
-      $param['id_brand']          = $data[0];
-      $param['name']              = $data[1];
-      $param['price']             = $data[2];
-      $param['sale_price']        = $data[3];
-      $param['modal_price']       = $data[4];
-      $param['potongan_gold']     = $data[5];
-      $param['potongan_silver']   = $data[6];
-      $param['potongan_bronze']   = $data[7];
-      $param['weight']            = $data[8];
-      $param['description']       = $data[9];
-      $param['short_description'] = $data[10];
-      //end param
+    $total_data = 0;
+    
+    foreach($excel_data as $key => $data){
+      if(count($data) == 14){
+        
+        //param
+        $param = array();
+        $param['id_brand']          = $data[0];
+        $param['name']              = $data[1];
+        $param['price']             = $data[5];
+        $param['sale_price']        = $data[6];
+        $param['modal_price']       = $data[7];
+        $param['potongan_gold']     = $data[8];
+        $param['potongan_silver']   = $data[9];
+        $param['potongan_bronze']   = $data[10];
+        $param['weight']            = $data[11];
+        $param['description']       = $data[12];
+        $param['short_description'] = $data[13];
+        //end param
 
-      $this->Model_products->add_data($param);
+        $id_product = $this->Model_products->add_data($param);
+        
+        //insert category level 1
+        if($data[2] != ''){
+          $insert_level_1 = array(
+            'id_category' => $data[2],
+            'id_products' => $id_product,
+            'cretime' => date('Y-m-d H:i:s'),
+            'creby' => 'MIGRATION'
+          );
+          $this->db->insert('category_detail', $insert_level_1);
+        }
+        //end insert category level 1
+        
+        //insert category level 2
+        if($data[3] != ''){
+          $insert_level_2 = array(
+            'id_category_child' => $data[3],
+            'id_products' => $id_product,
+            'cretime' => date('Y-m-d H:i:s'),
+            'creby' => 'MIGRATION'
+          );
+          $this->db->insert('category_detail', $insert_level_2);
+        }
+        //end insert category level 2
+        
+        //insert category level 3
+        if($data[4] != ''){
+          $insert_level_3 = array(
+            'id_category_child_' => $data[4],
+            'id_products' => $id_product,
+            'cretime' => date('Y-m-d H:i:s'),
+            'creby' => 'MIGRATION'
+          );
+          $this->db->insert('category_detail', $insert_level_3);
+        }
+        //end insert category level 3
+        
+        $total_data++;
+      }
     }
 
-    echo count($excel_data).' products is migrated successfully.';
+    echo $total_data.' products is migrated successfully.';
   }
   
   public function migrateProductImages($list_url, $id_products, $id_color){
@@ -106,40 +152,45 @@ class Migrate extends CI_Controller {
       die();
     }
     
+    $total_data = 0;
     foreach($excel_data as $data){
-      //Insert to products_variant
-      //param
-      $param = array();
-      $param['id_products']         = $data[0];
-      $param['id_color']            = $data[1];
-      $param['size']                = $data[2];
-      $param['sku']                 = $data[3];
-      $param['quantity']            = $data[4];
-      $param['max_quantity_order']  = $data[5];
-      //end param
+      if(count($data) == 10){
+        //Insert to products_variant
+        //param
+        $param = array();
+        $param['id_products']         = $data[0];
+        $param['id_color']            = $data[1];
+        $param['size']                = $data[2];
+        $param['sku']                 = $data[3];
+        $param['quantity']            = $data[4];
+        $param['max_quantity_order']  = $data[5];
+        //end param
 
-      $this->Model_products_variant_detail->add_data($param);
-      //End Insert to products_variant
-      
-      //Insert to product_images
-      $list_url = array();
-      if($data[6] != ''){
-        $list_url [] = $data[6];
+        $this->Model_products_variant_detail->add_data($param);
+        //End Insert to products_variant
+
+        //Insert to product_images
+        $list_url = array();
+        if($data[6] != ''){
+          $list_url [] = $data[6];
+        }
+        if($data[7] != ''){
+          $list_url [] = $data[7];
+        }
+        if($data[8] != ''){
+          $list_url [] = $data[8];
+        }
+        if($data[9] != ''){
+          $list_url [] = $data[9];
+        }
+
+        $this->migrateProductImages($list_url, $data[0], $data[1]);
+        //End Insert to product_images
+        
+        $total_data++;
       }
-      if($data[7] != ''){
-        $list_url [] = $data[7];
-      }
-      if($data[8] != ''){
-        $list_url [] = $data[8];
-      }
-      if($data[9] != ''){
-        $list_url [] = $data[9];
-      }
-      
-      $this->migrateProductImages($list_url, $data[0], $data[1]);
-      //End Insert to product_images
     }
 
-    echo count($excel_data).' products variant is migrated successfully.';
+    echo $total_data.' products variant is migrated successfully.';
   }
 }

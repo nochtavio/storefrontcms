@@ -78,7 +78,7 @@ class Model_products_variant_detail extends CI_Model {
       'show_order' => $show_order,
       'active' => $active,
       'cretime' => date('Y-m-d H:i:s'),
-      'creby' => ($this->session->userdata('username')) ? $this->session->userdata('username') : 'SYSTEM'
+      'creby' => ($this->session->userdata('username')) ? $this->session->userdata('username') : 'MIGRATION'
     );
     $this->db->insert('products_variant', $data);
     $insert_id = $this->db->insert_id();
@@ -101,7 +101,7 @@ class Model_products_variant_detail extends CI_Model {
     
     //Insert Inventory Logs
     $data_inventory_logs = array(
-      'user' => $this->session->userdata('id'),
+      'user' => ($this->session->userdata('username')) ? $this->session->userdata('username') : 'MIGRATION',
       'product_id' => $id_products,
       'SKU' => $sku,
       'quantity' => $quantity,
