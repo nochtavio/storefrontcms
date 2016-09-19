@@ -97,6 +97,20 @@ $(document).ready(function () {
     });
   };
 
+  show_template = function(template){
+    $('.img_template').hide();
+    $('.label_img_template').hide();
+    if(template == 1){
+      $('#img_template_1').show();
+      $('.label_img_template').show();
+    }else if(template == 2){
+      $('#img_template_2').show();
+      $('.label_img_template').show();
+    }else if(template == 3){
+      $('#img_template_3').show();
+      $('.label_img_template').show();
+    }
+  }
 
   set_edit = function () {
     var id = [];
@@ -127,6 +141,8 @@ $(document).ready(function () {
               $("#txt_data_promosi").val(result['promosi']);
               $("#txt_data_domain").val(result['domain']);
               $("#txt_data_keterangan").val(result['keterangan']);
+              show_template(result['template']);
+              
               $('#modal_data').modal('show');
             }
             else {

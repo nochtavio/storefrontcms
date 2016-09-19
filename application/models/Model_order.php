@@ -10,6 +10,8 @@ class Model_order extends CI_Model {
     $id = (isset($param['id'])) ? $param['id'] : 0;
     $purchase_code = (isset($param['purchase_code'])) ? $param['purchase_code'] : "";
     $customer_email = (isset($param['customer_email'])) ? $param['customer_email'] : "";
+    $start_date = (isset($param['start_date'])) ? $param['start_date'] : "";
+    $end_date = (isset($param['end_date'])) ? $param['end_date'] : "";
     $status_payment = (isset($param['status_payment'])) ? $param['status_payment'] : -1;
     $status = (isset($param['status'])) ? $param['status'] : -1;
     $order = (isset($param['order'])) ? $param['order'] : -1;
@@ -25,6 +27,8 @@ class Model_order extends CI_Model {
     if($id > 0){$this->db->where('oh.id', $id);}
     if($purchase_code != ""){$this->db->like('oh.purchase_code', $purchase_code);}
     if($customer_email != ""){$this->db->like('oh.customer_email', $customer_email);}
+    if($start_date != ""){$this->db->where('oh.purchase_date >=', $start_date);}
+    if($end_date != ""){$this->db->where('oh.purchase_date <=', $end_date.' 23:59:59');}
     if($status_payment == 1){$this->db->where('op.confirm_transfer_by is NOT NULL', NULL, FALSE);}
     if($status_payment == 2){$this->db->where('op.confirm_transfer_by is NULL', NULL, FALSE);}
     if($status > -1){$this->db->where('op.status', $status);}

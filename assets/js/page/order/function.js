@@ -15,6 +15,8 @@ $(document).ready(function () {
         page: page,
         purchase_code: purchase_code,
         customer_email: customer_email,
+        start_date: start_date,
+        end_date: end_date,
         status_payment: status_payment,
         status: status,
         order: order

@@ -96,6 +96,7 @@ class Reseller_request extends CI_Controller {
       $data['promosi'] = $result_data->row()->promosi;
       $data['domain'] = $result_data->row()->domain;
       $data['keterangan'] = $result_data->row()->keterangan;
+      $data['template'] = $result_data->row()->template;
     }else{
       $data['result'] = "r2";
       $data['message'] = "No Data";

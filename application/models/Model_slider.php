@@ -25,6 +25,7 @@ class Model_slider extends CI_Model {
     //End Validation
     
     $this->db->where('slider.deleted', 0);
+    $this->db->where('slider.store_id', 0);
     if($order == 1){
       $this->db->order_by("slider.cretime", "asc");
     }else if($order == 2){

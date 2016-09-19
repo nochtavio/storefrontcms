@@ -75,7 +75,7 @@ $query_builder = TRUE;
 
 $db['default'] = array(
 	'dsn'	=> '',
-	'hostname' => 'storefrontindo.com',
+	'hostname' => 'mallbeol.com',
 	'username' => 'storefro_test',
 	'password' => 'test220790',
 	'database' => 'storefro_ffstore',

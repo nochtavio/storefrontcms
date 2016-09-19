@@ -103,6 +103,14 @@
               </textarea>
             </div>
           </div>
+          <div class="form-group">
+            <label for="txt_img_template" class="col-lg-3 col-sm-3 control-label label_img_template">Template</label>
+            <div class="col-lg-9 col-sm-9">
+              <img id="img_template_1" class="img_template" src="<?php echo base_url() ?>images/templates/template1.png" width="100%" style="display: none;" />
+              <img id="img_template_2" class="img_template" src="<?php echo base_url() ?>images/templates/template2.png" width="100%" style="display: none;" />
+              <img id="img_template_3" class="img_template" src="<?php echo base_url() ?>images/templates/template3.png" width="100%" style="display: none;" />
+            </div>
+          </div>
           <div id="error_container" class="alert alert-block alert-danger" style="display: none;">
             <div id="error_container_message">
 
