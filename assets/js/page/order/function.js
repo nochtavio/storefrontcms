@@ -36,6 +36,12 @@ $(document).ready(function () {
             <th>Action</th>\
           </tr>\
         ");
+        
+        if(start_date_text == '' && end_date_text == ''){
+          $('#txt_table_header').html('All Transactions');
+        }else{
+          $('#txt_table_header').html('Transactions from <strong>' + start_date_text + '</strong> to <strong>' + end_date_text +'</strong>');
+        }
 
         if (result['result'] === 'r1') {
           //Set Paging

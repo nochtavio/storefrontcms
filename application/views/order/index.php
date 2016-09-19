@@ -9,7 +9,7 @@
           <div class="input-group">
             <input id="txt_purchase_code" name="txt_purchase_code" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Purchase Code">
             <input id="txt_customer_email" name="txt_customer_email" type="text" class="form-control input-sm" style="margin-right: 7px;width: 150px;" placeholder="Filter Customer Email">
-            <input id="txt_order_date" name="txt_order_date" type="text" class="form-control input-sm" style="margin-right: 7px;width: 160px;" placeholder="">
+            <input id="txt_order_date" name="txt_order_date" type="text" class="form-control input-sm" style="margin-right: 7px;width: 160px;" placeholder="Filter by Purchase Date" value="">
             <select id="sel_status_payment" name="sel_status_payment" class="form-control input-sm" style="margin-right: 7px;width: 150px;">
               <option value="-1">All Status Payment</option>
               <option value="1">Confirmed</option>
@@ -27,6 +27,7 @@
             <button id="btn_filter" type="submit" class="btn btn-default btn-sm">Filter</button>
           </div>
         </div>
+        <header id="txt_table_header" class="panel-heading"></header>
         <table class="table table-hover">
           <div id="div_hidden" style="display: none;"></div>
           <tbody id="table_content">
